@@ -17,3 +17,23 @@ Route::get('/masuk', function () {
 Route::get('/minat-pekerjaan', function () {
     return view('job_interest');
 });
+
+// Halaman tipe pekerjaan
+Route::get('/tipe-pekerjaan', function () {
+    return view('job_type'); // resources/views/job_type.blade.php
+})->name('job.type');
+
+// Halaman untuk perusahaan
+Route::get('/untuk-perusahaan', function () {
+    return view('company');
+})->name('company');
+
+// Halaman login untuk perusahaan
+Route::get('/login-perusahaan', function () {
+    return view('company_login');
+})->name('company.login');
+
+// Halaman daftar untuk perusahaan
+Route::get('/daftar-perusahaan', function () {
+    return view('company_register');
+})->name('company.register');
