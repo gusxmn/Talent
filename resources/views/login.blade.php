@@ -8,6 +8,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <style>
         /* CSS Navbar */
         .navbar {
@@ -210,6 +211,26 @@
             text-decoration: underline;
             font-weight: 500;
         }
+
+        /* Tambahan CSS untuk menyamakan input dengan halaman daftar */
+        .form-control {
+            height: 48px;
+            font-size: 14px;
+        }
+
+        /* Password container with eye icon */
+        .password-container {
+            position: relative;
+        }
+
+        .password-container .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+        }
     </style>
 </head>
 
@@ -219,9 +240,11 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
         <div class="container-fluid mx-lg-5">
             <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                <img src="{{ asset('images/logo_inotal.png') }}" alt="Inotal Logo" class="d-inline-block align-text-top me-2" style="height: 30px;">
+                <img src="{{ asset('images/logo_inotal.png') }}" alt="Inotal Logo"
+                    class="d-inline-block align-text-top me-2" style="height: 30px;">
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -230,12 +253,14 @@
                     <li class="nav-item"><a class="nav-link" href="#">Sumber Daya Karir</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Explore Perusahaan</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Tentang Perusahaan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
                     <li class="nav-item d-lg-none"><a class="nav-link text-primary" href="#">Untuk Perusahaan</a></li>
                 </ul>
                 <div class="d-flex align-items-center">
                     <a href="{{ url('/daftar') }}" class="btn btn-primary btn-primary-custom">Daftar</a>
-                    <a href="{{ url('/masuk') }}" class="btn btn-outline-primary btn-outline-primary-custom ms-3" onclick="window.location.reload();">Masuk</a>
-                    <a href="#" class="nav-link text-primary ms-3 d-none d-lg-block">Untuk Perusahaan</a>
+                    <a href="{{ url('/masuk') }}" class="btn btn-outline-primary btn-outline-primary-custom ms-3"
+                        onclick="window.location.reload();">Masuk</a>
+                    <a href="/untuk-perusahaan" class="nav-link text-primary ms-3 d-none d-lg-block">Untuk Perusahaan</a>
                 </div>
             </div>
         </div>
@@ -243,27 +268,31 @@
 
     {{-- Konten Form Login --}}
     <div class="d-flex flex-column align-items-center pt-5">
-         <h2 class="title-glints">Selamat Datang Kembali!</h2>
+        <h2 class="title-glints">Selamat Datang Kembali!</h2>
         <p class="text-center">Masuk ke akun Talenthub kamu</p>
         <div class="login-container bg-white rounded shadow-sm">
             <form action="#" method="POST">
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan Email" required>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Alamat Email"
+                        required>
                 </div>
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan Password" required>
+                    <div class="password-container">
+                        <input type="password" class="form-control" id="passwordInput" name="password"
+                            placeholder="Kata Sandi" required>
+                        <i class="fa-regular fa-eye password-toggle"></i>
+                    </div>
                 </div>
+                <p class="text-center mb-3">
+                    <a href="#" class="text-link">Lupa Password?</a>
+                </p>
                 <div class="d-grid gap-2 mb-3">
                     <button type="submit" class="btn btn-danger">Masuk</button>
                 </div>
             </form>
 
-            <p class="text-center mb-3">
-                <a href="#" class="text-link">Lupa Password?</a>
-            </p>
-            
             <p class="divider">atau</p>
 
             <div class="social-buttons">
@@ -273,6 +302,11 @@
                 <a href="#">
                     <img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook-logo">
                 </a>
+
+                <a href="#">
+                    <img src="{{ asset('images/logo linkedin.png') }}" alt="linkedin" class="linkedin-logo">
+                </a>
+
             </div>
 
             <hr class="my-4">
@@ -283,12 +317,26 @@
             </div>
 
             <p class="company-link mt-3 mb-0">
-                Untuk perusahaan, kunjungi <a href="#">laman berikut.</a>
+                Untuk perusahaan, kunjungi <a href="/untuk-perusahaan">laman berikut.</a>
             </p>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const passwordInput = document.getElementById("passwordInput");
+        const passwordToggle = document.querySelector(".password-toggle");
+
+        passwordToggle.addEventListener("click", function () {
+            // Toggle type attribute
+            const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+            passwordInput.setAttribute("type", type);
+
+            // Toggle the eye icon class
+            this.classList.toggle("fa-eye");
+            this.classList.toggle("fa-eye-slash");
+        });
+    </script>
 </body>
 
 </html>

@@ -18,6 +18,10 @@ Route::get('/minat-pekerjaan', function () {
     return view('job_interest');
 });
 
+Route::get('/kontak', function () {
+    return view('contact_us');
+});
+
 // Halaman tipe pekerjaan
 Route::get('/tipe-pekerjaan', function () {
     return view('job_type'); // resources/views/job_type.blade.php
