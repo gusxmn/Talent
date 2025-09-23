@@ -19,11 +19,13 @@ class AuthController extends Controller
             // Simpan session login
             Auth::login($user);
 
-            // Cek role
+            // ✅ Cek role
             if ($user->role === 'super admin') {
-                return redirect('/admin/dashboard');
+                return redirect()->route('admin.dashboard');
+            } elseif ($user->role === 'admin') {
+                return redirect()->route('admin.dashboard');
             } else {
-                return redirect('/'); // Public biasa
+                return redirect('/'); // pengguna biasa
             }
         }
 

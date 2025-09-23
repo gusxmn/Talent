@@ -10,9 +10,10 @@ class AdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check() && Auth::user()->role === 'super admin') {
-            return $next($request);
-        }
+        if (Auth::check() && in_array(Auth::user()->role, ['super admin', 'admin'])) {
+        return $next($request);
+}
+
 
         return redirect('/masuk')->with('error', 'Akses ditolak, hanya admin!');
     }

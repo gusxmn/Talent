@@ -3,6 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
+/*
+|--------------------------------------------------------------------------
+| Halaman Utama
+|--------------------------------------------------------------------------
+*/
 Route::get('/', function () {
     return view('home');
 });
@@ -47,13 +52,29 @@ Route::get('/daftar-perusahaan', function () {
     return view('company_register');
 })->name('company.register');
 
-// Proses login
+/*
+|--------------------------------------------------------------------------
+| Auth
+|--------------------------------------------------------------------------
+*/
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Admin dashboard (hanya super admin)
+/*
+|--------------------------------------------------------------------------
+| Panel Admin
+|--------------------------------------------------------------------------
+*/
+// ✅ Bisa diakses role: admin & super admin
 Route::middleware(['admin'])->group(function () {
     Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard'); // ✅ gunakan view khusus admin
+        return view('admin.dashboard'); // view khusus admin
     })->name('admin.dashboard');
+});
+
+// ✅ Hanya super admin yang bisa akses Setting
+Route::middleware(['superadmin'])->group(function () {
+    Route::get('/admin/setting', function () {
+        return view('admin.setting'); // view khusus super admin
+    })->name('admin.setting');
 });
