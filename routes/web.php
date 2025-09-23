@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
     return view('home');
@@ -45,3 +46,14 @@ Route::get('/login-perusahaan', function () {
 Route::get('/daftar-perusahaan', function () {
     return view('company_register');
 })->name('company.register');
+
+// Proses login
+Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Admin dashboard (hanya super admin)
+Route::middleware(['admin'])->group(function () {
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard'); // ✅ gunakan view khusus admin
+    })->name('admin.dashboard');
+});

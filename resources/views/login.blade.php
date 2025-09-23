@@ -271,27 +271,24 @@
         <h2 class="title-glints">Selamat Datang Kembali!</h2>
         <p class="text-center">Masuk ke akun Talenthub kamu</p>
         <div class="login-container bg-white rounded shadow-sm">
-            <form action="#" method="POST">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Alamat Email"
-                        required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="password-container">
-                        <input type="password" class="form-control" id="passwordInput" name="password"
-                            placeholder="Kata Sandi" required>
-                        <i class="fa-regular fa-eye password-toggle"></i>
-                    </div>
-                </div>
-                <p class="text-center mb-3">
-                    <a href="#" class="text-link">Lupa Password?</a>
-                </p>
-                <div class="d-grid gap-2 mb-3">
-                    <button type="submit" class="btn btn-danger">Masuk</button>
-                </div>
-            </form>
+            <form action="{{ route('login.process') }}" method="POST">
+    @csrf
+    <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" name="email" placeholder="Alamat Email" required>
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <div class="password-container">
+            <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Kata Sandi" required>
+            <i class="fa-regular fa-eye password-toggle"></i>
+        </div>
+    </div>
+    <div class="d-grid gap-2 mb-3">
+        <button type="submit" class="btn btn-danger">Masuk</button>
+    </div>
+</form>
+
 
             <p class="divider">atau</p>
 
