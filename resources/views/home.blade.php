@@ -404,8 +404,8 @@
                     <li class="nav-item"><a class="nav-link" href="#">Lowongan Kerja</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Sumber Daya Karir</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Explore Perusahaan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Tentang Perusahaan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/tentang-perusahaan">Tentang Perusahaan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/kontak">Kontak</a></li>
                     <li class="nav-item d-lg-none"><a class="nav-link text-primary" href="#">Untuk Perusahaan</a></li>
                 </ul>
 
@@ -783,7 +783,7 @@
                         <li><a href="#" class="footer-link">Lowongan Kerja</a></li>
                         <li><a href="#" class="footer-link">Sumber Daya Karir</a></li>
                         <li><a href="#" class="footer-link">Explore Perusahaan</a></li>
-                        <li><a href="#" class="footer-link">Tentang Perusahaan</a></li>
+                        <li><a href="tentang-perusahaan" class="footer-link">Tentang Perusahaan</a></li>
                         <li><a href="kontak" class="footer-link">Kontak</a></li>
                     </ul>
                 </div>

@@ -387,7 +387,7 @@
                         <li><a href="#" class="footer-link">Lowongan Kerja</a></li>
                         <li><a href="#" class="footer-link">Sumber Daya Karir</a></li>
                         <li><a href="#" class="footer-link">Explore Perusahaan</a></li>
-                        <li><a href="#" class="footer-link">Tentang Perusahaan</a></li>
+                        <li><a href="untuk-perusahaan" class="footer-link">Tentang Perusahaan</a></li>
                         <li><a href="kontak" class="footer-link">Kontak</a></li>
                     </ul>
                 </div>

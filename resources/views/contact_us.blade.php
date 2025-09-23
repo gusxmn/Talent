@@ -342,8 +342,8 @@
           <li class="nav-item"><a class="nav-link" href="#">Lowongan Kerja</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Sumber Daya Karir</a></li>
           <li class="nav-item"><a class="nav-link" href="#">Explore Perusahaan</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Tentang Perusahaan</a></li>
-          <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
+          <li class="nav-item"><a class="nav-link" href="/tentang-perusahaan">Tentang Perusahaan</a></li>
+          <li class="nav-item"><a class="nav-link" href="/kontak">Kontak</a></li>
           <li class="nav-item d-lg-none"><a class="nav-link text-primary" href="#">Untuk Perusahaan</a></li>
         </ul>
 
@@ -367,7 +367,7 @@
           <h2 class="contact-form-heading">Hubungi Kami</h2>
           <h3 class="contact-form-subheading">Punya Pertanyaan ?</h3>
           <p class="contact-form-text">
-            Apabila Anda memiliki pertanyaan terkait lowongan kerja, atau informasi lainnya, silahkan hubungi kami melalui informasi berikut.
+            Apabila Anda memiliki pertanyaan terkait lowongan kerja, atau informasi lainnya, silahkan hubungi kami melalui formulir di bawah ini:
           </p>
           <form>
             <div class="mb-3">
@@ -442,7 +442,7 @@
             <li><a href="#" class="footer-link">Lowongan Kerja</a></li>
             <li><a href="#" class="footer-link">Sumber Daya Karir</a></li>
             <li><a href="#" class="footer-link">Explore Perusahaan</a></li>
-            <li><a href="#" class="footer-link">Tentang Perusahaan</a></li>
+            <li><a href="tentang-perusahaan" class="footer-link">Tentang Perusahaan</a></li>
             <li><a href="kontak" class="footer-link">Kontak</a></li>
           </ul>
         </div>

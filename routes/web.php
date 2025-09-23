@@ -22,6 +22,10 @@ Route::get('/kontak', function () {
     return view('contact_us');
 });
 
+Route::get('/tentang-perusahaan', function () {
+    return view('about_company');
+});
+
 // Halaman tipe pekerjaan
 Route::get('/tipe-pekerjaan', function () {
     return view('job_type'); // resources/views/job_type.blade.php
