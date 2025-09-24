@@ -294,34 +294,8 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
-        <div class="container-fluid mx-lg-5">
-            <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-                <img src="{{ asset('images/logo_inotal.png') }}" alt="Inotal Logo" class="d-inline-block align-text-top me-2" style="height: 30px;">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="#">Lowongan Kerja</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Sumber Daya Karir</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#">Explore Perusahaan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/tentang-perusahaan">Tentang Perusahaan</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/kontak">Kontak</a></li>
-                    <li class="nav-item d-lg-none"><a class="nav-link text-primary" href="#">Untuk Perusahaan</a></li>
-                </ul>
-
-                <div class="d-flex align-items-center">
-                    <a href="{{ url('/daftar') }}" class="btn btn-primary">Daftar</a>
-                    <a href="{{ url('/masuk') }}" class="btn btn-outline-primary ms-3">Masuk</a>
-                    <a href="{{ url('/untuk-perusahaan') }}" class="nav-link text-primary ms-3 d-none d-lg-block">Untuk Perusahaan</a>
-                </div>
-            </div>
-        </div>
-    </nav>
+    {{-- Memanggil navbar dari file parsial --}}
+    @include('partials.navbar')
 
     <main>
         <section class="hero-section">
@@ -389,65 +363,8 @@
         </section>
     </main>
 
-    <footer class="py-5 footer-bg text-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <div class="mb-3">
-                        <img src="{{ asset('images/inotal.png') }}" alt="INOTAL SISTEMA INTERNASIONAL" class="footer-logo">
-                    </div>
-                    <p class="mb-1">PT INOTAL SISTEMA INTERNASIONAL</p>
-                    <p>Langkah Mudah Menuju Masa Depan Karier</p>
-                </div>
-
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5 class="fw-bold mb-3 text-red-custom">Navigasi</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="footer-link">Lowongan Kerja</a></li>
-                        <li><a href="#" class="footer-link">Sumber Daya Karir</a></li>
-                        <li><a href="#" class="footer-link">Explore Perusahaan</a></li>
-                        <li><a href="tentang-perusahaan" class="footer-link">Tentang Perusahaan</a></li>
-                        <li><a href="kontak" class="footer-link">Kontak</a></li>
-                    </ul>
-                </div>
-
-                <div class="col-md-4">
-                    <h5 class="fw-bold mb-3 text-red-custom">Alamat</h5>
-                    <ul class="list-unstyled">
-                        <li>
-                            <p class="alamat-icon-wrapper">
-                                <i class="bi bi-geo-alt-fill me-2 text-red-custom"></i>
-                                <span class="alamat-text">
-                                    Jl. Pratista Utara III No.2,<br>
-                                    Antapani Kidul,<br>
-                                    Kec. Antapani, Kota Bandung,<br>
-                                    Jawa Barat, Indonesia 4029
-                                </span>
-                            </p>
-                        </li>
-                        <li>
-                            <p class="mb-1 d-flex align-items-start">
-                                <i class="bi bi-telephone-fill me-2 text-red-custom"></i>
-                                <span>+(62) 82115179879</span>
-                            </p>
-                        </li>
-                        <li>
-                            <p class="mb-1 d-flex align-items-start">
-                                <i class="bi bi-envelope-fill me-2 text-red-custom"></i>
-                                <span>corporate@inotal.tech</span>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <hr class="my-4" style="border-color: #6c757d;">
-
-            <div class="text-center">
-                Copyright ©2025 INOTAL SISTEMA INTERNASIONAL
-            </div>
-        </div>
-    </footer>
+    {{-- Memanggil footer dari file parsial --}}
+    @include('partials.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>

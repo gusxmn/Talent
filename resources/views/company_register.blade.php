@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Talenthub</title>
 
-    <!-- Bootstrap & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
@@ -289,7 +288,6 @@
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav class="navbar">
         <div class="container-fluid d-flex justify-content-between align-items-center">
             <a href="/" class="navbar-brand d-flex align-items-center">
@@ -299,9 +297,7 @@
         </div>
     </nav>
 
-    <!-- Register Container -->
     <div class="register-container">
-        <!-- Left Section -->
         <div class="register-left">
             <div class="feature">
                 <img src="{{ asset('images/people.png') }}" alt="People" class="people-img">
@@ -317,7 +313,6 @@
             </div>
         </div>
 
-        <!-- Right Section -->
         <div class="register-right">
             <h3>Pasang Iklan Lowongan<br>Kerja Gratis!</h3>
 
@@ -364,70 +359,13 @@
         </div>
     </div>
 
-    <!-- QR Code Floating -->
     <div class="qr-code-float">
         <img src="{{ asset('images/qr code.png') }}" alt="QR Code Glints App">
         <p>Rekrut Cepat<br>dengan Talenthub App</p>
     </div>
 
-    <!-- Footer -->
-    <footer class="py-5 footer-bg text-white">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <div class="mb-3">
-                        <img src="{{ asset('images/inotal.png') }}" alt="INOTAL SISTEMA INTERNASIONAL" class="footer-logo">
-                    </div>
-                    <p class="mb-1">PT INOTAL SISTEMA INTERNASIONAL</p>
-                    <p>Langkah Mudah Menuju Masa Depan Karier</p>
-                </div>
-                <div class="col-md-4 mb-4 mb-md-0">
-                    <h5 class="fw-bold mb-3 text-red-custom">Navigasi</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="footer-link">Lowongan Kerja</a></li>
-                        <li><a href="#" class="footer-link">Sumber Daya Karir</a></li>
-                        <li><a href="#" class="footer-link">Explore Perusahaan</a></li>
-                        <li><a href="untuk-perusahaan" class="footer-link">Tentang Perusahaan</a></li>
-                        <li><a href="kontak" class="footer-link">Kontak</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
-                    <h5 class="fw-bold mb-3 text-red-custom">Alamat</h5>
-                    <ul class="list-unstyled">
-                        <li>
-                            <p class="alamat-icon-wrapper">
-                                <i class="bi bi-geo-alt-fill me-2 text-red-custom"></i>
-                                <span class="alamat-text">
-                                    Jl. Pratista Utara III No.2,<br>
-                                    Antapani Kidul,<br>
-                                    Kec. Antapani, Kota Bandung,<br>
-                                    Jawa Barat, Indonesia 4029
-                                </span>
-                            </p>
-                        </li>
-                        <li>
-                            <p class="mb-1 d-flex align-items-start">
-                                <i class="bi bi-telephone-fill me-2 text-red-custom"></i>
-                                <span>+(62) 82115179879</span>
-                            </p>
-                        </li>
-                        <li>
-                            <p class="mb-1 d-flex align-items-start">
-                                <i class="bi bi-envelope-fill me-2 text-red-custom"></i>
-                                <span>corporate@inotal.tech</span>
-                            </p>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="my-4" style="border-color: #6c757d;">
-            <div class="text-center">
-                Copyright ©2025 INOTAL SISTEMA INTERNASIONAL
-            </div>
-        </div>
-    </footer>
+    @include('partials.footer')
 
-    <!-- JS Password Toggle -->
     <script>
         const passwordToggle = document.querySelector('.password-toggle');
         const passwordInput = document.querySelector('#password');
