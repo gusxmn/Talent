@@ -15,90 +15,6 @@
             background-color: #fff;
         }
 
-        /* ==================== Navbar ==================== */
-        .navbar {
-            font-size: 0.95rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .navbar-logo {
-            height: 30px;
-            width: auto;
-            margin-right: 1.5rem;
-        }
-
-        .navbar .nav-link {
-            color: #2c2c2c;
-            margin-right: 1rem;
-            font-weight: 400;
-        }
-
-        .navbar .nav-link:hover {
-            color: #0d47a1;
-        }
-
-        .navbar .nav-link.active {
-            color: #2c2c2c;
-            font-weight: 400;
-            border-bottom: none;
-        }
-
-        .navbar .nav-item {
-            display: flex;
-            align-items: center;
-        }
-
-        .badge-baru {
-            background-color: #e0f2f1;
-            color: #00796b;
-            font-weight: 600;
-            padding: 0.25em 0.7em;
-            border-radius: 9999px;
-            margin-left: 0.25rem;
-            font-size: 0.75rem;
-        }
-
-        .dropdown-toggle::after {
-            display: none;
-        }
-
-        .dropdown-menu {
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-outline-primary {
-            border-radius: 4px;
-            padding: 0.35rem 1rem;
-            font-weight: 600;
-            color: #0d47a1;
-            border-color: #0d47a1;
-        }
-
-        .btn-outline-primary:hover {
-            background-color: #0d47a1;
-            color: #fff;
-        }
-
-        .btn-primary {
-            border-radius: 4px;
-            padding: 0.35rem 1rem;
-            font-weight: 600;
-            color: #fff;
-            background-color: #0d47a1;
-            border-color: #0d47a1;
-        }
-
-        .btn-primary:hover {
-            background-color: #0a3d8b;
-            border-color: #0a3d8b;
-        }
-
-        .nav-link.text-primary {
-            font-weight: 600;
-            color: #0d47a1 !important;
-        }
-
         /* ==================== Hero Section ==================== */
         .hero-section {
             background-color: #fff;
@@ -164,8 +80,8 @@
 
         .vm-card {
             background-color: #f8f9fa;
-            border-radius: 0; /* Mengubah card menjadi kotak dengan sudut lancip */
-            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 8px 30px rgba(0, 0, 0, 0.1); /* Menambahkan efek bayangan dan garis batas */
+            border-radius: 0;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 8px 30px rgba(0, 0, 0, 0.1);
             padding: 2.5rem;
             height: 100%;
             display: flex;
@@ -189,7 +105,7 @@
             opacity: 1;
             z-index: -1;
         }
-        
+
         .vm-card.visi-card::before {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Cpath d='M0,150 C50,50 150,50 200,100 C250,150 350,150 400,100 L400,300 L0,300 Z' fill='%23e9ecef'/%3E%3C/svg%3E");
             transform: scaleX(-1);
@@ -220,10 +136,10 @@
             color: #2c2c2c;
             margin-bottom: 0;
         }
-        
+
         .vm-text-content {
-            padding-left: 4.5rem; /* Menyesuaikan jarak kiri agar sejajar dengan judul */
-            padding-right: 2rem; /* Menyesuaikan jarak kanan */
+            padding-left: 4.5rem;
+            padding-right: 2rem;
         }
 
         .vm-text {
@@ -249,46 +165,6 @@
 
         .tech-logo {
             max-height: 50px;
-        }
-
-        /* ==================== Footer ==================== */
-        .footer-bg {
-            background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
-                url('{{ asset('images/gedung.png') }}');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            color: #fff;
-        }
-
-        .footer-logo {
-            height: 120px;
-            width: auto;
-            display: block;
-        }
-
-        .footer-link {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .footer-link:hover {
-            color: #28a745;
-        }
-
-        .alamat-icon-wrapper {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-
-        .alamat-text {
-            flex-grow: 1;
-            margin-left: 0.5rem;
-        }
-
-        .text-red-custom {
-            color: #dc3545;
         }
     </style>
 </head>

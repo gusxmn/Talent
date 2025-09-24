@@ -1,3 +1,33 @@
+<style>
+    /* Footer */
+    .footer-bg {
+        background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('{{ asset('images/gedung.png') }}');
+        background-size: cover;
+        background-position: center;
+        position: relative;
+        color: #fff;
+    }
+    .footer-logo {
+        height: 120px;
+        width: auto;
+        display: block;
+    }
+    .footer-link {
+        color: #fff;
+        text-decoration: none;
+    }
+    .footer-link:hover { color: #28a745; }
+    .alamat-icon-wrapper {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 0.5rem;
+    }
+    .alamat-text {
+        flex-grow: 1;
+        margin-left: 0.5rem;
+    }
+    .text-red-custom { color: #e11c25; }
+</style>
 <footer class="py-5 footer-bg text-white">
     <div class="container">
         <div class="row">
@@ -8,7 +38,6 @@
                 <p class="mb-1">PT INOTAL SISTEMA INTERNASIONAL</p>
                 <p>Langkah Mudah Menuju Masa Depan Karier</p>
             </div>
-
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5 class="fw-bold mb-3 text-red-custom">Navigasi</h5>
                 <ul class="list-unstyled">
@@ -19,7 +48,6 @@
                     <li><a href="kontak" class="footer-link">Kontak</a></li>
                 </ul>
             </div>
-
             <div class="col-md-4">
                 <h5 class="fw-bold mb-3 text-red-custom">Alamat</h5>
                 <ul class="list-unstyled">
@@ -49,9 +77,7 @@
                 </ul>
             </div>
         </div>
-
         <hr class="my-4" style="border-color: #6c757d;">
-
         <div class="text-center">Copyright ©2025 INOTAL SISTEMA INTERNASIONAL</div>
     </div>
 </footer>

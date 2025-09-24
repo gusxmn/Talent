@@ -251,39 +251,6 @@
             font-weight: 500;
             margin: 0;
         }
-
-        /* Footer */
-        .footer-bg {
-            background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)), url('{{ asset('images/gedung.png') }}');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            color: #fff;
-        }
-        .footer-logo {
-            height: 120px;
-            width: auto;
-            display: block;
-        }
-        .footer-link {
-            color: #fff;
-            text-decoration: none;
-        }
-        .footer-link:hover {
-            color: #28a745;
-        }
-        .alamat-icon-wrapper {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-        .alamat-text {
-            flex-grow: 1;
-            margin-left: 0.5rem;
-        }
-        .text-red-custom {
-            color: #dc3545;
-        }
     </style>
 </head>
 <body>

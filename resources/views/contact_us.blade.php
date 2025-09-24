@@ -9,7 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
     <style>
@@ -17,129 +17,18 @@
             background-color: #f6f8f5;
         }
 
-        /* Navbar */
-        .navbar {
-            font-size: 0.95rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .navbar-logo {
-            height: 30px;
-            width: auto;
-            margin-right: 1.5rem;
-        }
-
-        .navbar .nav-link {
-            color: #2c2c2c;
-            margin-right: 1rem;
-            font-weight: 400;
-        }
-
-        .navbar .nav-link:hover {
-            color: #0d47a1;
-        }
-
-        .navbar .nav-link.active {
-            color: #0d47a1;
-            font-weight: 600;
-            border-bottom: 2px solid #0d47a1;
-        }
-
-        .navbar .nav-item {
-            display: flex;
-            align-items: center;
-        }
-
-        .badge-baru {
-            background-color: #e0f2f1;
-            color: #00796b;
-            font-weight: 600;
-            padding: 0.25em 0.7em;
-            border-radius: 9999px;
-            margin-left: 0.25rem;
-            font-size: 0.75rem;
-        }
-
-        .dropdown-toggle::after {
-            display: none;
-        }
-
-        .dropdown-menu {
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn-outline-primary {
-            border-radius: 4px;
-            padding: 0.35rem 1rem;
-            font-weight: 600;
-            color: #0d47a1;
-            border-color: #0d47a1;
-        }
-
-        .btn-outline-primary:hover {
-            background-color: #0d47a1;
-            color: #fff;
-        }
-
-        .btn-primary {
-            border-radius: 4px;
-            padding: 0.35rem 1rem;
-            font-weight: 600;
-            color: #fff;
-            background-color: #0d47a1;
-            border-color: #0d47a1;
-        }
-
-        .btn-primary:hover {
-            background-color: #0a3d8b;
-            border-color: #0a3d8b;
-        }
-
-        .nav-link.text-primary {
-            font-weight: 600;
-            color: #0d47a1 !important;
-        }
-
-        /* Tombol Daftar dan Masuk */
-        .btn-primary-custom {
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary-custom:hover {
-            background-color: #fff;
-            color: #0d47a1;
-            border-color: #0d47a1;
-        }
-
-        .btn-outline-primary-custom {
-            transition: all 0.3s ease;
-        }
-
-        .btn-outline-primary-custom:hover {
-            background-color: #0d47a1;
-            color: #fff;
-            border-color: #0d47a1;
-        }
-
-        @media (max-width: 992px) {
-            .navbar .nav-link.active {
-                border-bottom: none;
-            }
-        }
-
         /* Map Section */
         .map-container {
             background-color: #fff;
-            padding: 0; /* Ubah padding menjadi 0 agar peta menempel ke samping */
+            padding: 0;
         }
 
         #map {
-            height: 450px; /* Tinggi peta disesuaikan */
+            height: 450px;
             width: 100%;
-            border-radius: 0; /* Hapus border-radius agar tidak ada sudut melengkung */
-            border: none; /* Hapus border */
-            box-shadow: none; /* Hapus bayangan */
+            border-radius: 0;
+            border: none;
+            box-shadow: none;
         }
 
         /* Konten Utama (Form dan Info) */
@@ -229,7 +118,7 @@
         .form-control-custom::placeholder {
             color: #a0a0a0;
         }
-        
+
         .form-control-custom.is-invalid {
             border-color: #e57373;
         }
@@ -277,50 +166,6 @@
             color: #555;
             font-size: 0.95rem;
             line-height: 1.5;
-        }
-
-        /* Footer */
-        .footer-bg {
-            background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9)),
-                url('{{ asset('images/gedung.png') }}');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            color: #fff;
-        }
-
-        .footer-logo {
-            height: 120px;
-            width: auto;
-            display: block;
-        }
-
-        .footer-link {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .footer-link:hover {
-            color: #28a745;
-        }
-
-        .alamat-icon-wrapper {
-            display: flex;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
-        }
-
-        .alamat-text {
-            flex-grow: 1;
-            margin-left: 0.5rem;
-        }
-
-        .text-red-custom {
-            color: #dc3545;
-        }
-
-        .footer-icon-custom {
-            color: #dc3545;
         }
     </style>
 </head>
@@ -416,7 +261,7 @@
             L.marker(location).addTo(map)
                 .bindPopup("<b>PT INOTAL SISTEMA INTERNASIONAL</b><br>Jl. Pratista Utara III No.2, Antapani.")
                 .openPopup();
-            
+
             map.setView(location, 18);
         });
     </script>
