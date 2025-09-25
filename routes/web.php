@@ -2,60 +2,28 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
 | Halaman Utama
 |--------------------------------------------------------------------------
 */
-Route::get('/', function () {
-    return view('home');
-});
-
-Route::get('/daftar', function () {
-    return view('daftar');
-});
-
-Route::get('/masuk', function () {
-    return view('login');
-});
-
-Route::get('/minat-pekerjaan', function () {
-    return view('job_interest');
-});
-
-Route::get('/kontak', function () {
-    return view('contact_us');
-});
-
-Route::get('/lowongan-kerja', function () {
-    return view('job');
-});
-
-
-Route::get('/tentang-perusahaan', function () {
-    return view('about_company');
-});
+Route::get('/', fn() => view('home'));
+Route::get('/daftar', fn() => view('daftar'));
+Route::get('/masuk', fn() => view('login'));
+Route::get('/minat-pekerjaan', fn() => view('job_interest'));
+Route::get('/kontak', fn() => view('contact_us'));
+Route::get('/tentang-perusahaan', fn() => view('about_company'));
 
 // Halaman tipe pekerjaan
-Route::get('/tipe-pekerjaan', function () {
-    return view('job_type'); // resources/views/job_type.blade.php
-})->name('job.type');
+Route::get('/tipe-pekerjaan', fn() => view('job_type'))->name('job.type');
 
 // Halaman untuk perusahaan
-Route::get('/untuk-perusahaan', function () {
-    return view('company');
-})->name('company');
-
-// Halaman login untuk perusahaan
-Route::get('/login-perusahaan', function () {
-    return view('company_login');
-})->name('company.login');
-
-// Halaman daftar untuk perusahaan
-Route::get('/daftar-perusahaan', function () {
-    return view('company_register');
-})->name('company.register');
+Route::get('/untuk-perusahaan', fn() => view('company'))->name('company');
+Route::get('/login-perusahaan', fn() => view('company_login'))->name('company.login');
+Route::get('/daftar-perusahaan', fn() => view('company_register'))->name('company.register');
 
 /*
 |--------------------------------------------------------------------------
@@ -72,14 +40,33 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 */
 // ✅ Bisa diakses role: admin & super admin
 Route::middleware(['admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard'); // view khusus admin
-    })->name('admin.dashboard');
+    Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
 });
 
-// ✅ Hanya super admin yang bisa akses Setting
+// ✅ Hanya super admin yang bisa akses Setting & Manajemen User
 Route::middleware(['superadmin'])->group(function () {
-    Route::get('/admin/setting', function () {
-        return view('admin.setting'); // view khusus super admin
-    })->name('admin.setting');
+    Route::get('/admin/setting', fn() => view('admin.setting'))->name('admin.setting');
+
+    // CRUD User
+    Route::resource('/admin/users', UserController::class)->names([
+        'index'   => 'admin.users.index',
+        'create'  => 'admin.users.create',
+        'store'   => 'admin.users.store',
+        'show'    => 'admin.users.show',
+        'edit'    => 'admin.users.edit',
+        'update'  => 'admin.users.update',
+        'destroy' => 'admin.users.destroy',
+    ]);
+
+    // Tambahan fitur lain (reset password, search)
+    Route::post('/admin/users/{id}/reset-password', [UserController::class, 'resetPassword'])->name('admin.users.reset-password');
+    Route::get('/admin/users/search', [UserController::class, 'search'])->name('admin.users.search');
+});
+
+Route::middleware(['admin'])->group(function () {
+    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
+});
+
+Route::get('/lowongan-kerja', function () {
+    return view('job');
 });

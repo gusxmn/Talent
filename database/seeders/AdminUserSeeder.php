@@ -12,7 +12,7 @@ class AdminUserSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'name' => 'Super Admin',
+                'name' => 'Kamu Sadewo',
                 'email' => 'superadmin@gmail.com',
                 'password' => Hash::make('superadmin2025'),
                 'role' => 'super admin',
@@ -22,8 +22,16 @@ class AdminUserSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'email' => 'admin@gmail.com',
-                'password' => Hash::make('password123'),
+                'password' => Hash::make('admin123'),
                 'role' => 'admin',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'dr raswah',
+                'email' => 'leader@gmail.com',
+                'password' => Hash::make('admin123'),
+                'role' => 'pimpinan',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
