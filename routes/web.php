@@ -28,6 +28,11 @@ Route::get('/kontak', function () {
     return view('contact_us');
 });
 
+Route::get('/lowongan-kerja', function () {
+    return view('job');
+});
+
+
 Route::get('/tentang-perusahaan', function () {
     return view('about_company');
 });
