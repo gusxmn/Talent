@@ -7,192 +7,287 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2c3e50;
-            --accent-color: #1abc9c;
-            --danger-color: #e74c3c;
-            --light-color: #ecf0f1;
-            --dark-color: #34495e;
-        }
+        /* ====================
+           GLOBAL STYLES
+           ==================== */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Poppins', sans-serif;
+            background-color: #f4f6f9;
+            color: #333;
         }
-        .sidebar {
-            background: linear-gradient(180deg, var(--secondary-color) 0%, var(--dark-color) 100%);
-            color: white;
-            min-height: 100vh;
-            width: 260px;
-            box-shadow: 3px 0 10px rgba(0,0,0,0.1);
-            transition: all 0.3s;
-        }
-        .sidebar-header {
-            padding: 20px 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-        }
-        .user-info {
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px;
+
+        #wrapper {
             display: flex;
-            align-items: center;
         }
-        .user-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background-color: var(--accent-color);
+
+        /* ====================
+           SIDEBAR STYLES
+           ==================== */
+        #sidebar-wrapper {
+            background-color: #4e73df;
+            color: #fff;
+            min-height: 100vh;
+            width: 250px;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            z-index: 1000;
+        }
+
+        .sidebar-brand {
+            padding: 1.5rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 24px;
-            margin-right: 15px;
         }
-        .user-details h5 {
-            margin-bottom: 0;
-            font-weight: 600;
+
+        .sidebar-brand h4 {
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            font-size: 1.25rem;
+            margin-left: 0.5rem;
+            transition: all 0.5s ease;
         }
-        .user-details p {
-            margin-bottom: 0;
-            font-size: 0.85rem;
-            opacity: 0.8;
+
+        .sidebar-brand i {
+            font-size: 1.5rem;
         }
+
+        .nav-item {
+            padding: 0 1rem;
+        }
+
         .nav-link {
-            color: rgba(255,255,255,0.8);
-            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            color: #fff;
+            opacity: 0.8;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
-            margin-bottom: 5px;
-            transition: all 0.3s;
+        }
+
+        .nav-link i {
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+            width: 20px;
+        }
+
+        /* ====================
+           CONTENT & NAVBAR STYLES
+           ==================== */
+        #content-wrapper {
+            flex-grow: 1;
+            margin-left: 250px;
+            background-color: #f4f6f9;
+            min-height: 100vh;
+            transition: margin-left 0.5s ease;
+        }
+
+        .navbar {
+            background-color: #fff;
+            padding: 0.75rem 2rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .navbar-custom {
+            padding-left: 1rem;
+            padding-right: 2rem;
+            justify-content: space-between;
+        }
+
+        .navbar-nav .nav-item .nav-link {
+            color: #555;
+            transition: color 0.3s;
+            padding: 0;
+            border-radius: 0;
+            background: none;
             display: flex;
             align-items: center;
         }
-        .nav-link i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
+
+        .navbar-nav .nav-item .nav-link:hover {
+            opacity: 1;
         }
-        .nav-link:hover, .nav-link.active {
-            color: white;
-            background-color: rgba(255,255,255,0.1);
-        }
-        .nav-link:hover {
-            transform: translateX(5px);
-        }
-        .logout-link {
-            color: #ff6b6b !important;
-            margin-top: 20px;
-        }
-        .logout-link:hover {
-            background-color: rgba(255,107,107,0.1) !important;
-        }
-        .content-area {
-            padding: 30px;
-            background-color: #f8f9fa;
-            flex-grow: 1;
-        }
-        .content-header {
-            background-color: white;
+
+        .dropdown-menu {
             border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
-        .page-title {
-            color: var(--secondary-color);
-            font-weight: 600;
-            margin-bottom: 5px;
+
+        .main-content {
+            padding: 2rem;
         }
-        .breadcrumb {
-            margin-bottom: 0;
-            background-color: transparent;
-            padding: 0;
+
+        #sidebarToggle {
+            background: none;
+            border: none;
+            color: #4e73df;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
+
+        .profile-text {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .profile-icon {
+            font-size: 2.25rem !important;
+            cursor: pointer;
+        }
+
+        /* ====================
+           TOGGLE FUNCTIONALITY STYLES
+           ==================== */
+        #wrapper.toggled #sidebar-wrapper {
+            width: 70px;
+        }
+
+        #wrapper.toggled #content-wrapper {
+            margin-left: 70px;
+        }
+
+        #wrapper.toggled .sidebar-brand h4,
+        #wrapper.toggled .sidebar-nav .nav-link span {
+            display: none;
+        }
+
+        #wrapper.toggled .sidebar-brand {
+            justify-content: center;
+        }
+
+        #wrapper.toggled .nav-link i {
+            margin-right: 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ====================
+           MEDIA QUERIES (RESPONSIVE)
+           ==================== */
         @media (max-width: 768px) {
-            .sidebar {
-                min-height: auto;
-                width: 100%;
+            #sidebarToggle {
+                display: block;
             }
-            .content-area {
-                padding: 15px;
+
+            #sidebar-wrapper {
+                margin-left: -250px;
+            }
+
+            #content-wrapper {
+                margin-left: 0;
+            }
+
+            #wrapper.toggled #sidebar-wrapper {
+                margin-left: 0;
+            }
+
+            #wrapper.toggled #content-wrapper {
+                margin-left: 250px;
             }
         }
     </style>
 </head>
 <body>
 
-<div class="d-flex">
-    <!-- Sidebar -->
-    <div class="sidebar p-0">
-        <div class="sidebar-header">
-            <h4 class="mb-0"><i class="fas fa-cogs me-2"></i> Panel Admin</h4>
-        </div>
-
-        <!-- Informasi Pengguna -->
-        @auth
-        <div class="user-info">
-            <div class="user-avatar">
-                <i class="fas fa-user"></i>
-            </div>
-            <div class="user-details">
-                <h5>{{ Auth::user()->name }}</h5>
-                <p>{{ Auth::user()->role }}</p>
-            </div>
-        </div>
-        @endauth
-
-        <ul class="nav flex-column p-3">
-            <li class="nav-item">
-                <a href="{{ route('admin.dashboard') }}" 
-                   class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                    <i class="fas fa-tachometer-alt"></i> Dashboard
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <div class="sidebar-brand">
+                <a href="#" class="text-white text-decoration-none d-flex align-items-center">
+                    <i class="fas fa-cogs"></i>
+                    <h4>Panel Admin</h4>
                 </a>
-            </li>
+            </div>
 
-            {{-- Menu Setting hanya untuk super admin --}}
-            @auth
+            <ul class="nav flex-column sidebar-nav mt-3">
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+                        <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                    </a>
+                </li>
+
+                @auth
                 @if(Auth::user()->role === 'super admin')
                 <li class="nav-item">
-                    <a href="{{ route('admin.users.index') }}" 
-                       class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}">
-                        <i class="fas fa-users-cog"></i> Manajemen User
+                    <a class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
+                        <i class="fas fa-users-cog"></i> <span>Manajemen User</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin.setting') }}" 
-                       class="nav-link {{ request()->routeIs('admin.setting') ? 'active' : '' }}">
-                        <i class="fas fa-cog"></i> Pengaturan
+                    <a class="nav-link {{ request()->routeIs('admin.setting') ? 'active' : '' }}" href="{{ route('admin.setting') }}">
+                        <i class="fas fa-cog"></i> <span>Pengaturan</span>
                     </a>
                 </li>
                 @endif
-            @endauth
+                @endauth
 
-            <li class="nav-item mt-4">
-                <a href="{{ route('logout') }}" class="nav-link logout-link">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </a>
-            </li>
-        </ul>
-    </div>
+                <li class="nav-item mt-5">
+                    <a class="nav-link" href="{{ route('logout') }}">
+                        <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
+                <button id="sidebarToggle" class="btn btn-link rounded-circle me-3">
+                    <i class="fa fa-bars"></i>
+                </button>
 
-    <!-- Konten Utama -->
-    <div class="content-area">
-        <!-- Header Konten -->
-        <div class="content-header">
-            <h3 class="page-title">@yield('title', 'PUSING ')</h3>
-            <nav aria-label="breadcrumb">
-                @yield('breadcrumb')
+                <ul class="navbar-nav ms-auto">
+                    @auth
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="me-2 d-none d-lg-inline text-gray-600 profile-text">{{ Auth::user()->name }}</span>
+                            <i class="fas fa-user-circle text-primary ms-2 profile-icon"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
+                                Lihat Profil
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ route('logout') }}">
+                                <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </li>
+                    @endauth
+                </ul>
             </nav>
-        </div>
 
-        <!-- Konten Dinamis -->
-        <div class="main-content">
-            @yield('content')
+            <div class="main-content">
+                @yield('content')
+            </div>
         </div>
     </div>
-</div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const wrapper = document.getElementById('wrapper');
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    wrapper.classList.toggle('toggled');
+                });
+            }
+        });
+    </script>
 </body>
 </html>
