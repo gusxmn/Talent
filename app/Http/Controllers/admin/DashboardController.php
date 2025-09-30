@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Lokasi;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -21,6 +22,12 @@ class DashboardController extends Controller
             ->orderBy('date', 'asc')
             ->pluck('total', 'date');
 
-        return view('admin.dashboard', compact('userRoles', 'userActivities'));
+        // Statistik lokasi berdasarkan provinsi
+        $lokasiStats = Lokasi::select('provinsi', DB::raw('count(*) as total'))
+            ->groupBy('provinsi')
+            ->orderBy('provinsi', 'asc')
+            ->pluck('total', 'provinsi');
+
+        return view('admin.dashboard', compact('userRoles', 'userActivities', 'lokasiStats'));
     }
 }

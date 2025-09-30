@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\LokasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +72,16 @@ Route::middleware(['admin'])->group(function () {
 Route::get('/lowongan-kerja', function () {
     return view('job');
 });
+
+Route::middleware(['admin'])->group(function () {
+    Route::resource('/admin/lokasi', LokasiController::class)->names([
+        'index'   => 'admin.lokasi.index',
+        'create'  => 'admin.lokasi.create',
+        'store'   => 'admin.lokasi.store',
+        'show'    => 'admin.lokasi.show',
+        'edit'    => 'admin.lokasi.edit',
+        'update'  => 'admin.lokasi.update',
+        'destroy' => 'admin.lokasi.destroy',
+    ]);
+});
+

@@ -9,17 +9,42 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    /**
+     * Tampilkan daftar user dengan pagination, pencarian, dan filter per_page.
+     */
+    public function index(Request $request)
     {
-        $users = User::latest()->paginate(10);
-        return view('admin.users.index', compact('users'));
+        $search   = $request->input('search');
+        $perPage  = $request->input('per_page', 5); // default tampil 5 data
+
+        $users = User::when($search, function ($query, $search) {
+                    return $query->where('name', 'like', "%{$search}%")
+                                 ->orWhere('email', 'like', "%{$search}%")
+                                 ->orWhere('role', 'like', "%{$search}%");
+                })
+                ->orderBy('id', 'desc')
+                ->paginate($perPage);
+
+        // bawa parameter query biar gak hilang saat pagination
+        $users->appends([
+            'search'   => $search,
+            'per_page' => $perPage,
+        ]);
+
+        return view('admin.users.index', compact('users', 'search', 'perPage'));
     }
 
+    /**
+     * Form tambah user.
+     */
     public function create()
     {
         return view('admin.users.create');
     }
 
+    /**
+     * Simpan user baru.
+     */
     public function store(Request $request)
     {
         $request->validate([
@@ -37,14 +62,21 @@ class UserController extends Controller
             'is_active' => $request->has('is_active'),
         ]);
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan.');
+        return redirect()->route('admin.users.index')
+                         ->with('success', 'User berhasil ditambahkan.');
     }
 
+    /**
+     * Form edit user.
+     */
     public function edit(User $user)
     {
         return view('admin.users.edit', compact('user'));
     }
 
+    /**
+     * Update data user.
+     */
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -54,9 +86,9 @@ class UserController extends Controller
             'role'     => 'required|string',
         ]);
 
-        $user->name  = $request->name;
-        $user->email = $request->email;
-        $user->role  = $request->role;
+        $user->name      = $request->name;
+        $user->email     = $request->email;
+        $user->role      = $request->role;
         $user->is_active = $request->has('is_active');
 
         if ($request->filled('password')) {
@@ -65,12 +97,18 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil diupdate.');
+        return redirect()->route('admin.users.index')
+                         ->with('success', 'User berhasil diperbarui.');
     }
 
+    /**
+     * Hapus user.
+     */
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+
+        return redirect()->route('admin.users.index')
+                         ->with('success', 'User berhasil dihapus.');
     }
 }
