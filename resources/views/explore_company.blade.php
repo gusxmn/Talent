@@ -247,14 +247,14 @@
 
         /* Styling untuk bagian baru "Dapatkan gambaran yang jelas sebelum melamar" */
         .pre-apply-section {
-            padding: 4rem 1rem; /* Padding section sedikit lebih kecil */
+            padding: 1rem 1rem; /* MENGURANGI padding-top untuk menaikkan section */
             text-align: center;
             background-color: #fff; 
         }
         .pre-apply-section h2 {
-            font-size: 2rem; /* Ukuran judul sedikit lebih kecil */
+            font-size: 2rem; 
             font-weight: 700;
-            margin-bottom: 3rem; /* Margin bawah judul sedikit lebih kecil */
+            margin-bottom: 3rem; 
             color: #333;
         }
         .pre-apply-card {
@@ -262,22 +262,70 @@
             padding: 1.5rem; 
         }
         .pre-apply-card img {
-            width: 120px; /* Ukuran gambar ikon kembali ke 120px */
-            height: 120px; /* Ukuran gambar ikon kembali ke 120px */
+            width: 120px; 
+            height: 120px; 
             object-fit: contain;
-            margin-bottom: 1.5rem; /* Margin bawah gambar sedikit lebih kecil */
+            margin-bottom: 1.5rem; 
         }
         .pre-apply-card h3 {
-            font-size: 1.3rem; /* Ukuran sub-judul sedikit lebih kecil */
+            font-size: 1.3rem; 
             font-weight: 600;
             color: #333;
             margin-bottom: 0.5rem; 
         }
         .pre-apply-card p {
-            font-size: 1rem; /* Ukuran teks deskripsi sedikit lebih kecil */
+            font-size: 1rem; 
             color: #666;
             margin: 0;
         }
+
+  .community-section {
+            background-color: #fff;
+            padding: 1rem 1rem;
+            font-family: Arial, sans-serif;
+        }
+        .community-section a {
+            display: block;
+            font-weight: 600;
+            color: #000;
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+        }
+        .community-section a:hover {
+            text-decoration: underline;
+        }
+        .community-section a i {
+            margin-left: 8px;
+        }
+
+        /* Tambahkan jarak antar section */
+        .top-companies {
+            margin-top: 5rem; /* jarak lebih besar dari sebelumnya */
+        }
+
+        .top-companies h5 {
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        /* supaya link perusahaan berjajar horizontal */
+        .top-companies .company-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem; /* jarak antar perusahaan */
+        }
+
+        .top-companies a {
+            color: #0d47a1;
+            text-decoration: underline; /* underline permanen */
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .top-companies a:hover {
+            text-decoration: underline; /* biar underline tetap ada saat hover */
+        }
+
     </style>
 </head>
 <body>
@@ -543,6 +591,25 @@
             </div>
         </div>
     </div>
+
+     <!-- Bagian baru sesuai gambar -->
+    <div class="community-section container">
+        <a href="#">Lihat pedoman komunitas <i class="bi bi-arrow-right"></i></a>
+        <a href="#">Informasi untuk perusahaan <i class="bi bi-arrow-right"></i></a>
+
+        <div class="top-companies">
+            <h5>Perusahaan teratas</h5>
+            <div class="company-list">
+                <a href="#">Bukalapak</a>
+                <a href="#">Traveloka</a>
+                <a href="#">kimia Farma</a>
+                <a href="#">Gojek</a>
+                <a href="#">Shopee</a>
+                <a href="#">Lihat semua <i class="bi bi-chevron-down"></i></a>
+            </div>
+        </div>
+    </div>
+
     {{-- Footer --}}
     @include('partials.footer')
 

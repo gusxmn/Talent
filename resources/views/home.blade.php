@@ -273,7 +273,7 @@
                         </div>
                     </div>
                     <div class="text-start mt-3">
-                        <a href="#" class="text-decoration-none see-more-offset">Lihat Lainnya.....</a>
+                        <a href="explore-perusahaan" class="text-decoration-none see-more-offset">Lihat Lainnya.....</a>
                     </div>
                 </div>
             </div>

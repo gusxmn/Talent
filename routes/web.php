@@ -84,4 +84,3 @@ Route::middleware(['admin'])->group(function () {
         'destroy' => 'admin.lokasi.destroy',
     ]);
 });
-
