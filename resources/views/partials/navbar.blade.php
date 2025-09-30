@@ -1,11 +1,11 @@
 <style>
     /* Navbar */
     .navbar {
-        font-size: 0.95rem;
+        font-size: 1rem; /* samakan ukuran teks navbar */
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
     .navbar-logo {
-        height: 30px;
+        height: 38px; /* samakan tinggi logo */
         width: auto;
         margin-right: 1.5rem;
     }
@@ -13,6 +13,7 @@
         color: #2c2c2c;
         margin-right: 1rem;
         font-weight: 400;
+        white-space: nowrap; /* cegah judul jadi 2 baris */
     }
     .navbar .nav-link:hover { color: #0d47a1; }
     .navbar .nav-link.active {
@@ -84,10 +85,11 @@
         .navbar .nav-link.active { border-bottom: none; }
     }
 </style>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
     <div class="container-fluid mx-lg-5">
-        <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
-            <img src="{{ asset('images/logo_inotal.png') }}" alt="Inotal Logo" class="d-inline-block align-text-top me-2" style="height: 30px;">
+        <a class="navbar-brand d-flex align-items-center py-2" href="{{ url('/') }}">
+            <img src="{{ asset('images/logo_inotal.png') }}" alt="Inotal Logo" class="d-inline-block align-text-top navbar-logo">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -96,11 +98,11 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/lowongan-kerja">Lowongan Kerja</a></li>
+                <li class="nav-item"><a class="nav-link" href="lowongan-kerja">Lowongan Kerja</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Sumber Daya Karir</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Explore Perusahaan</a></li>
-                <li class="nav-item"><a class="nav-link" href="/tentang-perusahaan">Tentang Perusahaan</a></li>
-                <li class="nav-item"><a class="nav-link" href="/kontak">Kontak</a></li>
+                <li class="nav-item"><a class="nav-link" href="explore-perusahaan">Explore Perusahaan</a></li>
+                <li class="nav-item"><a class="nav-link" href="tentang-perusahaan">Tentang Perusahaan</a></li>
+                <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
                 <li class="nav-item d-lg-none"><a class="nav-link text-primary" href="#">Untuk Perusahaan</a></li>
             </ul>
 
@@ -112,3 +114,9 @@
         </div>
     </div>
 </nav>
+
+
+
+
+
+

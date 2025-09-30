@@ -15,6 +15,7 @@ Route::get('/daftar', fn() => view('daftar'));
 Route::get('/masuk', fn() => view('login'));
 Route::get('/minat-pekerjaan', fn() => view('job_interest'));
 Route::get('/kontak', fn() => view('contact_us'));
+Route::get('/explore-perusahaan', fn() => view('explore_company'));
 Route::get('/tentang-perusahaan', fn() => view('about_company'));
 
 // Halaman tipe pekerjaan
