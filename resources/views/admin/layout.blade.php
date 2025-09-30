@@ -272,6 +272,12 @@
               </a>
             </li>
 
+            <li class="nav-item">
+              <a class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
+                <i class="fas fa-users-cog"></i> <span>Manajemen job</span>
+              </a>
+            </li>
+
             <li class="nav-item dropdown">
               <a class="nav-link d-flex" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fas fa-cog"></i> <span>Pengaturan</span>
@@ -279,8 +285,8 @@
               </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" href="#">
-                    <i class="fas fa-map-marker-alt"></i> Lokasi
+                  <a class="dropdown-item" href="{{ route('admin.lokasi.index') }}">
+                    <i class="fas fa-map-marker-alt"></i> manajemen Lokasi
                   </a>
                 </li>
               </ul>
@@ -304,6 +310,7 @@
         <button id="sidebarToggle" class="btn btn-link rounded-circle me-3">
           <i class="fa fa-bars"></i>
         </button>
+        <h3 class="page-title">@yield('title', 'PUSING ')</h3>
 
         <ul class="navbar-nav ms-auto">
           @auth
