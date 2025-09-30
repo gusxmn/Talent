@@ -273,7 +273,7 @@
                         </div>
                     </div>
                     <div class="text-start mt-3">
-                        <a href="#" class="text-decoration-none see-more-offset">Lihat Lainnya.....</a>
+                        <a href="explore-perusahaan" class="text-decoration-none see-more-offset">Lihat Lainnya.....</a>
                     </div>
                 </div>
             </div>
@@ -292,8 +292,8 @@
                             "Talenthub jadi platform cari kerja yang paling mudah & cepat buatku. Aku berhasil career switch ke bidang yang jadi passion-ku dan dapat kerja cuma dalam 4 hari."
                         </blockquote>
                         <div class="mt-3">
-                            <div class="testimonial-author">Windya A., 24 tahun</div>
-                            <div class="testimonial-role">Strategi Konten</div>
+                            <div class="testimonial-author">ilham sadewo, 24 tahun</div>
+                            <div class="testimonial-role">pemula</div>
                         </div>
                     </div>
                 </div>
@@ -304,8 +304,8 @@
                             "Lewat Talenthub, aku bisa dapat pekerjaan yang bikin aku puas dan orang tua bangga. Prosesnya cepat, cuma 4 hari aku langsung dihubungi rekruter."
                         </blockquote>
                         <div class="mt-3">
-                            <div class="testimonial-author">Dimas B Wicaksono, 26 tahun</div>
-                            <div class="testimonial-role">Senior Account Executive</div>
+                            <div class="testimonial-author">rimba sadewo, 26 tahun</div>
+                            <div class="testimonial-role">full stack developer</div>
                         </div>
                     </div>
                 </div>
@@ -316,8 +316,8 @@
                             "Lewat Talenthub, aku berhasil mematahkan stigma jurusanku & berhasil dapat kerja sebelum lulus. Prosesnya cepat, aku diterima seminggu setelah interview"
                         </blockquote>
                         <div class="mt-3">
-                            <div class="testimonial-author">Ashalia T. Tasha, 21 tahun</div>
-                            <div class="testimonial-role">Komunikasi Pemasaran</div>
+                            <div class="testimonial-author">Guss, 21 tahun</div>
+                            <div class="testimonial-role">pemula</div>
                         </div>
                     </div>
                 </div>
