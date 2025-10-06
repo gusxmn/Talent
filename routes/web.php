@@ -35,8 +35,6 @@ Route::get('/daftar-perusahaan', fn() => view('company_register'))->name('compan
 |--------------------------------------------------------------------------
 */
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-// ✅ Tambahkan route untuk proses registrasi
-Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process'); 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
