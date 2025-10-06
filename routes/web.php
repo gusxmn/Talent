@@ -2,24 +2,29 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+// Admin Controllers
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LokasiController;
+use App\Http\Controllers\Admin\JobListingController;
+use App\Http\Controllers\Admin\ApplicantController;
+use App\Http\Controllers\Admin\ScheduleController; // <-- DITAMBAHKAN
+use App\Http\Controllers\Admin\ReportController;   // <-- DITAMBAHKAN
+// Public Controllers
+use App\Http\Controllers\JobController;
+
 
 /*
 |--------------------------------------------------------------------------
-| Halaman Utama
+| Halaman Publik
 |--------------------------------------------------------------------------
 */
-Route::get('/', fn() => view('home'));
-Route::get('/daftar', fn() => view('daftar'));
-Route::get('/masuk', fn() => view('login'));
-Route::get('/minat-pekerjaan', fn() => view('job_interest'));
-Route::get('/kontak', fn() => view('contact_us'));
-Route::get('/explore-perusahaan', fn() => view('explore_company'));
-Route::get('/tentang-perusahaan', fn() => view('about_company'));
-Route::get('/lowongan-kerja', fn() => view('job'));
-Route::get('/sumber-daya-karir', fn() => view('career_resources'));
+Route::get('/', fn() => view('home'))->name('home');
+Route::get('/daftar', fn() => view('daftar'))->name('register'); // Tambahkan name
+Route::get('/masuk', fn() => view('login'))->name('login'); // Tambahkan name
+Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
+Route::get('/kontak', fn() => view('contact_us'))->name('contact');
+Route::get('/tentang-perusahaan', fn() => view('about_company'))->name('about');
 
 // Halaman tipe pekerjaan
 Route::get('/tipe-pekerjaan', fn() => view('job_type'))->name('job.type');
@@ -29,60 +34,71 @@ Route::get('/untuk-perusahaan', fn() => view('company'))->name('company');
 Route::get('/login-perusahaan', fn() => view('company_login'))->name('company.login');
 Route::get('/daftar-perusahaan', fn() => view('company_register'))->name('company.register');
 
+// Halaman publik Job
+Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobs.show');
+
+
 /*
 |--------------------------------------------------------------------------
 | Auth
 |--------------------------------------------------------------------------
 */
+// Rute login process sudah benar
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+// Gunakan POST untuk logout jika Anda menerapkan CSRF protection di form
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); 
+// Anda juga bisa mempertahankan GET, tapi POST lebih aman jika menggunakan form/link non-JS di layout
+// Route::get('/logout', [AuthController::class, 'logout'])->name('logout'); 
+
 
 /*
 |--------------------------------------------------------------------------
-| Panel Admin
+| PANEL ADMIN (Prefix & Name Grouping)
 |--------------------------------------------------------------------------
+| Middleware 'admin' diasumsikan mengizinkan 'admin' dan 'super admin'.
 */
-// ✅ Bisa diakses role: admin & super admin
-Route::middleware(['admin'])->group(function () {
-    Route::get('/admin/dashboard', fn() => view('admin.dashboard'))->name('admin.dashboard');
-});
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
 
-// ✅ Hanya super admin yang bisa akses Setting & Manajemen User
-Route::middleware(['superadmin'])->group(function () {
-    Route::get('/admin/setting', fn() => view('admin.setting'))->name('admin.setting');
+    // 1. Dashboard (Akses Admin & Super Admin)
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // CRUD User
-    Route::resource('/admin/users', UserController::class)->names([
-        'index'   => 'admin.users.index',
-        'create'  => 'admin.users.create',
-        'store'   => 'admin.users.store',
-        'show'    => 'admin.users.show',
-        'edit'    => 'admin.users.edit',
-        'update'  => 'admin.users.update',
-        'destroy' => 'admin.users.destroy',
+    // 2. Manajemen Lowongan (Akses Admin & Super Admin)
+    Route::resource('job_listings', JobListingController::class);
+
+    // 3. Manajemen Pelamar (Akses Admin & Super Admin)
+    Route::resource('applicants', ApplicantController::class)->only([
+        'index', 'show', 'destroy'
     ]);
+    Route::put('applicants/{applicant}/status', [ApplicantController::class, 'updateStatus'])->name('applicants.update_status');
 
-    // Tambahan fitur lain (reset password, search)
-    Route::post('/admin/users/{id}/reset-password', [UserController::class, 'resetPassword'])->name('admin.users.reset-password');
-    Route::get('/admin/users/search', [UserController::class, 'search'])->name('admin.users.search');
-});
+    // 4. Manajemen Jadwal (Akses Admin & Super Admin) <--- DIBETULKAN
+    Route::resource('schedules', ScheduleController::class);
 
-Route::middleware(['admin'])->group(function () {
-    Route::get('/admin/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-});
+    Route::get('schedules-events', [ScheduleController::class, 'events'])->name('schedules.events');
+    
+    // 5. Laporan & Analitik (Akses Admin & Super Admin) <--- DITAMBAHKAN
+    Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 
-Route::get('/lowongan-kerja', function () {
-    return view('job');
-});
 
-Route::middleware(['admin'])->group(function () {
-    Route::resource('/admin/lokasi', LokasiController::class)->names([
-        'index'   => 'admin.lokasi.index',
-        'create'  => 'admin.lokasi.create',
-        'store'   => 'admin.lokasi.store',
-        'show'    => 'admin.lokasi.show',
-        'edit'    => 'admin.lokasi.edit',
-        'update'  => 'admin.lokasi.update',
-        'destroy' => 'admin.lokasi.destroy',
-    ]);
+    /*
+    |--------------------------------------------------
+    | Rute Khusus Super Admin
+    |--------------------------------------------------
+    | Middleware 'superadmin' diasumsikan hanya mengizinkan 'super admin'.
+    */
+    Route::middleware(['superadmin'])->group(function () {
+        
+        // Pengaturan Sistem
+        Route::get('/setting', fn() => view('admin.setting'))->name('setting');
+
+        // CRUD User
+        Route::resource('users', UserController::class);
+        Route::post('users/{id}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
+        Route::get('users/search', [UserController::class, 'search'])->name('users.search');
+
+        // CRUD Lokasi
+        Route::resource('lokasi', LokasiController::class);
+    });
+
 });
