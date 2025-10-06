@@ -99,7 +99,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="lowongan-kerja">Lowongan Kerja</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Sumber Daya Karir</a></li>
+                <li class="nav-item"><a class="nav-link" href="sumber-daya-karir">Sumber Daya Karir</a></li>
                 <li class="nav-item"><a class="nav-link" href="explore-perusahaan">Explore Perusahaan</a></li>
                 <li class="nav-item"><a class="nav-link" href="tentang-perusahaan">Tentang Perusahaan</a></li>
                 <li class="nav-item"><a class="nav-link" href="kontak">Kontak</a></li>
