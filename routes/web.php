@@ -25,6 +25,9 @@ Route::get('/masuk', fn() => view('login'))->name('login'); // Tambahkan name
 Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
 Route::get('/kontak', fn() => view('contact_us'))->name('contact');
 Route::get('/tentang-perusahaan', fn() => view('about_company'))->name('about');
+Route::get('/explore-perusahaan', fn() => view('explore_company'));
+Route::get('/sumber-daya-karir', fn() => view('career_resources'));
+
 
 // Halaman tipe pekerjaan
 Route::get('/tipe-pekerjaan', fn() => view('job_type'))->name('job.type');
@@ -100,5 +103,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         // CRUD Lokasi
         Route::resource('lokasi', LokasiController::class);
     });
+
 
 });
