@@ -11,6 +11,8 @@ return new class extends Migration {
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('lokasi')->nullable(); // ✅ Tambahan kolom lokasi
+            $table->string('whatsapp', 15)->nullable(); // ✅ Tambahan kolom whatsapp
             $table->enum('role', ['user', 'admin','pimpinan','testdev','wawancara', 'super admin'])->default('user');
             $table->boolean('is_active')->default(true); // ✅ Tambahan kolom status aktif
             $table->timestamp('email_verified_at')->nullable();

@@ -49,12 +49,9 @@ Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobs.show');
 */
 // Rute login process sudah benar
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-// Gunakan POST untuk logout jika Anda menerapkan CSRF protection di form
+// ✅ Tambahkan route untuk proses registrasi
+Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process'); 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); 
-// Anda juga bisa mempertahankan GET, tapi POST lebih aman jika menggunakan form/link non-JS di layout
-// Route::get('/logout', [AuthController::class, 'logout'])->name('logout'); 
-
-
 /*
 |--------------------------------------------------------------------------
 | PANEL ADMIN (Prefix & Name Grouping)
