@@ -5,14 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Admin</title>
 
-  <!-- Bootstrap & Font Awesome -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
     /* ====================
-       GLOBAL STYLES
-       ==================== */
+        GLOBAL STYLES
+        ==================== */
     body {
       font-family: 'Poppins', sans-serif;
       background-color: #f4f6f9;
@@ -46,18 +46,31 @@
     }
 
     /* ====================
-       SIDEBAR STYLES
-       ==================== */
+        SIDEBAR STYLES
+        ==================== */
     #sidebar-wrapper {
-      background-color: #4e73df;
-      color: #fff;
-      min-height: 100vh;
-      width: 250px;
-      transition: all 0.5s ease;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-      position: fixed;
-      z-index: 1000;
-    }
+  background: linear-gradient(0deg, 
+    red, orange, yellow, green, blue, indigo, violet
+  );
+  background-size: 100% 400%;
+  color: #fff;
+  min-height: 100vh;
+  width: 250px;
+  transition: all 0.5s ease;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  z-index: 1000;
+
+  /* animasi gradasi pelangi */
+  animation: rainbowBG 15s linear infinite;
+}
+
+@keyframes rainbowBG {
+  0%   { background-position: 50% 100%; }
+  50%  { background-position: 50% 0%; }
+  100% { background-position: 50% 100%; }
+}
+
 
     .sidebar-brand {
       padding: 1.5rem 1rem;
@@ -91,6 +104,17 @@
       color: #fff;
       position: relative;
     }
+    
+    .nav-link.active {
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 5px;
+    }
+    
+    .nav-link:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+    }
+
 
     .nav-link i {
       margin-right: 0.8rem;
@@ -136,10 +160,21 @@
       margin-right: 0.75rem;
       width: 20px;
     }
+    
+    .sidebar-nav .dropdown-menu .dropdown-item:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    
+    /* Ganti warna saat aktif di dropdown item */
+    .sidebar-nav .dropdown-menu .dropdown-item.active {
+        background-color: rgba(255, 255, 255, 0.2); 
+        font-weight: bold;
+    }
+
 
     /* ====================
-       CONTENT & NAVBAR
-       ==================== */
+        CONTENT & NAVBAR
+        ==================== */
     #content-wrapper {
       flex-grow: 1;
       margin-left: 250px;
@@ -198,9 +233,30 @@
       cursor: pointer;
     }
 
+    /* Dark Mode Toggle Button */
+    .dark-toggle {
+        background: none;
+        border: none;
+        color: #555;
+        font-size: 1.25rem;
+        cursor: pointer;
+        margin-right: 1.5rem;
+        transition: color 0.2s;
+    }
+    .dark-toggle:hover {
+        color: #4e73df;
+    }
+    body.dark-mode .dark-toggle {
+        color: #ddd;
+    }
+    body.dark-mode .dark-toggle:hover {
+        color: #fff;
+    }
+
+
     /* ====================
-       TOGGLE STYLES
-       ==================== */
+        TOGGLE STYLES
+        ==================== */
     #wrapper.toggled #sidebar-wrapper {
       width: 70px;
     }
@@ -212,7 +268,8 @@
       display: none;
     }
     #wrapper.toggled .sidebar-nav .dropdown-menu {
-      display: none !important;
+      /* Harus di-toggle via JS untuk mode toggled/icon-only */
+      display: none !important; 
     }
     #wrapper.toggled .sidebar-brand {
       justify-content: center;
@@ -223,10 +280,18 @@
     #wrapper.toggled .dropdown-arrow {
       display: none;
     }
+    #wrapper.toggled .nav-item {
+        padding: 0 5px; /* Kurangi padding saat di-toggle */
+    }
+    #wrapper.toggled .nav-link {
+        justify-content: center;
+        padding: 1rem 0;
+    }
+
 
     /* ====================
-       RESPONSIVE
-       ==================== */
+        RESPONSIVE
+        ==================== */
     @media (max-width: 768px) {
       #sidebarToggle {
         display: block;
@@ -243,12 +308,21 @@
       #wrapper.toggled #content-wrapper {
         margin-left: 250px;
       }
+      /* Nonaktifkan mode icon-only saat tampilan kecil */
+      #wrapper.toggled .sidebar-nav .nav-link span {
+        display: inline;
+      }
+      #wrapper.toggled #sidebar-wrapper {
+        width: 250px; 
+      }
+      #wrapper.toggled #content-wrapper {
+        margin-left: 250px;
+      }
     }
   </style>
 </head>
 <body>
   <div id="wrapper">
-    <!-- Sidebar -->
     <div id="sidebar-wrapper">
       <div class="sidebar-brand">
         <a href="#" class="text-white text-decoration-none d-flex align-items-center">
@@ -265,52 +339,99 @@
         </li>
 
         @auth
+          {{-- ====================================== --}}
+          {{-- BLOK UNTUK ROLE ADMIN & SUPER ADMIN --}}
+          {{-- Dianggap untuk semua staf di Admin Panel (kecuali Super Admin Khusus) --}}
+          @if(in_array(Auth::user()->role, ['admin', 'super admin']))
+          
+            {{-- Manajemen Job --}}
+            <li class="nav-item">
+                {{-- Gunakan route yang sudah ada --}}
+                <a class="nav-link {{ request()->routeIs('admin.job_listings.*') ? 'active' : '' }}" 
+                   href="{{ route('admin.job_listings.index') }}">
+                   <i class="fas fa-briefcase"></i> <span>Manajemen Lowongan</span>
+                </a>
+            </li>
+
+            {{-- Manajemen Pelamar --}}
+            <li class="nav-item">
+                {{-- Anda perlu membuat route ini: admin.applicants.index --}}
+                <a class="nav-link {{ request()->routeIs('admin.applicants.*') ? 'active' : '' }}" 
+                   href="{{ route('admin.applicants.index') }}">
+                   <i class="fas fa-user-tie"></i> <span>Manajemen Pelamar</span>
+                </a>
+            </li>
+
+            {{-- Manajemen Jadwal --}}
+            <li class="nav-item">
+                {{-- Anda perlu membuat route ini: admin.schedules.index --}}
+                <a class="nav-link {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}" 
+                   href="{{ route('admin.schedules.index') }}">
+                   <i class="fas fa-calendar-alt"></i> <span>Manajemen Jadwal</span>
+                </a>
+            </li>
+
+            {{-- Laporan --}}
+            <li class="nav-item">
+                {{-- Anda perlu membuat route ini: admin.reports.index --}}
+                <a class="nav-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}" 
+                   href="{{ route('admin.reports.index') }}">
+                   <i class="fas fa-chart-bar"></i> <span>Laporan & Analitik</span>
+                </a>
+            </li>
+          @endif
+          {{-- ====================================== --}}
+          
+
+          {{-- ====================================== --}}
+          {{-- BLOK KHUSUS UNTUK ROLE SUPER ADMIN --}}
           @if(Auth::user()->role === 'super admin')
+            
+            {{-- Manajemen User --}}
             <li class="nav-item">
               <a class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
                 <i class="fas fa-users-cog"></i> <span>Manajemen User</span>
               </a>
             </li>
 
-            <li class="nav-item">
-              <a class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}" href="{{ route('admin.users.index') }}">
-                <i class="fas fa-users-cog"></i> <span>Manajemen job</span>
-              </a>
-            </li>
-
+            {{-- Pengaturan (Dropdown) --}}
             <li class="nav-item dropdown">
-              <a class="nav-link d-flex" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              {{-- Pastikan data-bs-target menunjuk ke id collapse --}}
+              <a class="nav-link d-flex collapsed" href="#pengaturanCollapse" role="button" data-bs-toggle="collapse" aria-expanded="{{ request()->routeIs('admin.lokasi.*') ? 'true' : 'false' }}" aria-controls="pengaturanCollapse">
                 <i class="fas fa-cog"></i> <span>Pengaturan</span>
                 <i class="fas fa-chevron-right dropdown-arrow"></i>
               </a>
-              <ul class="dropdown-menu">
+              <ul class="dropdown-menu collapse {{ request()->routeIs('admin.lokasi.*') ? 'show' : '' }}" id="pengaturanCollapse">
                 <li>
-                  <a class="dropdown-item" href="{{ route('admin.lokasi.index') }}">
-                    <i class="fas fa-map-marker-alt"></i> manajemen Lokasi
+                  <a class="dropdown-item {{ request()->routeIs('admin.lokasi.*') ? 'active' : '' }}" href="{{ route('admin.lokasi.index') }}">
+                    <i class="fas fa-map-marker-alt"></i> Manajemen Lokasi
                   </a>
                 </li>
               </ul>
             </li>
           @endif
+          {{-- ====================================== --}}
+          
         @endauth
 
         <li class="nav-item mt-5">
-          <a class="nav-link" href="{{ route('logout') }}">
+          <a class="nav-link" href="{{ route('logout') }}" 
+             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
           </a>
+          <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+          </form>
         </li>
       </ul>
     </div>
-    <!-- End Sidebar -->
-
-    <!-- Content Wrapper -->
     <div id="content-wrapper">
-      <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-light navbar-custom">
         <button id="sidebarToggle" class="btn btn-link rounded-circle me-3">
           <i class="fa fa-bars"></i>
         </button>
-        <h3 class="page-title">@yield('title', 'PUSING ')</h3>
+        {{-- Mengambil judul halaman dari @yield('title') --}}
+        <h3 class="page-title">@yield('title', 'masih pusing')</h3>
 
         <ul class="navbar-nav ms-auto">
           @auth
@@ -318,32 +439,43 @@
               <i class="fas fa-moon"></i>
             </button>
             <li class="nav-item dropdown no-arrow">
-              <a class="nav-link" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="me-2 d-none d-lg-inline text-gray-600 profile-text">{{ Auth::user()->name }}</span>
-                <i class="fas fa-user-circle text-primary ms-2 profile-icon"></i>
-              </a>
-              <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
-                  Lihat Profil
-                </a>
-                <div class="dropdown-divider"></div>
-              </div>
-            </li>
+    <a class="nav-link d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <!-- Nama & Role -->
+        <div class="d-none d-lg-flex flex-column text-start me-2">
+            <span class="fw-bold">{{ Auth::user()->name }}</span>
+            <span class="small text-warning">{{ strtoupper(Auth::user()->role) }}</span>
+        </div>
+        <!-- Icon User -->
+        <i class="fas fa-user-circle text-primary profile-icon fs-3"></i>
+    </a>
+
+    <!-- Dropdown Menu -->
+    <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in" aria-labelledby="userDropdown">
+        <a class="dropdown-item" href="#">
+            <i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>
+            Lihat Profil
+        </a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{ route('logout') }}"
+           onclick="event.preventDefault(); document.getElementById('logout-form-dropdown').submit();">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>
+            Logout
+        </a>
+        <form id="logout-form-dropdown" action="{{ route('logout') }}" method="POST" class="d-none">
+            @csrf
+        </form>
+    </div>
+</li>
+
           @endauth
         </ul>
       </nav>
-      <!-- End Navbar -->
-
-      <!-- Main Content -->
       <div class="main-content">
         @yield('content')
       </div>
     </div>
-    <!-- End Content Wrapper -->
-  </div>
+    </div>
 
-  <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -355,6 +487,28 @@
       // Sidebar toggle
       sidebarToggle.addEventListener('click', function () {
         wrapper.classList.toggle('toggled');
+        // Saat ditoggle ke mode icon-only, pastikan dropdown ditutup
+        if (wrapper.classList.contains('toggled')) {
+            const openDropdown = document.querySelector('.sidebar-nav .dropdown-menu.show');
+            if (openDropdown) {
+                // Collapse the open dropdown
+                new bootstrap.Collapse(openDropdown, { toggle: false }).hide();
+            }
+        }
+      });
+      
+      // Mengatasi masalah dropdown saat di-toggle (khusus untuk mode sidebar icon-only)
+      const sidebarLinks = document.querySelectorAll('#sidebar-wrapper .nav-link');
+      sidebarLinks.forEach(link => {
+          link.addEventListener('click', function() {
+              if (wrapper.classList.contains('toggled') && this.classList.contains('collapsed')) {
+                  // Jika di mode icon-only dan mengklik dropdown, jangan lakukan apa-apa (biarkan Bootstrap yang menangani)
+              } else if (wrapper.classList.contains('toggled') && !this.classList.contains('collapsed')) {
+                  // Jika di mode icon-only dan menutup dropdown, pastikan tidak ada aksi tambahan
+              } else {
+                  // Perilaku normal di mode sidebar penuh
+              }
+          });
       });
 
       // Dark mode toggle
@@ -373,7 +527,10 @@
       // Load saved theme
       if (localStorage.getItem('theme') === 'dark') {
         body.classList.add('dark-mode');
-        darkToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+        // Pastikan darkToggle ada sebelum diakses
+        if (darkToggle) {
+             darkToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+        }
       }
     });
   </script>
