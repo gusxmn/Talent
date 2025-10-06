@@ -18,6 +18,8 @@ Route::get('/minat-pekerjaan', fn() => view('job_interest'));
 Route::get('/kontak', fn() => view('contact_us'));
 Route::get('/explore-perusahaan', fn() => view('explore_company'));
 Route::get('/tentang-perusahaan', fn() => view('about_company'));
+Route::get('/lowongan-kerja', fn() => view('job'));
+Route::get('/sumber-daya-karir', fn() => view('career_resources'));
 
 // Halaman tipe pekerjaan
 Route::get('/tipe-pekerjaan', fn() => view('job_type'))->name('job.type');
