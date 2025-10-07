@@ -15,32 +15,40 @@
     body {
       background-color: #f8f9fa;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
     }
 
-    .registration-box {
-      max-width: 700px;
-      margin: 20px auto;
-      background: #fff;
-      border-radius: 6px;
-      padding: 40px 50px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
+    /* === Judul diangkat sedikit ke atas === */
     .title-glints {
       font-size: 28px;
       font-weight: 700;
       text-align: center;
-      margin: 40px auto 20px;
+      margin: 25px auto 15px; /* sebelumnya 35px -> dikurangi agar naik lebih dekat ke navbar */
     }
 
     .title-glints span {
       color: #00b14f;
     }
 
+    /* Card pendaftaran */
+    .registration-box {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      background: #fff;
+      border-radius: 6px;
+      padding: 30px 40px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      min-height: calc(100vh - 200px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
     /* Input style */
     .form-control,
     .input-group-text {
-      height: 48px;
+      height: 45px;
       font-size: 14px;
       border: 1px solid #999;
       border-radius: 2px;
@@ -53,7 +61,7 @@
     }
 
     .row .col {
-      margin-bottom: 20px;
+      margin-bottom: 15px;
     }
 
     /* Password container */
@@ -127,11 +135,11 @@
       background-color: #e60000;
       color: #fff;
       font-weight: 600;
-      height: 48px;
+      height: 45px;
       border: none;
       font-size: 15px;
-      width: 200px;
-      margin: 0 auto;
+      width: 180px;
+      margin: 15px auto 25px;
       display: block;
     }
 
@@ -144,9 +152,9 @@
     .terms,
     .footer-line {
       text-align: center;
-      margin-top: 25px;
+      margin-top: 10px;
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.4;
     }
 
     .terms a {
@@ -250,7 +258,7 @@
         </div>
       </div>
 
-      <div class="mt-4 text-center">
+      <div class="text-center">
         <button type="submit" class="btn btn-daftar">DAFTAR</button>
       </div>
     </form>

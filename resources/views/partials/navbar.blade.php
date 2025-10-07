@@ -149,14 +149,18 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
+    /* Menghilangkan panah default Bootstrap */
     .dropdown-toggle::after {
         display: none;
     }
 
-    /* === Warna khusus untuk "Untuk Perusahaan" (ABSOLUTE) === */
+    /* === Warna khusus untuk "Untuk Perusahaan" === */
     .nav-link.company-link {
         color: #0d47a1 !important;
         font-weight: 600 !important;
+        display: flex;
+        align-items: center;
+        height: 100%;
     }
 
     .nav-link.company-link:hover,
@@ -166,31 +170,97 @@
         border: none !important;
     }
 
+    /* === PERBAIKAN POSISI SAAT HALAMAN DAFTAR === */
+    .navbar .d-flex.align-items-center {
+        gap: 0.75rem;
+    }
+
+    .navbar .nav-link.company-link.ms-3 {
+        margin-top: 0 !important;
+        display: flex;
+        align-items: center;
+        padding-top: 0.25rem;
+    }
+
+    /* === CSS Custom untuk Dropdown Glints Style (Sesuai Gambar) - UKURAN LEBIH KECIL === */
+    .glints-dropdown {
+        min-width: 12rem; /* Mengurangi lebar dari 14rem ke 12rem */
+        padding: 0.2rem 0; /* Mengurangi padding vertikal */
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        margin-top: 8px !important;
+    }
+
+    .glints-dropdown .dropdown-item {
+        font-size: 0.875rem; /* Mengurangi ukuran font dari 0.95rem ke 0.875rem (sekitar 14px) */
+        color: #2c2c2c;
+        padding: 0.65rem 1rem; /* Mengurangi padding vertikal dari 0.75rem ke 0.65rem */
+        display: flex;
+        align-items: center;
+        font-weight: 500;
+    }
+
+    .glints-dropdown .dropdown-item:hover,
+    .glints-dropdown .dropdown-item:focus {
+        background-color: #f8f9fa;
+        color: #0d47a1;
+    }
+
+    .glints-dropdown .dropdown-item i {
+        font-size: 1rem; /* Mengurangi ukuran ikon dari 1.1rem ke 1rem */
+        margin-right: 0.8rem; /* Mengurangi jarak antara ikon dan teks */
+        width: 1.1rem; /* Mengurangi lebar tetap untuk ikon */
+        text-align: center;
+    }
+
+    .glints-dropdown .dropdown-divider {
+        margin: 0.2rem 0; /* Mengurangi margin pembatas */
+    }
+
+    .glints-dropdown .dropdown-item.logout-item {
+        color: #2c2c2c;
+    }
+
+    .glints-dropdown .dropdown-item.logout-item:hover {
+        color: #0d47a1;
+    }
+
+    /* === Animasi Panah Dropdown === */
+    .chevron-icon {
+        transition: transform 0.3s ease;
+        font-size: 0.7rem; /* Sedikit dikecilkan juga */
+        color: #6c757d;
+    }
+
+    .chevron-icon.open {
+        transform: rotate(180deg);
+    }
+
+
     @media (max-width: 992px) {
         .navbar .nav-link.active {
             border-bottom: none;
         }
         .nav-underline { display: none; }
         .user-dropdown-name { display: none !important; }
+        .chevron-icon { display: none !important; }
     }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
     <div class="container-fluid mx-lg-5">
-        <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center py-2" href="{{ url('/') }}">
             <img src="{{ asset('images/logo_inotal.png') }}" alt="Inotal Logo"
-                 class="d-inline-block align-text-top navbar-logo">
+                class="d-inline-block align-text-top navbar-logo">
         </a>
 
-        <!-- Toggle Mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNav" aria-controls="navbarNav"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navigasi -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 position-relative" id="navMenu">
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('jobs.index') ? 'active' : '' }}" href="{{ route('jobs.index') }}">Lowongan Kerja</a></li>
@@ -202,32 +272,42 @@
                 <span class="nav-underline" id="navUnderline"></span>
             </ul>
 
-            <!-- Bagian kanan -->
             <div class="d-flex align-items-center">
                 @auth
                     <i class="fas fa-bell nav-icon" title="Notifikasi"></i>
                     <i class="fas fa-comment-dots nav-icon" title="Pesan"></i>
 
-                    <div class="dropdown">
-                        <a class="user-dropdown-toggle dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="dropdown" id="userDropdownContainer">
+                        <a class="user-dropdown-toggle" href="#" role="button" id="userDropdownToggle" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="user-profile-icon">
                                 <i class="fas fa-user"></i>
                             </div>
                             <span class="user-dropdown-name d-none d-lg-inline">{{ Auth::user()->name }}</span>
-                            <i class="fas fa-chevron-down ms-1 d-none d-lg-inline" style="font-size: 0.75rem; color: #6c757d;"></i>
+                            <i class="fas fa-chevron-down ms-1 d-none d-lg-inline chevron-icon"></i>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-end glints-dropdown" aria-labelledby="userDropdownToggle">
                             <li>
-                                <div class="dropdown-item disabled text-dark">Login sebagai: <b>{{ Auth::user()->name }}</b></div>
+                                <a class="dropdown-item" href="{{ url('/profil') }}">
+                                    <i class="fas fa-user-circle"></i> PROFIL SAYA
+                                </a>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ url('/profil') }}">Profil Saya</a></li>
-                            <li><a class="dropdown-item" href="{{ url('/pengaturan') }}">Pengaturan Akun</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url('/lamaran-saya') }}">
+                                    <i class="fas fa-file-alt"></i> LAMARAN SAYA
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url('/pengaturan-akun') }}">
+                                    <i class="fas fa-cog"></i> PENGATURAN AKUN
+                                </a>
+                            </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="dropdown-item text-danger">Keluar</button>
+                                    <button type="submit" class="dropdown-item logout-item">
+                                        <i class="fas fa-power-off"></i> KELUAR
+                                    </button>
                                 </form>
                             </li>
                         </ul>
@@ -268,4 +348,20 @@
         const active = document.querySelector('#navMenu .nav-link.active');
         if (active) moveUnderline(active);
     });
+
+    // === Script untuk Animasi Panah Dropdown ===
+    const userDropdownContainer = document.getElementById('userDropdownContainer');
+    const chevronIcon = userDropdownContainer ? userDropdownContainer.querySelector('.chevron-icon') : null;
+
+    if (userDropdownContainer && chevronIcon) {
+        // Event saat dropdown ditampilkan
+        userDropdownContainer.addEventListener('show.bs.dropdown', function () {
+            chevronIcon.classList.add('open');
+        });
+
+        // Event saat dropdown disembunyikan
+        userDropdownContainer.addEventListener('hide.bs.dropdown', function () {
+            chevronIcon.classList.remove('open');
+        });
+    }
 </script>
