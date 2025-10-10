@@ -32,14 +32,12 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="title" class="form-label">Posisi</label>
-                <input type="text" name="title" id="title"
-                       class="form-control"
+                <input type="text" name="title" id="title" class="form-control"
                        value="{{ old('title', $jobListing->title) }}" required>
             </div>
             <div class="col-md-6">
                 <label for="company" class="form-label">Perusahaan</label>
-                <input type="text" name="company" id="company"
-                       class="form-control"
+                <input type="text" name="company" id="company" class="form-control"
                        value="{{ old('company', $jobListing->company) }}" required>
             </div>
         </div>
@@ -47,8 +45,7 @@
         {{-- Lokasi --}}
         <div class="mb-3">
             <label for="location" class="form-label">Lokasi</label>
-            <input type="text" name="location" id="location"
-                   class="form-control"
+            <input type="text" name="location" id="location" class="form-control"
                    value="{{ old('location', $jobListing->location) }}" required>
         </div>
 
@@ -56,14 +53,12 @@
         <div class="row mb-3">
             <div class="col-md-6">
                 <label for="salary_min" class="form-label">Gaji Minimum</label>
-                <input type="number" name="salary_min" id="salary_min"
-                       class="form-control"
+                <input type="number" name="salary_min" id="salary_min" class="form-control"
                        value="{{ old('salary_min', $jobListing->salary_min) }}">
             </div>
             <div class="col-md-6">
                 <label for="salary_max" class="form-label">Gaji Maksimum</label>
-                <input type="number" name="salary_max" id="salary_max"
-                       class="form-control"
+                <input type="number" name="salary_max" id="salary_max" class="form-control"
                        value="{{ old('salary_max', $jobListing->salary_max) }}">
             </div>
         </div>
@@ -74,10 +69,12 @@
                 <label for="job_type" class="form-label">Jenis Pekerjaan</label>
                 <select name="job_type" id="job_type" class="form-select" required>
                     <option value="">-- Pilih Jenis --</option>
-                    <option value="full-time" {{ old('job_type', $jobListing->job_type) == 'full-time' ? 'selected' : '' }}>Full-time</option>
-                    <option value="part-time" {{ old('job_type', $jobListing->job_type) == 'part-time' ? 'selected' : '' }}>Part-time</option>
-                    <option value="contract" {{ old('job_type', $jobListing->job_type) == 'contract' ? 'selected' : '' }}>Contract</option>
-                    <option value="internship" {{ old('job_type', $jobListing->job_type) == 'internship' ? 'selected' : '' }}>Internship</option>
+                    <option value="penuh_waktu" {{ old('job_type', $jobListing->job_type) == 'penuh_waktu' ? 'selected' : '' }}>Penuh Waktu</option>
+                    <option value="paruh_waktu" {{ old('job_type', $jobListing->job_type) == 'paruh_waktu' ? 'selected' : '' }}>Paruh Waktu</option>
+                    <option value="kontrak" {{ old('job_type', $jobListing->job_type) == 'kontrak' ? 'selected' : '' }}>Kontrak</option>
+                    <option value="magang" {{ old('job_type', $jobListing->job_type) == 'magang' ? 'selected' : '' }}>Magang</option>
+                    <option value="freelance" {{ old('job_type', $jobListing->job_type) == 'freelance' ? 'selected' : '' }}>Freelance</option>
+                    <option value="harian" {{ old('job_type', $jobListing->job_type) == 'harian' ? 'selected' : '' }}>Harian</option>
                 </select>
             </div>
 
@@ -85,7 +82,7 @@
                 <label for="work_policy" class="form-label">Kebijakan Kerja</label>
                 <select name="work_policy" id="work_policy" class="form-select" required>
                     <option value="">-- Pilih Kebijakan --</option>
-                    <option value="onsite" {{ old('work_policy', $jobListing->work_policy) == 'onsite' ? 'selected' : '' }}>Onsite</option>
+                    <option value="kerja_di_kantor" {{ old('work_policy', $jobListing->work_policy) == 'kerja_di_kantor' ? 'selected' : '' }}>Kerja di Kantor</option>
                     <option value="hybrid" {{ old('work_policy', $jobListing->work_policy) == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
                     <option value="remote" {{ old('work_policy', $jobListing->work_policy) == 'remote' ? 'selected' : '' }}>Remote</option>
                 </select>
@@ -98,10 +95,13 @@
                 <label for="experience_level" class="form-label">Level Pengalaman</label>
                 <select name="experience_level" id="experience_level" class="form-select" required>
                     <option value="">-- Pilih Level --</option>
-                    <option value="entry" {{ old('experience_level', $jobListing->experience_level) == 'entry' ? 'selected' : '' }}>Entry Level</option>
-                    <option value="mid" {{ old('experience_level', $jobListing->experience_level) == 'mid' ? 'selected' : '' }}>Mid Level</option>
-                    <option value="senior" {{ old('experience_level', $jobListing->experience_level) == 'senior' ? 'selected' : '' }}>Senior Level</option>
-                    <option value="manager" {{ old('experience_level', $jobListing->experience_level) == 'manager' ? 'selected' : '' }}>Manager</option>
+                    <option value="tidak_berpengalaman" {{ old('experience_level', $jobListing->experience_level) == 'tidak_berpengalaman' ? 'selected' : '' }}>Tidak Berpengalaman</option>
+                    <option value="fresh_graduate" {{ old('experience_level', $jobListing->experience_level) == 'fresh_graduate' ? 'selected' : '' }}>Fresh Graduate</option>
+                    <option value="kurang_dari_setahun" {{ old('experience_level', $jobListing->experience_level) == 'kurang_dari_setahun' ? 'selected' : '' }}>Kurang dari Setahun</option>
+                    <option value="1_3_tahun" {{ old('experience_level', $jobListing->experience_level) == '1_3_tahun' ? 'selected' : '' }}>1–3 Tahun</option>
+                    <option value="3_5_tahun" {{ old('experience_level', $jobListing->experience_level) == '3_5_tahun' ? 'selected' : '' }}>3–5 Tahun</option>
+                    <option value="5_10_tahun" {{ old('experience_level', $jobListing->experience_level) == '5_10_tahun' ? 'selected' : '' }}>5–10 Tahun</option>
+                    <option value="lebih_dari_10_tahun" {{ old('experience_level', $jobListing->experience_level) == 'lebih_dari_10_tahun' ? 'selected' : '' }}>Lebih dari 10 Tahun</option>
                 </select>
             </div>
 
@@ -109,10 +109,13 @@
                 <label for="education_level" class="form-label">Pendidikan Minimal</label>
                 <select name="education_level" id="education_level" class="form-select" required>
                     <option value="">-- Pilih Pendidikan --</option>
-                    <option value="sma" {{ old('education_level', $jobListing->education_level) == 'sma' ? 'selected' : '' }}>SMA / SMK</option>
-                    <option value="d3" {{ old('education_level', $jobListing->education_level) == 'd3' ? 'selected' : '' }}>D3</option>
+                    <option value="sd" {{ old('education_level', $jobListing->education_level) == 'sd' ? 'selected' : '' }}>SD</option>
+                    <option value="smp" {{ old('education_level', $jobListing->education_level) == 'smp' ? 'selected' : '' }}>SMP</option>
+                    <option value="sma_smk" {{ old('education_level', $jobListing->education_level) == 'sma_smk' ? 'selected' : '' }}>SMA / SMK</option>
+                    <option value="d1_d4" {{ old('education_level', $jobListing->education_level) == 'd1_d4' ? 'selected' : '' }}>D1 – D4</option>
                     <option value="s1" {{ old('education_level', $jobListing->education_level) == 's1' ? 'selected' : '' }}>S1</option>
                     <option value="s2" {{ old('education_level', $jobListing->education_level) == 's2' ? 'selected' : '' }}>S2</option>
+                    <option value="s3" {{ old('education_level', $jobListing->education_level) == 's3' ? 'selected' : '' }}>S3</option>
                 </select>
             </div>
         </div>
@@ -148,7 +151,7 @@
             <input type="file" name="company_logo" id="company_logo" class="form-control">
             @if($jobListing->company_logo)
                 <div class="mt-2">
-                    <img src="{{ asset('storage/' . $jobListing->company_logo) }}" class="img-thumbnail border" style="max-width:120px;">
+                    <img src="{{ asset($jobListing->company_logo) }}" class="img-thumbnail border" style="max-width:120px;">
                 </div>
             @endif
         </div>

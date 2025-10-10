@@ -10,6 +10,8 @@ use App\Http\Controllers\Admin\JobListingController;
 use App\Http\Controllers\Admin\ApplicantController;
 use App\Http\Controllers\Admin\ScheduleController; // <-- DITAMBAHKAN
 use App\Http\Controllers\Admin\ReportController;   // <-- DITAMBAHKAN
+use App\Http\Controllers\Admin\CompanyController; 
+use App\Http\Controllers\Admin\CandidateController; 
 // Public Controllers
 use App\Http\Controllers\JobController;
 
@@ -72,6 +74,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     ]);
     Route::put('applicants/{applicant}/status', [ApplicantController::class, 'updateStatus'])->name('applicants.update_status');
 
+    // 4. Manajemen Perusahaan (BARU - Memperbaiki Route admin.companies.index)
+    Route::get('companies', [CompanyController::class, 'index'])->name('companies.index');
+    
+    // 5. Manajemen Pencari Kerja (BARU - Memperbaiki Route admin.candidates.index)
+    Route::get('candidates', [CandidateController::class, 'index'])->name('candidates.index');
+
     // 4. Manajemen Jadwal (Akses Admin & Super Admin) <--- DIBETULKAN
     Route::resource('schedules', ScheduleController::class);
 
@@ -91,6 +99,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         
         // Pengaturan Sistem
         Route::get('/setting', fn() => view('admin.setting'))->name('setting');
+        
 
         // CRUD User
         Route::resource('users', UserController::class);

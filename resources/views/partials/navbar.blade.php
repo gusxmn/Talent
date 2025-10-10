@@ -4,6 +4,7 @@
         font-size: 1rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         position: relative;
+        z-index: 10;
     }
 
     .navbar-logo {
@@ -28,7 +29,6 @@
     .navbar .nav-link.active {
         color: #0d47a1;
         font-weight: 600;
-        border-bottom: 2px solid #0d47a1;
     }
 
     .navbar .nav-item {
@@ -36,13 +36,17 @@
         align-items: center;
     }
 
-    /* underline interaktif */
+    /* === Underline Animasi === */
     .nav-underline {
         position: absolute;
         bottom: 0;
+        left: 0;
         height: 2px;
         background: #0d47a1;
-        transition: all 0.3s ease;
+        border-radius: 2px;
+        transition: all 0.25s ease;
+        width: 0;
+        opacity: 0;
     }
 
     /* === Tombol Daftar & Masuk === */
@@ -77,23 +81,6 @@
         border-color: #0d47a1;
     }
 
-    .btn-primary-custom,
-    .btn-outline-primary-custom {
-        transition: all 0.3s ease;
-    }
-
-    .btn-primary-custom:hover {
-        background-color: #fff;
-        color: #0d47a1;
-        border-color: #0d47a1;
-    }
-
-    .btn-outline-primary-custom:hover {
-        background-color: #0d47a1;
-        color: #fff;
-        border-color: #0d47a1;
-    }
-
     /* === Ikon & Profil User === */
     .nav-icon {
         font-size: 1.2rem;
@@ -118,7 +105,6 @@
         font-size: 1rem;
         color: #333;
         margin-left: 0.5rem;
-        position: relative;
         box-shadow: 0 1px 2px rgba(0,0,0,0.15);
     }
 
@@ -132,18 +118,6 @@
         text-overflow: ellipsis;
     }
 
-    .user-dropdown-toggle {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        color: inherit;
-    }
-
-    .user-dropdown-toggle:hover {
-        text-decoration: none;
-        color: inherit;
-    }
-
     .dropdown-menu {
         border-radius: 0.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -153,14 +127,12 @@
         display: none;
     }
 
-    /* === Warna khusus untuk "Untuk Perusahaan" (ABSOLUTE) === */
     .nav-link.company-link {
         color: #0d47a1 !important;
         font-weight: 600 !important;
     }
 
     .nav-link.company-link:hover,
-    .nav-link.company-link:focus,
     .nav-link.company-link.active {
         color: #0d47a1 !important;
         border: none !important;
@@ -177,20 +149,16 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
     <div class="container-fluid mx-lg-5">
-        <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center py-2" href="{{ url('/') }}">
-            <img src="{{ asset('images/logo_inotal.png') }}" alt="Inotal Logo"
-                 class="d-inline-block align-text-top navbar-logo">
+            <img src="{{ asset('images/logo_inotal.png') }}" alt="Inotal Logo" class="navbar-logo">
         </a>
 
-        <!-- Toggle Mobile -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarNav" aria-controls="navbarNav"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Navigasi -->
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 position-relative" id="navMenu">
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('jobs.index') ? 'active' : '' }}" href="{{ route('jobs.index') }}">Lowongan Kerja</a></li>
@@ -202,24 +170,19 @@
                 <span class="nav-underline" id="navUnderline"></span>
             </ul>
 
-            <!-- Bagian kanan -->
             <div class="d-flex align-items-center">
                 @auth
                     <i class="fas fa-bell nav-icon" title="Notifikasi"></i>
                     <i class="fas fa-comment-dots nav-icon" title="Pesan"></i>
 
                     <div class="dropdown">
-                        <a class="user-dropdown-toggle dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <div class="user-profile-icon">
-                                <i class="fas fa-user"></i>
-                            </div>
+                        <a class="user-dropdown-toggle dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                            <div class="user-profile-icon"><i class="fas fa-user"></i></div>
                             <span class="user-dropdown-name d-none d-lg-inline">{{ Auth::user()->name }}</span>
                             <i class="fas fa-chevron-down ms-1 d-none d-lg-inline" style="font-size: 0.75rem; color: #6c757d;"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li>
-                                <div class="dropdown-item disabled text-dark">Login sebagai: <b>{{ Auth::user()->name }}</b></div>
-                            </li>
+                            <li><div class="dropdown-item disabled text-dark">Login sebagai: <b>{{ Auth::user()->name }}</b></div></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="{{ url('/profil') }}">Profil Saya</a></li>
                             <li><a class="dropdown-item" href="{{ url('/pengaturan') }}">Pengaturan Akun</a></li>
@@ -243,29 +206,39 @@
 </nav>
 
 <script>
-    const underline = document.getElementById('navUnderline');
-    const navLinks = document.querySelectorAll('#navMenu .nav-link');
+document.addEventListener("DOMContentLoaded", function () {
+    const underline = document.getElementById("navUnderline");
+    const navLinks = document.querySelectorAll("#navMenu .nav-link:not(.company-link)");
 
     function moveUnderline(el) {
         const rect = el.getBoundingClientRect();
-        const parentRect = el.parentElement.parentElement.getBoundingClientRect();
-        underline.style.width = rect.width + "px";
-        underline.style.left = (rect.left - parentRect.left) + "px";
+        const parentRect = el.closest("#navMenu").getBoundingClientRect();
+        underline.style.width = `${rect.width}px`;
+        underline.style.left = `${rect.left - parentRect.left}px`;
+        underline.style.opacity = "1";
     }
 
-    const activeLink = document.querySelector('#navMenu .nav-link.active');
+    // tampil di link aktif saat load
+    const activeLink = document.querySelector("#navMenu .nav-link.active");
     if (activeLink) moveUnderline(activeLink);
 
+    // gerak pas hover
     navLinks.forEach(link => {
-        link.addEventListener('click', function() {
-            navLinks.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-            moveUnderline(this);
-        });
+        link.addEventListener("mouseenter", () => moveUnderline(link));
+        link.addEventListener("click", () => moveUnderline(link));
     });
 
-    window.addEventListener('resize', () => {
-        const active = document.querySelector('#navMenu .nav-link.active');
+    // kembali ke link aktif saat mouse keluar
+    document.getElementById("navMenu").addEventListener("mouseleave", () => {
+        const active = document.querySelector("#navMenu .nav-link.active");
+        if (active) moveUnderline(active);
+        else underline.style.opacity = "0";
+    });
+
+    // update posisi saat resize
+    window.addEventListener("resize", () => {
+        const active = document.querySelector("#navMenu .nav-link.active");
         if (active) moveUnderline(active);
     });
+});
 </script>

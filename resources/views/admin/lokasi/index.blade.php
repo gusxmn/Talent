@@ -30,7 +30,7 @@
         <a href="{{ route('admin.lokasi.create') }}" class="btn btn-primary">+ Tambah Lokasi</a>
     </div>
 
-    {{-- Tabel Lokasi --}}
+    {{-- Tabel Lokasi dengan Pagination di Dalam --}}
     <div class="table-responsive">
         <table class="table table-bordered table-striped align-middle">
             <thead class="table-dark">
@@ -73,29 +73,37 @@
                     </tr>
                 @endforelse
             </tbody>
+            
+            {{-- FOOTER TABEL untuk Pagination --}}
+            @if($lokasi->hasPages() || $lokasi->total() > 0)
+            <tfoot class="table-light">
+                <tr>
+                    <td colspan="9" class="p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            {{-- Dropdown jumlah data --}}
+                            <form action="{{ route('admin.lokasi.index') }}" method="GET" class="d-flex align-items-center">
+                                <label for="perPage" class="me-2 small">Tampilkan</label>
+                                <select name="perPage" id="perPage" class="form-select form-select-sm me-2" style="width: auto;" onchange="this.form.submit()">
+                                    @foreach([10,25,50,100] as $size)
+                                        <option value="{{ $size }}" {{ request('perPage', 10) == $size ? 'selected' : '' }}>
+                                            {{ $size }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <span class="small">data</span>
+                                <input type="hidden" name="q" value="{{ request('q') }}">
+                            </form>
+
+                            {{-- Pagination (kanan) --}}
+                            <div>
+                                {{ $lokasi->withQueryString()->links('pagination::bootstrap-5') }}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+            @endif
         </table>
-    </div>
-
-    {{-- Footer: Filter & Pagination --}}
-    <div class="d-flex justify-content-between align-items-center mt-3">
-        {{-- Dropdown jumlah data --}}
-        <form action="{{ route('admin.lokasi.index') }}" method="GET" class="d-flex align-items-center">
-            <label for="perPage" class="me-2">Tampilkan</label>
-            <select name="perPage" id="perPage" class="form-select me-2" style="width: auto;" onchange="this.form.submit()">
-                @foreach([10,25,50,100] as $size)
-                    <option value="{{ $size }}" {{ request('perPage', 10) == $size ? 'selected' : '' }}>
-                        {{ $size }}
-                    </option>
-                @endforeach
-            </select>
-            <span>data</span>
-            <input type="hidden" name="q" value="{{ request('q') }}">
-        </form>
-
-        {{-- Pagination (kanan) --}}
-        <div>
-            {{ $lokasi->withQueryString()->links('pagination::bootstrap-5') }}
-        </div>
     </div>
 </div>
 

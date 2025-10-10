@@ -64,7 +64,7 @@
         </div>
     </form>
 
-    {{-- Tabel --}}
+    {{-- Tabel dengan Pagination di Dalam --}}
     <div class="table-responsive">
         <table class="table table-bordered table-hover align-middle bg-white shadow-sm">
             <thead class="table-light">
@@ -142,19 +142,25 @@
                     </tr>
                 @endforelse
             </tbody>
+            
+            {{-- FOOTER TABEL untuk Pagination --}}
+            @if ($jobs->total() > 0)
+            <tfoot class="table-light">
+                <tr>
+                    <td colspan="10" class="p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-muted small">
+                                Menampilkan <strong>{{ $jobs->firstItem() }}</strong> - 
+                                <strong>{{ $jobs->lastItem() }}</strong> dari 
+                                <strong>{{ $jobs->total() }}</strong> data.
+                            </div>
+                            {{ $jobs->appends(request()->query())->links('pagination::bootstrap-5') }}
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+            @endif
         </table>
     </div>
-
-    {{-- Pagination --}}
-    @if ($jobs->total() > 0)
-        <div class="d-flex justify-content-between align-items-center mt-3">
-            <div class="text-muted small">
-                Menampilkan <strong>{{ $jobs->firstItem() }}</strong> - 
-                <strong>{{ $jobs->lastItem() }}</strong> dari 
-                <strong>{{ $jobs->total() }}</strong> data.
-            </div>
-            {{ $jobs->appends(request()->query())->links('pagination::bootstrap-5') }}
-        </div>
-    @endif
 </div>
 @endsection

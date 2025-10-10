@@ -3,31 +3,39 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\JobListing;
+use App\Models\Application;
+use App\Models\Company;
 use App\Models\User;
-use App\Models\Lokasi;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Statistik user berdasarkan role
+        // Ambil jumlah data dari database
+        $activeJobsCount = JobListing::where('is_public', true)->count();
+        $newApplicationsCount = Application::where('status', 'baru')->count();
+        $companiesCount = Company::count();
+        $totalUsersCount = User::count();
+
+        // Grafik 1: Distribusi Role User
         $userRoles = User::select('role', DB::raw('count(*) as total'))
             ->groupBy('role')
             ->pluck('total', 'role');
 
-        // Statistik aktivitas user per hari (dummy pakai created_at user)
-        $userActivities = User::select(DB::raw('DATE(created_at) as date'), DB::raw('count(*) as total'))
-            ->groupBy('date')
-            ->orderBy('date', 'asc')
-            ->pluck('total', 'date');
+        // Grafik 2: Statistik Lowongan per Lokasi
+        $lokasiStats = JobListing::select('location', DB::raw('count(*) as total'))
+            ->groupBy('location')
+            ->pluck('total', 'location');
 
-        // Statistik lokasi berdasarkan provinsi
-        $lokasiStats = Lokasi::select('provinsi', DB::raw('count(*) as total'))
-            ->groupBy('provinsi')
-            ->orderBy('provinsi', 'asc')
-            ->pluck('total', 'provinsi');
-
-        return view('admin.dashboard', compact('userRoles', 'userActivities', 'lokasiStats'));
+        return view('admin.dashboard', compact(
+            'activeJobsCount',
+            'newApplicationsCount',
+            'companiesCount',
+            'totalUsersCount',
+            'userRoles',
+            'lokasiStats'
+        ));
     }
 }

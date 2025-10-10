@@ -1,89 +1,262 @@
 @extends('admin.layout')
 
 @section('content')
-<div class="container">
-    <h2 class="mb-4">Dashboard</h2>
 
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #f8f9fc;
+        color: #333;
+    }
+
+    .dashboard-header {
+        text-align: center;
+        margin-bottom: 2rem;
+        position: relative;
+    }
+
+    .dashboard-title {
+        display: inline-block;
+        position: relative;
+        font-weight: 700;
+        color: #51a2f3ff;
+        font-size: 1.8rem;
+        padding-bottom: 8px;
+    }
+
+    .dashboard-title::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        transform: translateX(-50%);
+        height: 4px;
+        width: 180px;
+        border-radius: 3px;
+        background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+        background-size: 400%;
+        animation: lineFlow 5s linear infinite;
+    }
+
+    @keyframes lineFlow {
+        0% { background-position: 0% 50%; }
+        100% { background-position: 400% 50%; }
+    }
+
+    /* KPI CARD */
+    .kpi-card {
+        border-radius: 12px !important;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        border: none;
+        color: #fff !important;
+        min-height: 100px;
+        background: linear-gradient(270deg, #ff3c3c, #ff9f0a, #28a745, #007bff, #6610f2);
+        background-size: 600% 600%;
+        animation: colorShift 10s ease infinite;
+    }
+
+    @keyframes colorShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .kpi-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .kpi-card .card-body {
+        padding: 0.8rem 1rem;
+    }
+
+    .kpi-card h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 3px;
+    }
+
+    .kpi-card p {
+        font-size: 0.9rem;
+        margin-bottom: 0;
+        opacity: 0.9;
+    }
+
+    .card-footer {
+        background: rgba(255, 255, 255, 0.2);
+        border-top: none;
+        padding: 0.5rem 1rem;
+        text-align: right;
+    }
+
+    .card-footer a {
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .card-footer a:hover {
+        text-decoration: underline;
+    }
+
+    /* Chart Box */
+    .chart-box {
+        background: #fff;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        min-height: 200px;
+        animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chart-box h6 {
+        font-weight: 700;
+        color: #495057;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="dashboard-header">
+        <h2 class="dashboard-title">Dashboard</h2>
+    </div>
+
+    {{-- KPI Boxes --}}
+    <div class="row text-center mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h3>{{ $activeJobsCount }}</h3>
+                    <p>Lowongan Aktif</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ route('admin.job_listings.index') }}">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h3>{{ $newApplicationsCount }}</h3>
+                    <p>Kandidat</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ route('admin.applicants.index') }}">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h3>{{ $companiesCount }}</h3>
+                    <p>Perusahaan</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ route('admin.companies.index') }}">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-3">
+            <div class="card kpi-card">
+                <div class="card-body">
+                    <h3>{{ $totalUsersCount }}</h3>
+                    <p>Total Pengguna</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ route('admin.users.index') }}">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Inline Charts di bawah KPI --}}
     <div class="row">
-        <div class="col-md-4">
-            <canvas id="userRoleChart"></canvas>
+        <div class="col-md-6 mb-4">
+            <div class="chart-box">
+                <h6 class="text-center">Distribusi Peran Pengguna</h6>
+                <canvas id="userRoleChart" style="max-height:160px;"></canvas>
+            </div>
         </div>
-        <div class="col-md-4">
-            <canvas id="lokasiChart"></canvas>
-        </div>
-        <div class="col-md-4">
-            <canvas id="userActivityChart"></canvas>
+        <div class="col-md-6 mb-4">
+            <div class="chart-box">
+                <h6 class="text-center">Lowongan Berdasarkan Lokasi</h6>
+                <canvas id="lokasiChart" style="max-height:160px;"></canvas>
+            </div>
         </div>
     </div>
 </div>
 
+{{-- CHART SCRIPT --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // === Grafik User Role (Pie) ===
+    Chart.defaults.font.family = "'Inter', sans-serif";
+    Chart.defaults.color = '#6c757d';
+
+    // Chart 1: Distribusi Role Pengguna
     const userRoleCtx = document.getElementById('userRoleChart');
-    new Chart(userRoleCtx, {
-        type: 'pie',
-        data: {
-            labels: {!! json_encode($userRoles->keys()) !!},
-            datasets: [{
-                label: 'Jumlah User',
-                data: {!! json_encode($userRoles->values()) !!},
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.7)',
-                    'rgba(54, 162, 235, 0.7)',
-                    'rgba(255, 206, 86, 0.7)',
-                    'rgba(75, 192, 192, 0.7)',
-                    'rgba(153, 102, 255, 0.7)'
-                ],
-                borderWidth: 1
-            }]
-        }
-    });
-
-    // === Grafik Lokasi per Provinsi (Bar) ===
-    const lokasiCtx = document.getElementById('lokasiChart');
-    new Chart(lokasiCtx, {
-        type: 'bar',
-        data: {
-            labels: {!! json_encode($lokasiStats->keys()) !!},
-            datasets: [{
-                label: 'Jumlah Lokasi',
-                data: {!! json_encode($lokasiStats->values()) !!},
-                backgroundColor: 'rgba(54, 162, 235, 0.7)',
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false },
-            }
-        }
-    });
-
-    // === Grafik Aktivitas User per Hari (Line) ===
-    const activityCtx = document.getElementById('userActivityChart');
-    new Chart(activityCtx, {
-        type: 'line',
-        data: {
-            labels: {!! json_encode($userActivities->keys()) !!}, // tanggal
-            datasets: [{
-                label: 'Aktivitas User',
-                data: {!! json_encode($userActivities->values()) !!},
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                tension: 0.3,
-                fill: true,
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: true },
+    if (userRoleCtx) {
+        new Chart(userRoleCtx, {
+            type: 'pie',
+            data: {
+                labels: {!! json_encode($userRoles->keys()) !!},
+                datasets: [{
+                    label: 'Jumlah User',
+                    data: {!! json_encode($userRoles->values()) !!},
+                    backgroundColor: [
+                        'rgb(0,123,255)',
+                        'rgb(40,167,69)',
+                        'rgb(255,193,7)',
+                        'rgb(220,53,69)',
+                        'rgb(111,66,193)'
+                    ],
+                    hoverOffset: 6
+                }]
             },
-            scales: {
-                y: { beginAtZero: true }
+            options: {
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 14 } } }
             }
-        }
-    });
+        });
+    }
+
+    // Chart 2: Lowongan Berdasarkan Lokasi
+    const lokasiCtx = document.getElementById('lokasiChart');
+    if (lokasiCtx) {
+        new Chart(lokasiCtx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($lokasiStats->keys()) !!},
+                datasets: [{
+                    label: 'Jumlah Lowongan',
+                    data: {!! json_encode($lokasiStats->values()) !!},
+                    backgroundColor: 'rgba(23,162,184,0.8)',
+                    borderColor: 'rgb(23,162,184)',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1 } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    }
 </script>
 @endsection

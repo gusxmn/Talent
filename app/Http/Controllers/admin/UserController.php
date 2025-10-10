@@ -31,7 +31,30 @@ class UserController extends Controller
             'per_page' => $perPage,
         ]);
 
-        return view('admin.users.index', compact('users', 'search', 'perPage'));
+        // Data untuk KPI Box
+        $totalAdmin = User::where('role', 'admin')->count();
+        $totalWawancara = User::where('role', 'wawancara')->count();
+        $totalPemimpin = User::where('role', 'pemimpin')->count();
+        $totalUser = User::where('role', 'user')->count();
+
+        // Statistik role
+        $roleStats = [
+            'admin' => $totalAdmin,
+            'wawancara' => $totalWawancara,
+            'pemimpin' => $totalPemimpin,
+            'user' => $totalUser,
+        ];
+
+        return view('admin.users.index', compact(
+            'users', 
+            'search', 
+            'perPage',
+            'totalAdmin',
+            'totalWawancara',
+            'totalPemimpin',
+            'totalUser',
+            'roleStats'
+        ));
     }
 
     /**
@@ -110,5 +133,13 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')
                          ->with('success', 'User berhasil dihapus.');
+    }
+
+    /**
+     * Tampilkan detail user (opsional - untuk tombol detail)
+     */
+    public function show(User $user)
+    {
+        return view('admin.users.show', compact('user'));
     }
 }

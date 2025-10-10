@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Manajemen Pelamar')
+@section('title', 'masih pusing')
 
 @section('content')
 <div class="container-fluid">
