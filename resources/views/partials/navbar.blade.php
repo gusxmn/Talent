@@ -263,8 +263,17 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 position-relative" id="navMenu">
+
                 <li class="nav-item"><a class="nav-link {{ request()->routeIs('jobs.index') ? 'active' : '' }}" href="{{ route('jobs.index') }}">Lowongan Kerja</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->is('sumber-daya-karir') ? 'active' : '' }}" href="/sumber-daya-karir">Sumber Daya Karir</a></li>
+
+        <li class="nav-item">
+        <a class="nav-link 
+            {{ request()->is('sumber-daya-karir') || request()->is('sumber-daya-karir/jelajahi-karier') || request()->is('sumber-daya-karir/pencarian-lowongan-kerja') || request()->is('sumber-daya-karir/kehidupan-kerja') || request()->is('sumber-daya-karir/jelajahi-gaji')? 'active' : '' }}" 
+            href="/sumber-daya-karir">
+            Sumber Daya Karir
+        </a>
+    </li>
+
                 <li class="nav-item"><a class="nav-link {{ request()->is('explore-perusahaan') ? 'active' : '' }}" href="/explore-perusahaan">Explore Perusahaan</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->is('tentang-perusahaan') ? 'active' : '' }}" href="/tentang-perusahaan">Tentang Perusahaan</a></li>
                 <li class="nav-item"><a class="nav-link {{ request()->is('kontak') ? 'active' : '' }}" href="/kontak">Kontak</a></li>

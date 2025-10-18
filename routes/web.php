@@ -28,6 +28,22 @@ Route::get('/tentang-perusahaan', fn() => view('about_company'))->name('about');
 Route::get('/explore-perusahaan', fn() => view('explore_company'));
 Route::get('/sumber-daya-karir', fn() => view('career_resources'));
 
+Route::get('/sumber-daya-karir/jelajahi-karier', function () {
+    return view('career_explore');
+})->name('career.explore');
+
+Route::get('/sumber-daya-karir/pencarian-lowongan-kerja', function () {
+    return view('job_search_page');
+})->name('job.search.page');
+
+Route::get('/sumber-daya-karir/kehidupan-kerja', function () {
+    return view('job_life');
+})->name('job.life');
+
+Route::get('/sumber-daya-karir/jelajahi-gaji', function () {
+    return view('salary_explore');
+})->name('salary.explore');
+
 
 // Halaman tipe pekerjaan
 Route::get('/tipe-pekerjaan', fn() => view('job_type'))->name('job.type');

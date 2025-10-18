@@ -11,81 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
-        .career-header {
-            background-color: #0b0b54;
-            padding: 40px 0 20px 0;
-            text-align: center;
-        }
-
-        .career-search {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .search-box {
-            position: relative;
-            width: 900px;
-            max-width: 95%;
-        }
-
-        .search-box input {
-            width: 100%;
-            padding: 12px 15px 12px 40px;
-            border-radius: 8px;
-            border: none;
-            outline: none;
-            font-size: 16px;
-        }
-
-        .search-box .fa-search {
-            position: absolute;
-            top: 50%;
-            left: 12px;
-            transform: translateY(-50%);
-            color: #666;
-            font-size: 16px;
-        }
-
-        .career-search button {
-            background-color: #ff007f;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-        }
-
-        .career-menu {
-            background-color: #002e6d;
-            padding: 15px 0;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .career-menu ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            gap: 150px;
-        }
-
-        .career-menu ul li {
-            color: #fff;
-            font-size: 18px;
-            font-weight: 500;
-            cursor: pointer;
-        }
-
-        .career-menu ul li:hover {
-            text-decoration: underline;
-        }
-
+   
         /* === SLIDER STYLE (Existing) === */
         .article-slider {
             position: relative;
@@ -833,24 +759,10 @@
     {{-- Memanggil navbar dari file parsial --}}
     @include('partials.navbar')
 
-    <div class="career-header">
-        <form action="#" method="GET" class="career-search">
-            <div class="search-box">
-                <i class="fa fa-search"></i>
-                <input type="text" placeholder="Misalnya, perawat, rekayasawan, akuntan, penjualan..." />
-            </div>
-            <button type="submit">Cari</button>
-        </form>
-    </div>
+    
+    {{-- Header Import dari File Partial --}}
+    @include('partials.header_career')
 
-    <div class="career-menu">
-        <ul>
-            <li>Jelajahi karier</li>
-            <li>Jelajahi gaji</li>
-            <li>Pencarian lowongan kerja</li>
-            <li>Kehidupan kerja</li>
-        </ul>
-    </div>
 
     <div class="article-slider">
         <div class="article-slides-wrapper">
@@ -1134,6 +1046,10 @@
 
     {{-- Memanggil footer dari file parsial --}}
     @include('partials.footer')
+
+       {{-- Bootstrap JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <script>
         let currentSlide = 0;
