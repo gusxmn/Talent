@@ -10,6 +10,14 @@
 
     <style>
         /* Section Header Explore */
+        html, body {
+    width: 100%;
+    overflow-x: hidden; /* ❌ Hilangkan scroll horizontal */
+    margin: 0;
+    padding: 0;
+}
+
+
         .explore-wrapper {
             padding: 0 1rem;
             margin-bottom: 3rem;

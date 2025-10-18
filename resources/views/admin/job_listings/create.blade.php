@@ -37,7 +37,7 @@
             <input type="file" name="company_logo" class="form-control" accept="image/*">
         </div>
 
-        {{-- Lokasi --}}
+        {{-- Lokasi (Dropdown Bertingkat) --}}
         <div class="mb-3">
             <label class="form-label">Lokasi</label>
             <div class="row g-2">
@@ -78,6 +78,18 @@
                 <label class="form-label">Gaji Maksimum</label>
                 <input type="number" name="salary_max" class="form-control" value="{{ old('salary_max') }}">
             </div>
+        </div>
+
+        {{-- ✅ Type (Full-Time, Part-Time, Contract, Internship) --}}
+        <div class="mb-3">
+            <label class="form-label">Tipe (Type)</label>
+            <select name="type" class="form-select" required>
+                <option value="">-- Pilih Tipe --</option>
+                <option value="full-time" {{ old('type') == 'full-time' ? 'selected' : '' }}>Full-Time</option>
+                <option value="part-time" {{ old('type') == 'part-time' ? 'selected' : '' }}>Part-Time</option>
+                <option value="contract" {{ old('type') == 'contract' ? 'selected' : '' }}>Contract</option>
+                <option value="internship" {{ old('type') == 'internship' ? 'selected' : '' }}>Internship</option>
+            </select>
         </div>
 
         {{-- Jenis Pekerjaan --}}

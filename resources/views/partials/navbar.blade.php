@@ -4,7 +4,6 @@
         font-size: 1rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         position: relative;
-        z-index: 10;
     }
 
     .navbar-logo {
@@ -29,6 +28,7 @@
     .navbar .nav-link.active {
         color: #0d47a1;
         font-weight: 600;
+        border-bottom: 2px solid #0d47a1;
     }
 
     .navbar .nav-item {
@@ -36,17 +36,13 @@
         align-items: center;
     }
 
-    /* === Underline Animasi === */
+    /* underline interaktif */
     .nav-underline {
         position: absolute;
         bottom: 0;
-        left: 0;
         height: 2px;
         background: #0d47a1;
-        border-radius: 2px;
-        transition: all 0.25s ease;
-        width: 0;
-        opacity: 0;
+        transition: all 0.3s ease;
     }
 
     /* === Tombol Daftar & Masuk === */
@@ -81,6 +77,23 @@
         border-color: #0d47a1;
     }
 
+    .btn-primary-custom,
+    .btn-outline-primary-custom {
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary-custom:hover {
+        background-color: #fff;
+        color: #0d47a1;
+        border-color: #0d47a1;
+    }
+
+    .btn-outline-primary-custom:hover {
+        background-color: #0d47a1;
+        color: #fff;
+        border-color: #0d47a1;
+    }
+
     /* === Ikon & Profil User === */
     .nav-icon {
         font-size: 1.2rem;
@@ -105,6 +118,7 @@
         font-size: 1rem;
         color: #333;
         margin-left: 0.5rem;
+        position: relative;
         box-shadow: 0 1px 2px rgba(0,0,0,0.15);
     }
 
@@ -118,6 +132,18 @@
         text-overflow: ellipsis;
     }
 
+    .user-dropdown-toggle {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .user-dropdown-toggle:hover {
+        text-decoration: none;
+        color: inherit;
+    }
+
     .dropdown-menu {
         border-radius: 0.5rem;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -128,7 +154,7 @@
         display: none;
     }
 
-    /* === Warna khusus untuk "Untuk Perusahaan" (ABSOLUTE) === */
+    /* === Warna khusus untuk "Untuk Perusahaan" === */
     .nav-link.company-link {
         color: #0d47a1 !important;
         font-weight: 600 !important;
@@ -138,6 +164,7 @@
     }
 
     .nav-link.company-link:hover,
+    .nav-link.company-link:focus,
     .nav-link.company-link.active {
         color: #0d47a1 !important;
         border: none !important;
@@ -225,7 +252,7 @@
     <div class="container-fluid mx-lg-5">
         <a class="navbar-brand d-flex align-items-center py-2" href="{{ url('/') }}">
             <img src="{{ asset('images/logo_inotal.png') }}" alt="Inotal Logo"
-                 class="d-inline-block align-text-top navbar-logo">
+                class="d-inline-block align-text-top navbar-logo">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -250,21 +277,30 @@
                     <i class="fas fa-bell nav-icon" title="Notifikasi"></i>
                     <i class="fas fa-comment-dots nav-icon" title="Pesan"></i>
 
-                    <div class="dropdown">
-                        <a class="user-dropdown-toggle dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <div class="dropdown" id="userDropdownContainer">
+                        <a class="user-dropdown-toggle" href="#" role="button" id="userDropdownToggle" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="user-profile-icon">
                                 <i class="fas fa-user"></i>
                             </div>
                             <span class="user-dropdown-name d-none d-lg-inline">{{ Auth::user()->name }}</span>
                             <i class="fas fa-chevron-down ms-1 d-none d-lg-inline chevron-icon"></i>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
+                        <ul class="dropdown-menu dropdown-menu-end glints-dropdown" aria-labelledby="userDropdownToggle">
                             <li>
-                                <div class="dropdown-item disabled text-dark">Login sebagai: <b>{{ Auth::user()->name }}</b></div>
+                                <a class="dropdown-item" href="{{ url('/profil') }}">
+                                    <i class="fas fa-user-circle"></i> PROFIL SAYA
+                                </a>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ url('/profil') }}">Profil Saya</a></li>
-                            <li><a class="dropdown-item" href="{{ url('/pengaturan') }}">Pengaturan Akun</a></li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url('/lamaran-saya') }}">
+                                    <i class="fas fa-file-alt"></i> LAMARAN SAYA
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ url('/pengaturan-akun') }}">
+                                    <i class="fas fa-cog"></i> PENGATURAN AKUN
+                                </a>
+                            </li>
                             <li><hr class="dropdown-divider"></li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
@@ -287,38 +323,45 @@
 </nav>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const underline = document.getElementById("navUnderline");
-    const navLinks = document.querySelectorAll("#navMenu .nav-link:not(.company-link)");
+    const underline = document.getElementById('navUnderline');
+    const navLinks = document.querySelectorAll('#navMenu .nav-link');
 
     function moveUnderline(el) {
         const rect = el.getBoundingClientRect();
-        const parentRect = el.closest("#navMenu").getBoundingClientRect();
-        underline.style.width = `${rect.width}px`;
-        underline.style.left = `${rect.left - parentRect.left}px`;
-        underline.style.opacity = "1";
+        const parentRect = el.parentElement.parentElement.getBoundingClientRect();
+        underline.style.width = rect.width + "px";
+        underline.style.left = (rect.left - parentRect.left) + "px";
     }
 
-    // tampil di link aktif saat load
-    const activeLink = document.querySelector("#navMenu .nav-link.active");
+    const activeLink = document.querySelector('#navMenu .nav-link.active');
     if (activeLink) moveUnderline(activeLink);
 
-    // gerak pas hover
     navLinks.forEach(link => {
-        link.addEventListener("mouseenter", () => moveUnderline(link));
-        link.addEventListener("click", () => moveUnderline(link));
+        link.addEventListener('click', function() {
+            navLinks.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+            moveUnderline(this);
+        });
     });
 
-    // kembali ke link aktif saat mouse keluar
-    document.getElementById("navMenu").addEventListener("mouseleave", () => {
-        const active = document.querySelector("#navMenu .nav-link.active");
+    window.addEventListener('resize', () => {
+        const active = document.querySelector('#navMenu .nav-link.active');
         if (active) moveUnderline(active);
-        else underline.style.opacity = "0";
     });
 
-    // update posisi saat resize
-    window.addEventListener("resize", () => {
-        const active = document.querySelector("#navMenu .nav-link.active");
-        if (active) moveUnderline(active);
-    });
+    // === Script untuk Animasi Panah Dropdown ===
+    const userDropdownContainer = document.getElementById('userDropdownContainer');
+    const chevronIcon = userDropdownContainer ? userDropdownContainer.querySelector('.chevron-icon') : null;
+
+    if (userDropdownContainer && chevronIcon) {
+        // Event saat dropdown ditampilkan
+        userDropdownContainer.addEventListener('show.bs.dropdown', function () {
+            chevronIcon.classList.add('open');
+        });
+
+        // Event saat dropdown disembunyikan
+        userDropdownContainer.addEventListener('hide.bs.dropdown', function () {
+            chevronIcon.classList.remove('open');
+        });
+    }
 </script>

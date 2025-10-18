@@ -4,7 +4,7 @@
 <div class="container">
     <h2 class="mb-4">Manajemen User</h2>
 
-    {{-- Toast Notifikasi --}}
+    
     @if(session('success'))
         <div class="position-fixed top-0 end-0 p-3" style="z-index:1080;">
             <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
@@ -65,7 +65,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
                                 Total Pemimpin</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalPemimpin }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $totalPimpinan }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-crown fa-2x text-gray-300"></i>
@@ -184,13 +184,13 @@
                                     @php
                                         $roleColors = [
                                             'admin' => 'primary',
-                                            'pemimpin' => 'info',
+                                            'pimpinan' => 'info',
                                             'user' => 'success', 
                                             'wawancara' => 'warning'
                                         ];
                                         $roleIcons = [
                                             'admin' => 'user-shield',
-                                            'pemimpin' => 'crown',
+                                            'pimpinan' => 'crown',
                                             'user' => 'user',
                                             'wawancara' => 'comments'
                                         ];
@@ -216,22 +216,23 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-warning" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <button type="button"
-                                                class="btn btn-danger"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#confirmDeleteModal"
-                                                data-id="{{ $user->id }}"
-                                                title="Hapus">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                        <a href="{{ route('admin.users.show', $user->id) }}" class="btn btn-info" title="Detail">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                    </div>
+                                   <div class="d-flex gap-2">
+    <!-- Tombol Edit -->
+    <a href="{{ route('admin.users.edit', $user->id) }}" title="Edit" style="color: #ffc107; font-size: 1.1rem;">
+        <i class="fas fa-edit"></i>
+    </a>
+
+    <!-- Tombol Hapus -->
+    <button type="button"
+            data-bs-toggle="modal"
+            data-bs-target="#confirmDeleteModal"
+            data-id="{{ $user->id }}"
+            title="Hapus"
+            style="color: #dc3545; background: none; border: none; font-size: 1.1rem;">
+        <i class="fas fa-trash"></i>
+    </button>
+</div>
+
                                 </td>
                             </tr>
                         @empty
@@ -314,7 +315,7 @@
   </div>
 </div>
 
-{{-- Script --}}
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     // Toast auto tampil
@@ -324,7 +325,7 @@ document.addEventListener('DOMContentLoaded', function () {
         toast.show();
     }
 
-    // Modal konfirmasi hapus
+    
     var confirmModal = document.getElementById('confirmDeleteModal');
     if (confirmModal) {
         confirmModal.addEventListener('show.bs.modal', function (event) {
@@ -360,6 +361,6 @@ document.addEventListener('DOMContentLoaded', function () {
 }
 </style>
 
-<!-- Font Awesome -->
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 @endsection

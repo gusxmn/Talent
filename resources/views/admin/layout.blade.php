@@ -458,6 +458,16 @@
         </li>
 
         @auth
+        {{-- BLOK KHUSUS UNTUK ROLE WAWANCARA --}}
+        @if(Auth::user()->role === 'wawancara')
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('wawancara.jadwal.index') ? 'active' : '' }}" 
+                   href="{{ route('wawancara.jadwal.index') }}">
+                    <i class="fas fa-calendar-alt"></i> <span>Lihat Jadwal</span>
+                </a>
+            </li>
+        @endif
+        
           {{-- BLOK UNTUK ROLE ADMIN & SUPER ADMIN --}}
           @if(in_array(Auth::user()->role, ['admin', 'super admin']))
             <li class="nav-item">
@@ -475,8 +485,8 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link {{ request()->routeIs('admin.schedules.*') ? 'active' : '' }}" 
-                   href="{{ route('admin.schedules.index') }}">
+                <a class="nav-link {{ request()->routeIs('admin.calendar.*') ? 'active' : '' }}" 
+                   href="{{ route('admin.calendar.index') }}">
                    <i class="fas fa-calendar-alt"></i> <span>Manajemen Jadwal</span>
                 </a>
             </li>

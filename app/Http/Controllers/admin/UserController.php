@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * Tampilkan daftar user dengan pagination, pencarian, dan filter per_page.
-     */
+    
     public function index(Request $request)
     {
         $search   = $request->input('search');
@@ -25,23 +23,23 @@ class UserController extends Controller
                 ->orderBy('id', 'desc')
                 ->paginate($perPage);
 
-        // bawa parameter query biar gak hilang saat pagination
+        
         $users->appends([
             'search'   => $search,
             'per_page' => $perPage,
         ]);
 
-        // Data untuk KPI Box
+        
         $totalAdmin = User::where('role', 'admin')->count();
         $totalWawancara = User::where('role', 'wawancara')->count();
-        $totalPemimpin = User::where('role', 'pemimpin')->count();
+        $totalPimpinan = User::where('role', 'pimpinan')->count();
         $totalUser = User::where('role', 'user')->count();
 
-        // Statistik role
+        
         $roleStats = [
             'admin' => $totalAdmin,
             'wawancara' => $totalWawancara,
-            'pemimpin' => $totalPemimpin,
+            'pemimpin' => $totalPimpinan,
             'user' => $totalUser,
         ];
 
@@ -51,23 +49,19 @@ class UserController extends Controller
             'perPage',
             'totalAdmin',
             'totalWawancara',
-            'totalPemimpin',
+            'totalPimpinan',
             'totalUser',
             'roleStats'
         ));
     }
 
-    /**
-     * Form tambah user.
-     */
+    
     public function create()
     {
         return view('admin.users.create');
     }
 
-    /**
-     * Simpan user baru.
-     */
+    
     public function store(Request $request)
     {
         $request->validate([
@@ -89,17 +83,13 @@ class UserController extends Controller
                          ->with('success', 'User berhasil ditambahkan.');
     }
 
-    /**
-     * Form edit user.
-     */
+    
     public function edit(User $user)
     {
         return view('admin.users.edit', compact('user'));
     }
 
-    /**
-     * Update data user.
-     */
+    
     public function update(Request $request, User $user)
     {
         $request->validate([
@@ -124,9 +114,7 @@ class UserController extends Controller
                          ->with('success', 'User berhasil diperbarui.');
     }
 
-    /**
-     * Hapus user.
-     */
+    
     public function destroy(User $user)
     {
         $user->delete();
@@ -135,9 +123,7 @@ class UserController extends Controller
                          ->with('success', 'User berhasil dihapus.');
     }
 
-    /**
-     * Tampilkan detail user (opsional - untuk tombol detail)
-     */
+    
     public function show(User $user)
     {
         return view('admin.users.show', compact('user'));
