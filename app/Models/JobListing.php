@@ -13,6 +13,7 @@ class JobListing extends Model
         'location',
         'salary_min',
         'salary_max',
+        'type',
         'job_type',          // ✅ kolom baru
         'work_policy',       // ✅ kolom baru
         'experience_level',  // ✅ kolom baru

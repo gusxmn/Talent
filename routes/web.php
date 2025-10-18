@@ -8,8 +8,10 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\JobListingController;
 use App\Http\Controllers\Admin\ApplicantController;
-use App\Http\Controllers\Admin\ScheduleController; // <-- DITAMBAHKAN
-use App\Http\Controllers\Admin\ReportController;   // <-- DITAMBAHKAN
+use App\Http\Controllers\Admin\CalendarController; // <-- CONTROLLER BARU UNTUK KALENDER
+use App\Http\Controllers\Admin\ReportController; 
+use App\Http\Controllers\Admin\CompanyController; 
+use App\Http\Controllers\Admin\CandidateController; 
 // Public Controllers
 use App\Http\Controllers\JobController;
 
@@ -20,8 +22,8 @@ use App\Http\Controllers\JobController;
 |--------------------------------------------------------------------------
 */
 Route::get('/', fn() => view('home'))->name('home');
-Route::get('/daftar', fn() => view('daftar'))->name('register'); // Tambahkan name
-Route::get('/masuk', fn() => view('login'))->name('login'); // Tambahkan name
+Route::get('/daftar', fn() => view('daftar'))->name('register');
+Route::get('/masuk', fn() => view('login'))->name('login');
 Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
 Route::get('/kontak', fn() => view('contact_us'))->name('contact');
 Route::get('/tentang-perusahaan', fn() => view('about_company'))->name('about');
@@ -63,37 +65,46 @@ Route::get('/jobs/{id}', [JobController::class, 'show'])->name('jobs.show');
 | Auth
 |--------------------------------------------------------------------------
 */
-// Rute login process sudah benar
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-// ✅ Tambahkan route untuk proses registrasi
 Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process'); 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); 
+
+
 /*
 |--------------------------------------------------------------------------
 | PANEL ADMIN (Prefix & Name Grouping)
 |--------------------------------------------------------------------------
-| Middleware 'admin' diasumsikan mengizinkan 'admin' dan 'super admin'.
 */
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
 
-    // 1. Dashboard (Akses Admin & Super Admin)
+    // 1. Dashboard, Lowongan, Pelamar, Perusahaan, Kandidat (tetap sama)
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    // 2. Manajemen Lowongan (Akses Admin & Super Admin)
     Route::resource('job_listings', JobListingController::class);
 
-    // 3. Manajemen Pelamar (Akses Admin & Super Admin)
-    Route::resource('applicants', ApplicantController::class)->only([
-        'index', 'show', 'destroy'
-    ]);
+    Route::resource('applicants', ApplicantController::class)->only(['index', 'show', 'destroy']);
     Route::put('applicants/{applicant}/status', [ApplicantController::class, 'updateStatus'])->name('applicants.update_status');
 
-    // 4. Manajemen Jadwal (Akses Admin & Super Admin) <--- DIBETULKAN
-    Route::resource('schedules', ScheduleController::class);
+    Route::get('companies', [CompanyController::class, 'index'])->name('companies.index');
+    Route::get('candidates', [CandidateController::class, 'index'])->name('candidates.index');
 
-    Route::get('schedules-events', [ScheduleController::class, 'events'])->name('schedules.events');
+
+    // ----------------------------------------------------
+    // 4. Manajemen Jadwal/Kalender (ROUTE KHUSUS UNTUK API FULLCALENDAR)
+    // ----------------------------------------------------
+    Route::prefix('calendar')->name('calendar.')->group(function () {
+        // Rute untuk menampilkan View/Halaman Kalender
+        Route::get('/', fn() => view('admin.calendar.index'))->name('index'); 
+
+        // Rute API untuk FullCalendar:
+        Route::get('/events', [CalendarController::class, 'fetchEvents'])->name('index.events');
+        Route::post('/store', [CalendarController::class, 'store'])->name('store');
+        Route::patch('/update', [CalendarController::class, 'update'])->name('update'); // Untuk drag/resize
+        Route::post('/delete', [CalendarController::class, 'destroy'])->name('delete'); // Untuk hapus
+    });
+
     
-    // 5. Laporan & Analitik (Akses Admin & Super Admin) <--- DITAMBAHKAN
+    // 5. Laporan & Analitik
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 
 
@@ -101,13 +112,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     |--------------------------------------------------
     | Rute Khusus Super Admin
     |--------------------------------------------------
-    | Middleware 'superadmin' diasumsikan hanya mengizinkan 'super admin'.
     */
     Route::middleware(['superadmin'])->group(function () {
         
         // Pengaturan Sistem
         Route::get('/setting', fn() => view('admin.setting'))->name('setting');
-
+        
         // CRUD User
         Route::resource('users', UserController::class);
         Route::post('users/{id}/reset-password', [UserController::class, 'resetPassword'])->name('users.reset-password');
@@ -116,6 +126,26 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         // CRUD Lokasi
         Route::resource('lokasi', LokasiController::class);
     });
+});
 
+// =========================================================================
+/*
+|--------------------------------------------------------------------------
+| PANEL WAWANCARA (Prefix & Name Grouping)
+|--------------------------------------------------------------------------
+*/
+// 👇 PERBAIKI BAGIAN INI: Ganti 'role:wawancara' menjadi 'wawancara' (nama alias yang sudah didaftarkan)
+Route::prefix('wawancara')->name('wawancara.')->middleware(['auth', 'wawancara'])->group(function () {
+    
+    // Rute untuk role Wawancara: HANYA LIHAT JADWAL
+    Route::prefix('jadwal')->name('jadwal.')->group(function () {
+        // Rute untuk menampilkan View/Halaman Kalender (Wawancara: HANYA LIHAT)
+        Route::get('/', fn() => view('admin.calendar.index'))->name('index'); 
 
+        // Rute API untuk FullCalendar: HANYA AMBIL DATA (GET), tidak ada POST/PATCH/DELETE
+        Route::get('/events', [CalendarController::class, 'fetchEvents'])->name('index.events');
+    });
+
+    // Anda mungkin juga ingin menambahkan Dashboard khusus, misalnya:
+    // Route::get('/dashboard', [DashboardWawancaraController::class, 'index'])->name('dashboard');
 });

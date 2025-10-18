@@ -8,14 +8,12 @@ use Illuminate\Http\Request;
 
 class LokasiController extends Controller
 {
-    /**
-     * Menampilkan semua data lokasi dengan pencarian & pagination
-     */
+    
     public function index(Request $request)
     {
         $query = Lokasi::query();
 
-        // Fitur pencarian
+        
         if ($request->filled('q')) {
             $q = $request->q;
             $query->where(function ($sub) use ($q) {

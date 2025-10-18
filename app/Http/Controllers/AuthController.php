@@ -32,14 +32,14 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
             'lokasi' => $request->lokasi,     
             'whatsapp' => $request->whatsapp, 
-            'role' => 'user',                
+            'role' => 'user',             
             'is_active' => true,
         ]);
         
         // 4. Otomatis Login setelah daftar
         Auth::login($user);
 
-        // 5. PERUBAHAN: Redirect ke halaman utama ('/')
+        // 5. Redirect ke halaman utama ('/')
         return redirect('/')->with('success', 'Pendaftaran berhasil! Selamat datang.');
     }
 
@@ -49,15 +49,31 @@ class AuthController extends Controller
 
         $user = User::where('email', $credentials['email'])->first();
 
+        // Cek apakah user ada dan password benar
         if ($user && Hash::check($credentials['password'], $user->password)) {
             // Simpan session login
             Auth::login($user);
 
-            // Cek role dan arahkan ke dashboard admin/user
-            if (in_array($user->role, ['super admin', 'admin', 'wawancara', 'pimpinan', 'testdev'])) {
-                return redirect()->route('admin.dashboard');
-            } else {
-                return redirect('/'); // pengguna biasa (role 'user') akan diarahkan ke Home
+            // --- PERBAIKAN: Cek role dan arahkan ke rute yang sesuai ---
+            switch ($user->role) {
+                case 'super admin':
+                case 'admin':
+                case 'pimpinan':
+                case 'testdev':
+                    // Role yang punya akses ke panel ADMIN
+                    // Rute ini harus memiliki middleware yang sesuai (auth, admin/superadmin, dll.)
+                    return redirect()->route('admin.dashboard');
+                    break;
+                    
+                case 'wawancara':
+                    // Role WAWANCARA diarahkan ke rute 'Lihat Jadwal' khusus
+                    // Ini adalah rute: /wawancara/jadwal
+                    return redirect()->route('wawancara.jadwal.index');
+                    break;
+
+                default:
+                    // pengguna biasa (role 'user') atau role lainnya
+                    return redirect('/'); 
             }
         }
 

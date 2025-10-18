@@ -15,6 +15,7 @@ class JobListingController extends Controller
         $perPage = $request->get('per_page', 10);
         $search = $request->get('search');
         $jobType = $request->get('job_type');
+        $type = $request->get('type');
 
         $jobs = JobListing::query()
             ->when($search, function ($query, $search) {
@@ -27,15 +28,19 @@ class JobListingController extends Controller
             ->when($jobType, function ($query, $jobType) {
                 $query->where('job_type', $jobType);
             })
+            ->when($type, function ($query, $type) {
+                $query->where('type', $type);
+            })
             ->latest()
             ->paginate($perPage)
             ->appends([
                 'search' => $search,
                 'job_type' => $jobType,
+                'type' => $type,
                 'per_page' => $perPage,
             ]);
 
-        return view('admin.job_listings.index', compact('jobs', 'search', 'jobType', 'perPage'));
+        return view('admin.job_listings.index', compact('jobs', 'search', 'jobType', 'type', 'perPage'));
     }
 
     public function create()
@@ -53,6 +58,7 @@ class JobListingController extends Controller
             'location' => 'required|string|max:255',
             'salary_min' => 'nullable|integer',
             'salary_max' => 'nullable|integer',
+            'type' => 'required|in:full-time,part-time,contract,internship',
             'job_type' => 'required|in:penuh_waktu,kontrak,magang,paruh_waktu,freelance,harian',
             'work_policy' => 'required|in:kerja_di_kantor,hybrid,remote',
             'experience_level' => 'required|in:tidak_berpengalaman,fresh_graduate,kurang_dari_setahun,1_3_tahun,3_5_tahun,5_10_tahun,lebih_dari_10_tahun',
@@ -89,6 +95,7 @@ class JobListingController extends Controller
             'location' => 'required|string|max:255',
             'salary_min' => 'nullable|integer',
             'salary_max' => 'nullable|integer',
+            'type' => 'required|in:full-time,part-time,contract,internship',
             'job_type' => 'required|in:penuh_waktu,kontrak,magang,paruh_waktu,freelance,harian',
             'work_policy' => 'required|in:kerja_di_kantor,hybrid,remote',
             'experience_level' => 'required|in:tidak_berpengalaman,fresh_graduate,kurang_dari_setahun,1_3_tahun,3_5_tahun,5_10_tahun,lebih_dari_10_tahun',
@@ -102,7 +109,6 @@ class JobListingController extends Controller
         ]);
 
         if ($request->hasFile('company_logo')) {
-            // Hapus logo lama kalau ada
             if ($jobListing->company_logo && Storage::disk('public')->exists($jobListing->company_logo)) {
                 Storage::disk('public')->delete($jobListing->company_logo);
             }
