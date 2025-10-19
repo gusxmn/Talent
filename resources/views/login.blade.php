@@ -184,7 +184,7 @@
             <p class="divider">atau</p>
 
             <div class="social-buttons">
-                <a href="#">
+               <a href="{{ route('google.login') }}" title="Masuk dengan Google">
                     <img src="{{ asset('images/logo google.png') }}" alt="Google">
                 </a>
                 <a href="#">

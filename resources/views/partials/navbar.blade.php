@@ -331,9 +331,33 @@
                             <a class="user-dropdown-toggle" href="#" role="button"
                                id="userDropdownToggle" data-bs-toggle="dropdown" aria-expanded="false">
 
-                                <div class="user-profile-icon">
-                                    <i class="fas fa-user"></i>
-                                </div>
+                               <div class="user-profile-icon">
+                                
+                                @if (Auth::user()->avatar)
+                                    {{-- Tampilkan Avatar dari Google jika ada --}}
+                                    <img src="{{ Auth::user()->avatar }}" alt="Profile Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                @else
+                                    {{-- Jika tidak ada, tampilkan inisial (dari login manual atau Google tanpa avatar) --}}
+                                    @php
+                                        $name = Auth::user()->name;
+                                        $nameParts = explode(' ', trim($name));
+                                        $initials = '';
+                                        if (count($nameParts) >= 2) {
+                                            $initials = strtoupper(substr($nameParts[0], 0, 1) . substr(end($nameParts), 0, 1));
+                                        } elseif (count($nameParts) == 1 && !empty($nameParts[0])) {
+                                            $initials = strtoupper(substr($nameParts[0], 0, 2));
+                                        } else {
+                                            $initials = '<i class="fas fa-user"></i>';
+                                        }
+                                    @endphp
+                                    
+                                    @if (strpos($initials, 'fas fa-user') !== false)
+                                        <i class="fas fa-user"></i>
+                                    @else
+                                        {{ $initials }}
+                                    @endif
+                                @endif
+                            </div>
 
                                 <span class="user-dropdown-name d-none d-lg-inline">
                                     {{ Auth::user()->name }}

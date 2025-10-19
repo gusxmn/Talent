@@ -23,6 +23,8 @@ class User extends Authenticatable
         'is_active',
         'lokasi',
         'whatsapp', 
+        'google_id', 
+        'avatar',    
     ];
 
     /**
@@ -42,7 +44,9 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password' => 'hashed',
+        // HAPUS: 'password' => 'hashed', 
+        // ALASAN: Kolom password tidak perlu di-hash otomatis 
+        // karena kita mengizinkan NULL untuk Google Login.
     ];
 
     /**
@@ -50,7 +54,7 @@ class User extends Authenticatable
      */
     public function scopeActive($query)
     {
-        return $query->where('status', 'active');
+        return $query->where('is_active', true); // Perbaikan: Ganti 'status' menjadi 'is_active'
     }
 
     /**
