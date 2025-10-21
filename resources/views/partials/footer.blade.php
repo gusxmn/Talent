@@ -11,6 +11,7 @@
         height: 120px;
         width: auto;
         display: block;
+        cursor: pointer;
     }
     .footer-link {
         color: #fff;
@@ -33,7 +34,10 @@
         <div class="row">
             <div class="col-md-4 mb-4 mb-md-0">
                 <div class="mb-3">
-                    <img src="{{ asset('images/inotal.png') }}" alt="INOTAL SISTEMA INTERNASIONAL" class="footer-logo">
+                    {{-- ✅ Logo sekarang bisa diklik menuju halaman utama --}}
+                    <a href="{{ route('home') }}">
+                        <img src="{{ asset('images/inotal.png') }}" alt="INOTAL SISTEMA INTERNASIONAL" class="footer-logo">
+                    </a>
                 </div>
                 <p class="mb-1">PT INOTAL SISTEMA INTERNASIONAL</p>
                 <p>Langkah Mudah Menuju Masa Depan Karier</p>
