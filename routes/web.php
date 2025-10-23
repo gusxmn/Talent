@@ -12,8 +12,11 @@ use App\Http\Controllers\Admin\CalendarController; // <-- CONTROLLER BARU UNTUK 
 use App\Http\Controllers\Admin\ReportController; 
 use App\Http\Controllers\Admin\CompanyController; 
 use App\Http\Controllers\Admin\CandidateController; 
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
+
 // Public Controllers
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\ContactController;
 
 
 /*
@@ -25,7 +28,12 @@ Route::get('/', fn() => view('home'))->name('home');
 Route::get('/daftar', fn() => view('daftar'))->name('register');
 Route::get('/masuk', fn() => view('login'))->name('login');
 Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
-Route::get('/kontak', fn() => view('contact_us'))->name('contact');
+
+// START: PERUBAHAN DI BAGIAN KONTAK (Sekarang hanya menggunakan 2 rute di satu URI)
+Route::get('/kontak', [ContactController::class, 'index'])->name('contact');
+Route::post('/kontak', [ContactController::class, 'store'])->name('contact.store');
+// END: PERUBAHAN DI BAGIAN KONTAK
+
 Route::get('/tentang-perusahaan', fn() => view('about_company'))->name('about');
 Route::get('/explore-perusahaan', fn() => view('explore_company'));
 Route::get('/sumber-daya-karir', fn() => view('career_resources'));
@@ -109,6 +117,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     
     // 5. Laporan & Analitik
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+
+    // Contact messages admin management
+    Route::resource('contact-messages', AdminContactController::class)->only(['index','show','destroy']);
+    Route::post('contact-messages/{id}/restore', [AdminContactController::class, 'restore'])->name('contact-messages.restore');
 
 
     /*

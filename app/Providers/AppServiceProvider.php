@@ -3,9 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
 use Illuminate\Pagination\Paginator;
-
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Paginator::useBootstrap(); // Untuk Bootstrap 5:cite[6]
+        // Untuk pagination Bootstrap 5
+        Paginator::useBootstrap();
+
+        // Set bahasa Indonesia untuk tanggal Carbon
+        Carbon::setLocale('id');
+        setlocale(LC_TIME, 'id_ID.utf8', 'id_ID', 'id');
     }
 }

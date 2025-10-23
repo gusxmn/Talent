@@ -497,6 +497,28 @@
                    <i class="fas fa-chart-bar"></i> <span>Laporan & Analitik</span>
                 </a>
             </li>
+
+            {{-- TAMBAHAN: Navigasi untuk Pesan Masuk / Form Kontak yang telah disubmit pengguna --}}
+            <li class="nav-item">
+                {{-- Menghitung jumlah pesan baru (belum dibaca). 
+                    Jika Anda ingin menghindari query di blade, pindahkan ke view composer. --}}
+                @php
+                    try {
+                        $countNewMessages = \App\Models\ContactMessage::whereNull('read_at')->count();
+                    } catch (\Throwable $e) {
+                        // Jika model/migration belum ada -> fallback 0 supaya UI tidak error
+                        $countNewMessages = 0;
+                    }
+                @endphp
+
+                <a class="nav-link {{ request()->routeIs('admin.contact-messages.*') ? 'active' : '' }}" 
+                   href="{{ route('admin.contact-messages.index') }}">
+                   <i class="fas fa-envelope"></i> <span>kontak</span>
+                   @if($countNewMessages > 0)
+                       <span class="badge bg-danger ms-auto" style="margin-left: 0.5rem;">{{ $countNewMessages }}</span>
+                   @endif
+                </a>
+            </li>
           @endif
 
           {{-- BLOK KHUSUS UNTUK ROLE SUPER ADMIN --}}
