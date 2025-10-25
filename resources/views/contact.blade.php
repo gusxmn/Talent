@@ -195,6 +195,11 @@
             padding-right: 0;
         }
 
+        /* NEW: Style for invalid subject wrapper */
+        .subject-input-wrapper.is-invalid {
+            border-color: #e57373; /* Red color for error */
+        }
+
         .subject-input-wrapper input {
             flex-grow: 1;
             border: none;
@@ -281,6 +286,18 @@
             color: #fff;
             text-decoration: none;
             background-color: #0d6efd;
+        }
+
+        /* NEW: Custom styling for error messages */
+        .invalid-feedback {
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #e57373; /* Red color matching the border */
+        }
+        /* Ensures the feedback is always visible under the custom inputs/wrappers */
+        .invalid-feedback.d-block {
+            display: block !important;
         }
 
         /* Style Disesuaikan untuk Success Message (Mirip Jobstreet) */
@@ -382,22 +399,25 @@
             display: none;
         }
 
-            /* --- STYLE TAMBAHAN UNTUK IKON GMAIL --- */
+        /* --- STYLE TAMBAHAN UNTUK IKON GMAIL --- */
         .success-icon-wrapper {
             /* Hapus 'text-align: left;' atau atur ke display: block; */
             /* Untuk kontrol margin-left yang lebih baik, cukup hapus text-align */
             /* atau ubah menjadi: */
-            text-align: initial; /* Atau hapus baris ini, agar margin pada child bisa bekerja */
+            text-align: initial;
+            /* Atau hapus baris ini, agar margin pada child bisa bekerja */
             margin-top: -50px;
             margin-bottom: -50px;
         }
 
         .gmail-icon {
-            width: 200px; /* Ganti dengan nilai px yang Anda inginkan (Contoh: 90px) */
+            width: 200px;
+            /* Ganti dengan nilai px yang Anda inginkan (Contoh: 90px) */
             height: auto;
-            
+
             /* Gunakan margin-left untuk menggeser ikon secara manual */
-            margin-left: 70px; /* Ganti 120px dengan nilai pergeseran horizontal yang Anda inginkan */
+            margin-left: 70px;
+            /* Ganti 120px dengan nilai pergeseran horizontal yang Anda inginkan */
         }
         /* -------------------------------------- */
     </style>
@@ -406,7 +426,8 @@
 <body>
     {{-- Pastikan data $profile tersedia sebelum mencoba mengaksesnya --}}
     @if (isset($profile))
-        @include('partials.navbar')
+        {{-- diasumsikan file ini ada --}}
+        @include('partials.navbar') 
 
         <div class="map-container">
             <div id="map"></div>
@@ -425,7 +446,10 @@
 
                                 {{-- START: IKON GMAIL TAMBAHAN --}}
                                 <div class="success-icon-wrapper">
-                                    <img src="{{ asset('images/send.png') }}" alt="Email Sent" class="gmail-icon">
+                                    {{-- Menggunakan placeholder jika 'images/send.png' tidak ada --}}
+                                    <img src="{{ asset('images/send.png') }}"
+                                        onerror="this.onerror=null; this.src='https://placehold.co/200x200/cccccc/333333?text=Email+Sent';"
+                                        alt="Email Sent" class="gmail-icon">
                                 </div>
                                 {{-- END: IKON GMAIL TAMBAHAN --}}
 
@@ -453,24 +477,40 @@
                             <form action="{{ route('contact.store') }}" method="POST">
                                 @csrf
 
+                                {{-- Input: Nama --}}
                                 <div class="mb-3">
-                                    <input name="name" type="text" class="form-control form-control-custom"
+                                    <input name="name" type="text"
+                                        class="form-control form-control-custom @error('name') is-invalid @enderror"
                                         placeholder="Nama Lengkap Anda" value="{{ old('name') }}">
+                                    @error('name')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
+                                {{-- Input: Nomor Kontak --}}
                                 <div class="mb-3">
                                     <input name="phone" type="tel" inputmode="numeric" pattern="[0-9]*"
-                                        class="form-control form-control-custom" placeholder="Nomor Kontak"
-                                        id="phone-input" value="{{ old('phone') }}">
+                                        class="form-control form-control-custom @error('phone') is-invalid @enderror"
+                                        placeholder="Nomor Kontak" id="phone-input" value="{{ old('phone') }}">
+                                    @error('phone')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
+                                {{-- Input: Email --}}
                                 <div class="mb-3">
-                                    <input name="email" type="email" class="form-control form-control-custom"
+                                    <input name="email" type="email"
+                                        class="form-control form-control-custom @error('email') is-invalid @enderror"
                                         placeholder="Alamat Email Anda" value="{{ old('email') }}">
+                                    @error('email')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
+                                {{-- Input: Subjek (Custom Dropdown) --}}
                                 <div class="subject-dropdown-container">
-                                    <div class="subject-input-wrapper" id="subject-wrapper">
+                                    <div class="subject-input-wrapper @error('subject') is-invalid @enderror"
+                                        id="subject-wrapper">
                                         <input name="subject" type="text" class="subject-input" id="subject-input"
                                             placeholder="Subjek" aria-haspopup="true" aria-expanded="false"
                                             value="{{ old('subject') }}">
@@ -489,10 +529,20 @@
                                                 lowongan yang mencurigakan</a></li>
                                         <li><a href="#" data-value="Masalah email">Masalah email</a></li>
                                     </ul>
+                                    @error('subject')
+                                        {{-- Menampilkan error di luar wrapper subjek --}}
+                                        <div class="invalid-feedback d-block mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
+                                {{-- Input: Pesan --}}
                                 <div class="mb-3">
-                                    <textarea name="message" class="form-control form-control-custom" rows="4" placeholder="Pesan Anda">{{ old('message') }}</textarea>
+                                    <textarea name="message"
+                                        class="form-control form-control-custom @error('message') is-invalid @enderror"
+                                        rows="4" placeholder="Pesan Anda">{{ old('message') }}</textarea>
+                                    @error('message')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div class="d-grid">
@@ -541,6 +591,7 @@
             </div>
         </div>
 
+        {{-- diasumsikan file ini ada --}}
         @include('partials.footer')
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

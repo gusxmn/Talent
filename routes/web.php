@@ -16,7 +16,7 @@ use App\Http\Controllers\Admin\ContactController as AdminContactController;
 
 // Public Controllers
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactController; // <-- SUDAH ADA, TIDAK PERLU DIUBAH
 
 
 /*
@@ -30,6 +30,7 @@ Route::get('/masuk', fn() => view('login'))->name('login');
 Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
 
 // START: PERUBAHAN DI BAGIAN KONTAK (Sekarang hanya menggunakan 2 rute di satu URI)
+// KEDUA ROUTE INI SUDAH BENAR DAN MENGARAH KE ContactController
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact');
 Route::post('/kontak', [ContactController::class, 'store'])->name('contact.store');
 // END: PERUBAHAN DI BAGIAN KONTAK
