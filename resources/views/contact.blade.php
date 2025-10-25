@@ -50,8 +50,10 @@
             width: 45%;
             padding-right: 3rem;
             /* Tambahan: Minimal tinggi, disesuaikan agar sama dengan tinggi form */
-            min-height: 570px; /* Nilai estimasi, coba sesuaikan jika perlu */
+            min-height: 570px;
+            /* Nilai estimasi, coba sesuaikan jika perlu */
         }
+
         /* ------------------------------------------- */
 
         .contact-info-wrapper {
@@ -69,6 +71,7 @@
         }
 
         @media (max-width: 991px) {
+
             .contact-form-wrapper,
             .contact-info-wrapper {
                 width: 100%;
@@ -80,7 +83,7 @@
                 padding-bottom: 30px;
                 margin-bottom: 30px;
                 /* Hapus min-height di mobile agar konten menyesuaikan */
-                min-height: auto; 
+                min-height: auto;
             }
         }
 
@@ -283,43 +286,56 @@
         /* Style Disesuaikan untuk Success Message (Mirip Jobstreet) */
         .success-message-container {
             /* Menghilangkan align-items: center dan text-align: center dari style lama */
-            display: block; /* Menggunakan display block atau flex-start untuk rata kiri */
-            padding: 0; /* Sesuaikan padding jika perlu */
+            display: block;
+            /* Menggunakan display block atau flex-start untuk rata kiri */
+            padding: 0;
+            /* Sesuaikan padding jika perlu */
         }
 
         .success-heading {
-            font-size: 1.5rem; /* **PERUBAHAN: Dari 2rem menjadi 1.5rem (sama dengan .contact-form-heading)** */
+            font-size: 1.5rem;
+            /* **PERUBAHAN: Dari 2rem menjadi 1.5rem (sama dengan .contact-form-heading)** */
             font-weight: bold;
-            color: #333; /* Warna gelap */
-            margin-bottom: 25px; /* Jarak bawah yang sesuai */
-            text-align: left; /* Rata Kiri */
+            color: #333;
+            /* Warna gelap */
+            margin-bottom: 25px;
+            /* Jarak bawah yang sesuai */
+            text-align: left;
+            /* Rata Kiri */
         }
 
         .success-title-thanks {
-            font-size: 1.25rem; /* **PERUBAHAN: Dari 1.5rem menjadi 1.25rem (sama dengan .contact-form-subheading)** */
+            font-size: 1.25rem;
+            /* **PERUBAHAN: Dari 1.5rem menjadi 1.25rem (sama dengan .contact-form-subheading)** */
             /* font-weight: normal; <-- Diambil dari sini */
             color: #333;
-            margin-bottom: 15px; /* Jarak bawah */
-            text-align: left; /* Rata Kiri */
+            margin-bottom: 15px;
+            /* Jarak bawah */
+            text-align: left;
+            /* Rata Kiri */
         }
 
         /* --- TAMBAHAN: Style untuk membuat teks pesan sukses jadi bold --- */
         .success-title-thanks strong {
             font-weight: bold;
         }
+
         /* ------------------------------------------------------------ */
 
 
         .success-text {
-            font-size: 0.95rem; /* **PERUBAHAN: Dari 1rem menjadi 0.95rem (sama dengan .contact-form-text)** */
+            font-size: 0.95rem;
+            /* **PERUBAHAN: Dari 1rem menjadi 0.95rem (sama dengan .contact-form-text)** */
             color: #555;
             line-height: 1.6;
             margin-bottom: 20px;
-            text-align: left; /* Rata Kiri */
+            text-align: left;
+            /* Rata Kiri */
         }
 
         .success-text a {
-            color: #0d6efd; /* Warna link biru */
+            color: #0d6efd;
+            /* Warna link biru */
             text-decoration: none;
         }
 
@@ -328,20 +344,27 @@
         }
 
         .btn-kembali-kontak-js {
-            display: inline-flex; /* Menggunakan inline-flex untuk ikon dan teks */
+            display: inline-flex;
+            /* Menggunakan inline-flex untuk ikon dan teks */
             align-items: center;
-            background-color: #fff; /* Latar belakang putih */
-            color: #333; /* Teks hitam */
-            font-weight: 600; /* Sedikit lebih tebal */
-            padding: 0.75rem 1.5rem; /* Padding yang lebih besar */
+            background-color: #fff;
+            /* Latar belakang putih */
+            color: #333;
+            /* Teks hitam */
+            font-weight: 600;
+            /* Sedikit lebih tebal */
+            padding: 0.75rem 1.5rem;
+            /* Padding yang lebih besar */
             border-radius: 6px;
-            border: 1px solid #ccc; /* Border abu-abu */
+            border: 1px solid #ccc;
+            /* Border abu-abu */
             text-decoration: none;
             transition: background-color 0.3s, border-color 0.3s;
         }
 
         .btn-kembali-kontak-js:hover {
-            background-color: #f5f5f5; /* Hover effect */
+            background-color: #f5f5f5;
+            /* Hover effect */
             color: #333;
             border-color: #999;
         }
@@ -352,11 +375,31 @@
         }
 
         /* Hapus style lama yang tidak terpakai */
-        .success-message-icon, .success-message-title, .success-message-text {
+        .success-message-icon,
+        .success-message-title,
+        .success-message-text {
             /* Hapus atau timpa style lama agar tidak bentrok */
-            display: none; 
+            display: none;
         }
 
+            /* --- STYLE TAMBAHAN UNTUK IKON GMAIL --- */
+        .success-icon-wrapper {
+            /* Hapus 'text-align: left;' atau atur ke display: block; */
+            /* Untuk kontrol margin-left yang lebih baik, cukup hapus text-align */
+            /* atau ubah menjadi: */
+            text-align: initial; /* Atau hapus baris ini, agar margin pada child bisa bekerja */
+            margin-top: -50px;
+            margin-bottom: -50px;
+        }
+
+        .gmail-icon {
+            width: 200px; /* Ganti dengan nilai px yang Anda inginkan (Contoh: 90px) */
+            height: auto;
+            
+            /* Gunakan margin-left untuk menggeser ikon secara manual */
+            margin-left: 70px; /* Ganti 120px dengan nilai pergeseran horizontal yang Anda inginkan */
+        }
+        /* -------------------------------------- */
     </style>
 </head>
 
@@ -379,11 +422,19 @@
                                 <h2 class="success-heading">Hubungi kami</h2>
                                 {{-- PERUBAHAN: Tambahkan <strong> untuk membuat teks bold --}}
                                 <h3 class="success-title-thanks"><strong>Terima kasih telah menghubungi kami</strong></h3>
+
+                                {{-- START: IKON GMAIL TAMBAHAN --}}
+                                <div class="success-icon-wrapper">
+                                    <img src="{{ asset('images/send.png') }}" alt="Email Sent" class="gmail-icon">
+                                </div>
+                                {{-- END: IKON GMAIL TAMBAHAN --}}
+
                                 <p class="success-text">
                                     Kami akan mencoba membalas anda dalam beberapa hari ke depan.
                                 </p>
                                 <p class="success-text">
-                                    Jika anda ingin segera menghubungi kami, silahkan kunjungi halaman Kontak untuk menemukan nomor telepon kami
+                                    Jika anda ingin segera menghubungi kami, silahkan kunjungi halaman Kontak untuk
+                                    menemukan nomor telepon kami
                                 </p>
                                 <a href="{{ route('contact') }}" class="btn-kembali-kontak-js">
                                     <i class="fas fa-chevron-left"></i> Kembali ke halaman Kontak.
@@ -403,34 +454,25 @@
                                 @csrf
 
                                 <div class="mb-3">
-                                    <input name="name" type="text" class="form-control form-control-custom" placeholder="Nama Lengkap Anda" value="{{ old('name') }}">
+                                    <input name="name" type="text" class="form-control form-control-custom"
+                                        placeholder="Nama Lengkap Anda" value="{{ old('name') }}">
                                 </div>
 
                                 <div class="mb-3">
-                                    <input name="phone"
-                                        type="tel"
-                                        inputmode="numeric"
-                                        pattern="[0-9]*"
-                                        class="form-control form-control-custom"
-                                        placeholder="Nomor Kontak"
-                                        id="phone-input"
-                                        value="{{ old('phone') }}">
+                                    <input name="phone" type="tel" inputmode="numeric" pattern="[0-9]*"
+                                        class="form-control form-control-custom" placeholder="Nomor Kontak"
+                                        id="phone-input" value="{{ old('phone') }}">
                                 </div>
 
                                 <div class="mb-3">
-                                    <input name="email" type="email" class="form-control form-control-custom" placeholder="Alamat Email Anda" value="{{ old('email') }}">
+                                    <input name="email" type="email" class="form-control form-control-custom"
+                                        placeholder="Alamat Email Anda" value="{{ old('email') }}">
                                 </div>
 
                                 <div class="subject-dropdown-container">
                                     <div class="subject-input-wrapper" id="subject-wrapper">
-                                        <input
-                                            name="subject"
-                                            type="text"
-                                            class="subject-input"
-                                            id="subject-input"
-                                            placeholder="Subjek"
-                                            aria-haspopup="true"
-                                            aria-expanded="false"
+                                        <input name="subject" type="text" class="subject-input" id="subject-input"
+                                            placeholder="Subjek" aria-haspopup="true" aria-expanded="false"
                                             value="{{ old('subject') }}">
                                         <button type="button" class="dropdown-toggle-button" id="dropdown-toggle">
                                             <i class="fas fa-chevron-down dropdown-arrow" id="dropdown-arrow"></i>
@@ -443,7 +485,8 @@
                                         <li><a href="#" data-value="Pencarian Lowongan">Pencarian Lowongan</a></li>
                                         <li><a href="#" data-value="Melamar lowongan">Melamar lowongan</a></li>
                                         <li><a href="#" data-value="Profil Talenthub">Profil Talenthub</a></li>
-                                        <li><a href="#" data-value="Melaporkan iklan lowongan yang mencurigakan">Melaporkan iklan lowongan yang mencurigakan</a></li>
+                                        <li><a href="#" data-value="Melaporkan iklan lowongan yang mencurigakan">Melaporkan iklan
+                                                lowongan yang mencurigakan</a></li>
                                         <li><a href="#" data-value="Masalah email">Masalah email</a></li>
                                     </ul>
                                 </div>
@@ -505,8 +548,10 @@
         <script>
             document.addEventListener('DOMContentLoaded', () => {
                 // Pastikan variabel-variabel ini tersedia, jika tidak, inisialisasi dengan nilai default
-                const latitude = typeof {{ $profile->latitude ?? 'null' }} !== 'undefined' ? {{ $profile->latitude ?? 'null' }} : -6.200000;
-                const longitude = typeof {{ $profile->longitude ?? 'null' }} !== 'undefined' ? {{ $profile->longitude ?? 'null' }} : 106.816666;
+                const latitude = typeof {{ $profile->latitude ?? 'null' }} !== 'undefined' ?
+                    {{ $profile->latitude ?? 'null' }} : -6.200000;
+                const longitude = typeof {{ $profile->longitude ?? 'null' }} !== 'undefined' ?
+                    {{ $profile->longitude ?? 'null' }} : 106.816666;
                 const mapPopupText = "{!! addslashes($profile->map_popup_text ?? 'Lokasi') !!}";
                 const location = (latitude && longitude) ? [latitude, longitude] : [-6.200000, 106.816666];
 
@@ -527,7 +572,7 @@
                 const subjectInput = document.getElementById('subject-input');
                 const dropdownArrow = document.getElementById('dropdown-arrow');
                 const menuItems = subjectMenu ? subjectMenu.querySelectorAll('a') : [];
-                
+
                 // Cek apakah elemen-elemen untuk form ada sebelum menjalankan script dropdown/phone input
                 if (toggleButton && subjectMenu && subjectInput && dropdownArrow && menuItems.length > 0) {
                     function toggleDropdown() {
@@ -565,7 +610,7 @@
                         }
                     });
                 }
-                
+
                 const phoneInput = document.getElementById('phone-input');
                 if (phoneInput) {
                     phoneInput.addEventListener('keydown', (e) => {

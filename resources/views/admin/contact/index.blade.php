@@ -40,9 +40,17 @@
         background-color: #0d6efd;
     }
 
-        /* paksa sel ikut warna abu-abu untuk pesan belum dibaca */
+    /* paksa sel ikut warna abu-abu untuk pesan belum dibaca */
     .unread-row td {
         background-color: #f0f0f0 !important;
+    }
+
+    /* Penyesuaian agar elemen form dan filter muat di satu baris */
+    .data-filter-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px; /* Jarak dari tabel di bawahnya */
     }
 
 </style>
@@ -56,16 +64,22 @@
         @php
             // Hitung jumlah data yang dihapus untuk notifikasi badge
             $trashedCount = \App\Models\ContactMessage::onlyTrashed()->count();
-            // Ambil filter saat ini, default 'without'
+            
+            // Ambil filter saat ini
             $currentFilter = request()->query('status', 'without'); 
-
-            // Tentukan teks tombol filter saat ini
+            $currentSearch = request()->query('search', '');
+            $currentLimit = request()->query('limit', 10); // Default 10 data per halaman
+            
+            // Tentukan teks tombol filter status saat ini
             $filterText = 'Tanpa data yang dihapus';
             if ($currentFilter == 'with') {
                 $filterText = 'Dengan data yang dihapus';
             } elseif ($currentFilter == 'only') {
                 $filterText = 'Hanya data yang dihapus';
             }
+            
+            // Base URL untuk filter (mempertahankan status, search, dan limit)
+            $baseRoute = route('admin.contact-messages.index');
         @endphp
 
         <div class="dropdown">
@@ -111,17 +125,72 @@
                     {{-- Daftar Pilihan Filter (TANPA ANGKA NOTIFIKASI) --}}
                     <ul class="dropdown-menu w-100" aria-labelledby="innerFilterSelect">
                         {{-- Opsi 1: Tanpa data yang dihapus (Default) --}}
-                        <li><a class="dropdown-item @if($currentFilter == 'without') active @endif" href="{{ route('admin.contact-messages.index') }}">Tanpa data yang dihapus</a></li>
+                        {{-- Pastikan semua filter saat ini dipertahankan, kecuali 'status' dihapus/direset --}}
+                        @php $params = array_filter(['search' => $currentSearch, 'limit' => $currentLimit]); @endphp
+                        <li><a class="dropdown-item @if($currentFilter == 'without') active @endif" href="{{ $baseRoute }}?{{ http_build_query($params) }}">Tanpa data yang dihapus</a></li>
+                        
                         {{-- Opsi 2: Dengan data yang dihapus (withTrashed) --}}
-                        <li><a class="dropdown-item @if($currentFilter == 'with') active @endif" href="{{ route('admin.contact-messages.index', ['status' => 'with']) }}">Dengan data yang dihapus</a></li>
+                        @php $params = array_filter(['status' => 'with', 'search' => $currentSearch, 'limit' => $currentLimit]); @endphp
+                        <li><a class="dropdown-item @if($currentFilter == 'with') active @endif" href="{{ $baseRoute }}?{{ http_build_query($params) }}">Dengan data yang dihapus</a></li>
+                        
                         {{-- Opsi 3: Hanya data yang dihapus (onlyTrashed) --}}
-                        <li><a class="dropdown-item @if($currentFilter == 'only') active @endif" href="{{ route('admin.contact-messages.index', ['status' => 'only']) }}">Hanya data yang dihapus</a></li>
+                        @php $params = array_filter(['status' => 'only', 'search' => $currentSearch, 'limit' => $currentLimit]); @endphp
+                        <li><a class="dropdown-item @if($currentFilter == 'only') active @endif" href="{{ $baseRoute }}?{{ http_build_query($params) }}">Hanya data yang dihapus</a></li>
                     </ul>
                 </div>
                 
             </div>
         </div>
     </div>
+    
+    {{--- BAGIAN KONTROL PENCARIAN DAN BATAS PER HALAMAN ---}}
+    <div class="data-filter-controls">
+        
+        {{-- KOLOM PENCARIAN --}}
+        <form action="{{ $baseRoute }}" method="GET" class="d-flex me-3" style="flex-grow: 1;">
+            {{-- Input tersembunyi untuk mempertahankan filter status dan limit --}}
+            @if($currentFilter != 'without')
+            <input type="hidden" name="status" value="{{ $currentFilter }}">
+            @endif
+            <input type="hidden" name="limit" value="{{ $currentLimit }}">
+            
+            <input type="search" 
+                   name="search" 
+                   class="form-control" 
+                   placeholder="Cari (Nama, Email, Kontak)..." 
+                   value="{{ $currentSearch }}"
+                   style="width: 100%; max-width: 300px;">
+            <button class="btn btn-primary ms-2" type="submit">Cari</button>
+            @if($currentSearch)
+            {{-- Tombol Reset: Menghapus hanya parameter 'search' --}}
+            <a href="{{ $baseRoute }}?{{ http_build_query(array_filter(['status' => $currentFilter != 'without' ? $currentFilter : null, 'limit' => $currentLimit])) }}" class="btn btn-secondary ms-2">Reset</a>
+            @endif
+        </form>
+        
+        {{-- FILTER BATAS DATA PER HALAMAN --}}
+        <div class="d-flex align-items-center flex-shrink-0">
+            <span class="text-nowrap me-2 d-none d-sm-block">Tampilkan:</span>
+            <select class="form-select form-select-sm" 
+                    onchange="window.location.href = this.value" 
+                    style="width: auto;">
+                @foreach([10, 20, 50, 100] as $limit)
+                    @php 
+                        $params = array_filter([
+                            // Periksa $currentFilter != 'without' untuk menghindari parameter status kosong
+                            'status' => $currentFilter != 'without' ? $currentFilter : null, 
+                            'search' => $currentSearch, 
+                            'limit' => $limit
+                        ]);
+                        $url = $baseRoute . '?' . http_build_query($params);
+                    @endphp
+                    <option value="{{ $url }}" @if($currentLimit == $limit) selected @endif>
+                        {{ $limit }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+    </div>
+    {{--- AKHIR BAGIAN KONTROL BARU ---}}
     
     @if(session('success'))
         <div id="deleteSuccessMessage" data-message="{{ session('success') }}"></div>
@@ -192,7 +261,10 @@
                 </tbody>
             </table>
 
-                {{ $messages->links() }}
+                {{-- PERBAIKAN: Memastikan parameter query dipertahankan saat navigasi pagination --}}
+                {{-- Dengan withQueryString() di controller, $messages->links() saja sudah cukup. --}}
+                {{-- Namun, untuk memastikan kompatibilitas, kita tambahkan appends: --}}
+                {{ $messages->appends(['search' => $currentSearch, 'limit' => $currentLimit, 'status' => $currentFilter])->links() }}
             @else
                 <div class="text-center p-4 text-muted">
                     @if($currentFilter == 'only')
@@ -232,11 +304,12 @@
                 const form = this.closest('form');
                 Swal.fire({
                     title: 'Konfirmasi Penghapusan?',
-                    text: "Pesan ini akan disembunyikan. Data masih dapat dipulihkan.",
+                    text: "Pesan ini akan dihapus. Data masih dapat dipulihkan.",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Ya, Sembunyikan!',
-                    cancelButtonText: 'Batal'
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#dc3545' 
                 }).then((result) => {
                     if (result.isConfirmed) {
                         form.submit();
