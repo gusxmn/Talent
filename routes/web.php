@@ -8,15 +8,16 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\JobListingController;
 use App\Http\Controllers\Admin\ApplicantController;
-use App\Http\Controllers\Admin\CalendarController; // <-- CONTROLLER BARU UNTUK KALENDER
+use App\Http\Controllers\Admin\CalendarController; 
 use App\Http\Controllers\Admin\ReportController; 
-use App\Http\Controllers\Admin\CompanyController; 
+use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\Admin\CandidateController; 
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 
 // Public Controllers
 use App\Http\Controllers\JobController;
-use App\Http\Controllers\ContactController; // <-- SUDAH ADA, TIDAK PERLU DIUBAH
+use App\Http\Controllers\ContactController; 
 
 
 /*
@@ -37,6 +38,9 @@ Route::post('/kontak', [ContactController::class, 'store'])->name('contact.store
 
 Route::get('/tentang-perusahaan', fn() => view('about_company'))->name('about');
 Route::get('/explore-perusahaan', fn() => view('explore_company'));
+Route::get('/open-intership', fn() => view('open_intership'));
+Route::get('/registrasi-perusahaan', fn() => view('daftar_perusahaan'));
+Route::get('/registrasi-kampus', fn() => view('daftar_kampus'));
 Route::get('/sumber-daya-karir', fn() => view('career_resources'));
 
 Route::get('/sumber-daya-karir/jelajahi-karier', function () {
@@ -54,6 +58,24 @@ Route::get('/sumber-daya-karir/kehidupan-kerja', function () {
 Route::get('/sumber-daya-karir/jelajahi-gaji', function () {
     return view('salary_explore');
 })->name('salary.explore');
+
+// Halaman pengaturan akun dan fungsionalitasnya
+Route::middleware(['auth'])->group(function () {
+    // Rute utama halaman pengaturan akun (Detail Login)
+    Route::get('/pengaturan/detail', [AccountSettingsController::class, 'index'])->name('account.settings');
+    
+    // RUTE BARU: Halaman Kontak Saya
+    Route::get('/pengaturan/kontak', [AccountSettingsController::class, 'contactIndex'])->name('account.contact');
+
+    // Rute POST untuk ganti kata sandi
+    Route::post('/pengaturan/update-password', [AccountSettingsController::class, 'updatePassword'])->name('account.update.password');
+
+    // Rute POST untuk perbarui email
+    Route::post('/pengaturan/update-email', [AccountSettingsController::class, 'updateEmail'])->name('account.update.email');
+    
+    // RUTE BARU: Rute POST untuk perbarui WhatsApp
+    Route::post('/pengaturan/update-whatsapp', [AccountSettingsController::class, 'updateWhatsapp'])->name('account.update.whatsapp');
+});
 
 
 // Halaman tipe pekerjaan

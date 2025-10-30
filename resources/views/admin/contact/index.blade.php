@@ -31,7 +31,7 @@
     
     /* Pastikan warna teks normal tetap default saat tidak hover */
     #innerFilterContainer .dropdown-item {
-        color: #212529; /* Warna teks default */
+        color: #212579; /* Warna teks default */
     }
     
     /* Pastikan warna teks item aktif tetap konsisten dengan Bootstrap */
@@ -51,6 +51,13 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 15px; /* Jarak dari tabel di bawahnya */
+    }
+
+    /* CSS Tambahan untuk Ikon Mata */
+    .status-icon {
+        width: 24px; /* Atur lebar ikon */
+        height: 24px; /* Atur tinggi ikon */
+        vertical-align: middle; /* Pusatkan secara vertikal */
     }
 
 </style>
@@ -155,11 +162,11 @@
             <input type="hidden" name="limit" value="{{ $currentLimit }}">
             
             <input type="search" 
-                   name="search" 
-                   class="form-control" 
-                   placeholder="Cari (Nama, Email, Kontak)..." 
-                   value="{{ $currentSearch }}"
-                   style="width: 100%; max-width: 300px;">
+                    name="search" 
+                    class="form-control" 
+                    placeholder="Cari (Nama, Email, Kontak)..." 
+                    value="{{ $currentSearch }}"
+                    style="width: 100%; max-width: 300px;">
             <button class="btn btn-primary ms-2" type="submit">Cari</button>
             @if($currentSearch)
             {{-- Tombol Reset: Menghapus hanya parameter 'search' --}}
@@ -220,19 +227,20 @@
                         <td>{{ $msg->phone ?? '-' }}</td>
                         <td>{{ $msg->email ?? '-' }}</td>
 
-                        <td>{{ \Carbon\Carbon::parse($msg->created_at)->locale('id')->translatedFormat('H:i d M Y') }}</td>
+                        <td>{{ \Carbon\Carbon::parse($msg->created_at)->format('H:i d/m/Y') }}</td>
 
-                        <td>
+                        {{-- PERUBAHAN UTAMA: Kolom Status diganti Ikon --}}
+                        <td class="text-center"> {{-- Tambahkan text-center untuk memusatkan ikon --}}
                             @php
                                 $isRead = $msg->status == 1;
-                                $badgeClass = $isRead ? 'bg-success' : 'bg-danger'; 
-                                $statusText = $isRead ? 'Sudah Dibaca' : 'Belum Dibaca';
+                                $iconPath = $isRead ? asset('images/OpenEye.png') : asset('images/ClosedEye.png');
+                                $altText = $isRead ? 'Sudah Dibaca' : 'Belum Dibaca';
                             @endphp
 
-                            <span class="badge {{ $badgeClass }} text-white">
-                                {{ $statusText }}
-                            </span>
+                            {{-- Menggunakan tag img dengan path ke ikon dan kelas CSS kustom --}}
+                            <img src="{{ $iconPath }}" alt="{{ $altText }}" title="{{ $altText }}" class="status-icon">
                         </td>
+                        {{-- AKHIR PERUBAHAN UTAMA --}}
 
                         <td>
                             <a href="{{ route('admin.contact-messages.show', $msg->id) }}" class="btn btn-sm btn-primary">Lihat</a>

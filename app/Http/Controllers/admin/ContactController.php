@@ -19,8 +19,8 @@ class ContactController extends Controller
         $limit = $request->query('limit', 10); // Ambil limit, default 10
         
         // 2. Tentukan Query Dasar
-        // Tetap diurutkan ASC (terlama di atas) sesuai permintaan sebelumnya.
-        $query = ContactMessage::orderBy('created_at', 'asc'); 
+        // PERUBAHAN: Diurutkan DESC (terbaru di atas)
+        $query = ContactMessage::orderBy('created_at', 'desc'); 
 
         // 3. Terapkan Pencarian (Jika ada nilai search)
         if ($search) {
@@ -33,17 +33,8 @@ class ContactController extends Controller
                 // Untuk Kolom Teks (name, email): Gunakan LOWER() untuk pencarian case-insensitive
                 // LOWER(kolom) LIKE ?
                 $q->whereRaw('LOWER(name) LIKE ?', [$searchPattern])
-                  ->orWhereRaw('LOWER(email) LIKE ?', [$searchPattern])
-                  // Untuk Kolom Kontak (phone): Biasanya nomor tidak sensitif huruf besar/kecil, 
-                  // namun kita tetap menggunakan LIKE biasa (atau jika phone adalah string, tetap LOWER)
-                  // Karena phone biasanya hanya angka, LIKE biasa sudah memadai, 
-                  // tetapi menggunakan whereRaw dengan $searchPattern yang sudah di-lowercase tetap aman.
-                  // Kita asumsikan kolom phone hanya berisi angka, jadi kita kembali ke LIKE normal 
-                  // agar tidak membuang-buang resource, atau gunakan LIKE dengan search aslinya.
-                  // Pilihan 1: Gunakan whereRaw dengan lowerSearch (lebih aman untuk semua field string):
-                  ->orWhereRaw('LOWER(phone) LIKE ?', [$searchPattern]); 
-                  // Pilihan 2: Jika phone pasti hanya angka:
-                  // ->orWhere('phone', 'like', '%' . $search . '%');
+                    ->orWhereRaw('LOWER(email) LIKE ?', [$searchPattern])
+                    ->orWhereRaw('LOWER(phone) LIKE ?', [$searchPattern]); 
             });
         }
 

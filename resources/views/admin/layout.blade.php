@@ -570,7 +570,7 @@
           <button id="sidebarToggle" class="btn btn-link rounded-circle me-3">
             <i class="fa fa-bars"></i>
           </button>
-          <h3 class="page-title mb-0">@yield('title', 'Masih pusing')</h3>
+          <h3 class="page-title mb-0">@yield('title', 'Pasti Bisa')</h3>
         </div>
 
         <ul class="navbar-nav ms-auto d-flex flex-row align-items-center">
