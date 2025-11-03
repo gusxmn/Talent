@@ -24,10 +24,18 @@ class DashboardController extends Controller
             ->groupBy('role')
             ->pluck('total', 'role');
 
-        // Grafik 2: Statistik Lowongan per Lokasi
-        $lokasiStats = JobListing::select('location', DB::raw('count(*) as total'))
-            ->groupBy('location')
-            ->pluck('total', 'location');
+        // GANTI INI: Statistik Lowongan per Provinsi (bukan location)
+        $lokasiStats = JobListing::with('province')
+            ->select('provinsi_id', DB::raw('count(*) as total'))
+            ->whereNotNull('provinsi_id')
+            ->groupBy('provinsi_id')
+            ->get()
+            ->pluck('total', 'province.name');
+
+        // Atau alternatif: Statistik berdasarkan jenis pekerjaan
+        $jobTypeStats = JobListing::select('job_type', DB::raw('count(*) as total'))
+            ->groupBy('job_type')
+            ->pluck('total', 'job_type');
 
         return view('admin.dashboard', compact(
             'activeJobsCount',
@@ -35,7 +43,8 @@ class DashboardController extends Controller
             'companiesCount',
             'totalUsersCount',
             'userRoles',
-            'lokasiStats'
+            'lokasiStats',
+            'jobTypeStats'
         ));
     }
 }

@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Admin</title>
-
+  <title>Panel admin next jobz</title>
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="{{ asset('123.png') }}">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -87,10 +88,9 @@
     .sidebar-brand img {
       width: 100px;
       height: auto;
-  object-fit: contain;
-  margin-bottom: 0; /* hindari jarak vertikal kalau sejajar horizontal */
-}
-
+      object-fit: contain;
+      margin-bottom: 0;
+    }
 
     .sidebar-brand h5 {
       font-weight: 700;
@@ -323,7 +323,7 @@
         position: relative;
     }
     .notification-btn:hover {
-        color: #4e73df;
+        color: #ec650aff;
         background-color: rgba(78, 115, 223, 0.1);
     }
     body.dark-mode .notification-btn {
@@ -347,6 +347,147 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    /* Notification Dropdown Styles */
+    .notification-dropdown {
+        min-width: 350px;
+        max-width: 400px;
+        padding: 0;
+    }
+
+    .notification-list {
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .notification-item {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        border-radius: 0;
+        margin: 0;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .notification-item:last-child {
+        border-bottom: none;
+    }
+
+    .notification-item:hover {
+        background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    .notification-item.unread {
+        background-color: rgba(0, 123, 255, 0.05);
+        border-left: 3px solid #007bff;
+    }
+
+    .notification-item.read {
+        opacity: 0.7;
+        border-left: 3px solid transparent;
+    }
+
+    .notification-item h6 {
+        font-size: 0.9rem;
+        margin-bottom: 0.25rem;
+        color: #333;
+        font-weight: 600;
+    }
+
+    .notification-item p {
+        font-size: 0.8rem;
+        margin-bottom: 0.25rem;
+        color: #666;
+        line-height: 1.3;
+    }
+
+    .notification-item small {
+        font-size: 0.7rem;
+        color: #888;
+    }
+
+    .notification-badge.new {
+        background-color: #e74c3c;
+        color: white;
+        font-size: 0.6rem;
+        padding: 0.1rem 0.3rem;
+    }
+
+    .notification-empty {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: #6c757d;
+    }
+
+    .notification-empty i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        opacity: 0.5;
+    }
+
+    /* Dark mode styles untuk notifikasi */
+    body.dark-mode .notification-item:hover {
+        background-color: rgba(255, 255, 255, 0.05);
+    }
+
+    body.dark-mode .notification-item.unread {
+        background-color: rgba(78, 115, 223, 0.1);
+    }
+
+    body.dark-mode .notification-item h6 {
+        color: #ddd;
+    }
+
+    body.dark-mode .notification-item p {
+        color: #aaa;
+    }
+
+    body.dark-mode .notification-item {
+        border-bottom-color: #444;
+    }
+
+    /* Scrollbar untuk dropdown notifikasi */
+    .notification-list::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .notification-list::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+    }
+
+    .notification-list::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+    }
+
+    .notification-list::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+    }
+
+    body.dark-mode .notification-list::-webkit-scrollbar-track {
+        background: #2a2a3c;
+    }
+
+    body.dark-mode .notification-list::-webkit-scrollbar-thumb {
+        background: #555;
+    }
+
+    body.dark-mode .notification-list::-webkit-scrollbar-thumb:hover {
+        background: #777;
+    }
+
+    /* Dropdown header */
+    .dropdown-header {
+        padding: 0.75rem 1rem;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #e3e6f0;
+    }
+
+    body.dark-mode .dropdown-header {
+        background-color: #2f2f44;
+        border-bottom-color: #444;
     }
 
     /* ====================
@@ -434,6 +575,11 @@
         padding-left: 0.5rem;
         padding-right: 1rem;
       }
+
+      .notification-dropdown {
+        min-width: 280px;
+        max-width: 300px;
+      }
     }
   </style>
 </head>
@@ -494,7 +640,21 @@
             <li class="nav-item">
                 <a class="nav-link {{ request()->routeIs('admin.reports.*') ? 'active' : '' }}" 
                    href="{{ route('admin.reports.index') }}">
-                   <i class="fas fa-chart-bar"></i> <span>Laporan & Analitik</span>
+                   <i class="fas fa-chart-bar"></i> <span>LAPORAN</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.notif.*') ? 'active' : '' }}" 
+                   href="{{ route('admin.notif.index') }}">
+                   <i class="fas fa-bell"></i> <span>Notifikasi</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link {{ request()->routeIs('admin.magang.*') ? 'active' : '' }}" 
+                   href="{{ route('admin.magang.index') }}">
+                   <i class="fas fa-briefcase"></i> <span>Lowongan magang</span>
                 </a>
             </li>
           @endif
@@ -513,18 +673,10 @@
               </a>
             </li>
 
-            <li class="nav-item dropdown">
-              <a class="nav-link d-flex collapsed" href="#pengaturanCollapse" role="button" data-bs-toggle="collapse" aria-expanded="false" aria-controls="pengaturanCollapse">
-                <i class="fas fa-cog"></i> <span>Pengaturan</span>
-                <i class="fas fa-chevron-right dropdown-arrow"></i>
+            <li class="nav-item">
+              <a class="nav-link {{ request()->routeIs('admin.companies.index') ? 'active' : '' }}" href="{{ route('admin.companies.index') }}">
+                <i class="fas fa-building"></i> <span>Perusahaan</span>
               </a>
-              <div class="collapse" id="pengaturanCollapse">
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#"><i class="fas fa-sliders-h"></i> Pengaturan Umum</a>
-                  <a class="dropdown-item" href="#"><i class="fas fa-shield-alt"></i> Keamanan</a>
-                  <a class="dropdown-item" href="#"><i class="fas fa-bell"></i> Notifikasi</a>
-                </div>
-              </div>
             </li>
           @endif
         @endauth
@@ -548,7 +700,7 @@
           <button id="sidebarToggle" class="btn btn-link rounded-circle me-3">
             <i class="fa fa-bars"></i>
           </button>
-          <h3 class="page-title mb-0">@yield('title', 'Masih pusing')</h3>
+          <h3 class="page-title mb-0">@yield('title', 'Jangan Males yaa')</h3>
         </div>
 
         <ul class="navbar-nav ms-auto d-flex flex-row align-items-center">
@@ -557,10 +709,34 @@
               <i class="fas fa-moon"></i>
             </button>
             
-            <button id="notificationToggle" class="notification-btn">
-              <i class="fas fa-bell"></i>
-              <span class="notification-badge">3</span>
-            </button>
+            <!-- Notification Dropdown -->
+            <li class="nav-item dropdown no-arrow me-3">
+              <button id="notificationToggle" class="notification-btn" type="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge" style="display: none;">0</span>
+              </button>
+              
+              <div class="dropdown-menu dropdown-menu-end shadow animated--grow-in notification-dropdown" 
+                   id="notificationDropdown" aria-labelledby="notificationToggle">
+                <div class="dropdown-header d-flex justify-content-between align-items-center">
+                  <strong>Notifikasi</strong>
+                  <a href="{{ route('admin.notif.my') }}" class="small text-primary">Lihat Semua</a>
+                </div>
+                <div class="dropdown-divider"></div>
+                <div class="notification-list" style="max-height: 300px; overflow-y: auto;">
+                  <div class="text-center p-3">
+                    <div class="spinner-border spinner-border-sm" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2 small text-muted">Memuat notifikasi...</p>
+                  </div>
+                </div>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-center small text-muted" href="javascript:void(0)" onclick="loadNotifications()">
+                  <i class="fas fa-sync-alt me-1"></i> Refresh
+                </a>
+              </div>
+            </li>
 
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -650,17 +826,6 @@
         }
       });
 
-      // Notification toggle
-      notificationToggle.addEventListener('click', function () {
-        // Di sini bisa ditambahkan logika untuk menampilkan notifikasi
-        console.log('Notification clicked');
-        // Contoh: toggle dropdown notifikasi
-        const notificationBadge = this.querySelector('.notification-badge');
-        if (notificationBadge) {
-          notificationBadge.style.display = 'none';
-        }
-      });
-
       // Load saved theme
       if (localStorage.getItem('theme') === 'dark') {
         body.classList.add('dark-mode');
@@ -694,6 +859,165 @@
           this.scrollTop += e.deltaY;
         });
       }
+
+      // ==================== NOTIFICATION FUNCTIONS ====================
+      
+      // Fungsi untuk memuat notifikasi dari server
+      async function loadNotifications() {
+        try {
+          const notificationList = document.querySelector('.notification-list');
+          if (notificationList) {
+            notificationList.innerHTML = `
+              <div class="text-center p-3">
+                <div class="spinner-border spinner-border-sm" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2 small text-muted">Memuat notifikasi...</p>
+              </div>
+            `;
+          }
+
+          const response = await fetch('{{ route("admin.notif.api.my") }}');
+          const data = await response.json();
+          
+          if (data.success) {
+            updateNotificationDropdown(data.notifications);
+            updateNotificationBadge(data.unread_count);
+          } else {
+            throw new Error('Failed to load notifications');
+          }
+        } catch (error) {
+          console.error('Error loading notifications:', error);
+          const notificationList = document.querySelector('.notification-list');
+          if (notificationList) {
+            notificationList.innerHTML = `
+              <div class="text-center p-3 text-danger">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p class="mt-2 small">Gagal memuat notifikasi</p>
+                <button class="btn btn-sm btn-primary mt-2" onclick="loadNotifications()">Coba Lagi</button>
+              </div>
+            `;
+          }
+        }
+      }
+
+      // Fungsi untuk memperbarui dropdown notifikasi
+      function updateNotificationDropdown(notifications) {
+        const notificationList = document.querySelector('.notification-list');
+        if (!notificationList) return;
+        
+        if (notifications.length === 0) {
+          notificationList.innerHTML = `
+            <div class="notification-empty">
+              <i class="fas fa-bell-slash"></i>
+              <p class="mt-2 small">Tidak ada notifikasi</p>
+            </div>
+          `;
+          return;
+        }
+        
+        let html = '';
+        notifications.forEach(notif => {
+          const isRead = notif.read_at !== null;
+          const timeAgo = getTimeAgo(notif.created_at);
+          const title = notif.data?.title || 'Notifikasi';
+          const message = notif.data?.message || 'Tidak ada pesan';
+          
+          html += `
+            <div class="notification-item ${isRead ? 'read' : 'unread'}" 
+                 data-id="${notif.id}" onclick="markAsRead('${notif.id}')">
+              <div class="d-flex align-items-start">
+                <div class="flex-grow-1">
+                  <h6 class="mb-1">${title}</h6>
+                  <p class="mb-1">${message}</p>
+                  <small class="text-muted">${timeAgo}</small>
+                </div>
+                ${!isRead ? '<span class="badge bg-primary ms-2 new">Baru</span>' : ''}
+              </div>
+            </div>
+          `;
+        });
+        
+        notificationList.innerHTML = html;
+      }
+
+      // Fungsi untuk memperbarui badge notifikasi
+      function updateNotificationBadge(unreadCount) {
+        const badge = document.querySelector('.notification-badge');
+        if (!badge) return;
+        
+        if (unreadCount > 0) {
+          badge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+          badge.style.display = 'flex';
+        } else {
+          badge.style.display = 'none';
+        }
+      }
+
+      // Fungsi untuk menandai notifikasi sebagai dibaca
+      window.markAsRead = async function(notificationId) {
+        try {
+          const response = await fetch(`/admin/notif/read/${notificationId}`, {
+            method: 'PUT',
+            headers: {
+              'X-CSRF-TOKEN': '{{ csrf_token() }}',
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            }
+          });
+          
+          if (response.ok) {
+            // Update tampilan notifikasi
+            const notificationItem = document.querySelector(`.notification-item[data-id="${notificationId}"]`);
+            if (notificationItem) {
+              notificationItem.classList.remove('unread');
+              notificationItem.classList.add('read');
+              const newBadge = notificationItem.querySelector('.badge.new');
+              if (newBadge) {
+                newBadge.remove();
+              }
+            }
+            
+            // Update badge count
+            loadNotifications();
+          }
+        } catch (error) {
+          console.error('Error marking notification as read:', error);
+        }
+      }
+
+      // Fungsi utility untuk format waktu
+      function getTimeAgo(timestamp) {
+        const now = new Date();
+        const time = new Date(timestamp);
+        const diffInSeconds = Math.floor((now - time) / 1000);
+        
+        if (diffInSeconds < 60) return 'Baru saja';
+        if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)} menit lalu`;
+        if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} jam lalu`;
+        if (diffInSeconds < 2592000) return `${Math.floor(diffInSeconds / 86400)} hari lalu`;
+        
+        return time.toLocaleDateString('id-ID', {
+          day: 'numeric',
+          month: 'short',
+          year: 'numeric'
+        });
+      }
+
+      // Load notifikasi saat halaman pertama kali dimuat
+      loadNotifications();
+      
+      // Auto-refresh notifikasi setiap 30 detik
+      setInterval(loadNotifications, 30000);
+
+      // Event listener untuk dropdown notifikasi
+      notificationToggle.addEventListener('click', function () {
+        // Load notifikasi ketika dropdown diklik
+        loadNotifications();
+      });
+
+      // Make loadNotifications available globally
+      window.loadNotifications = loadNotifications;
     });
   </script>
 </body>

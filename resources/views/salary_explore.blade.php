@@ -3,7 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talenthub</title>
+    <title>Jelajahi Gaji | Next Jobz</title>
+    <link rel="icon" type="image/png" href="{{ asset('123.png') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jelajahi Gaji | Next Jobz</title>
+    <link rel="icon" type="image/png" href="{{ asset('123.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -155,10 +167,10 @@
         }
 
         .career-highsalary-header h2 {
-        font-size: 24px;
-        font-weight: 600;
-        margin-bottom: 10px;
-        color: #333;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
         }
 
         .career-highsalary-header p {
@@ -233,12 +245,12 @@
         .career-highsalary-footer a {
             color: #0b0b54;
             font-weight: 600;
-            text-decoration: none; /* hapus underline */
-            font-size: 17px; /* diperbesar sedikit */
+            text-decoration: none;
+            font-size: 17px;
         }
 
         .career-highsalary-footer a:hover {
-            text-decoration: none; /* tetap tanpa underline */
+            text-decoration: none;
         }
 
         @media (max-width: 992px) {
@@ -291,7 +303,7 @@
         /* Grid untuk tombol agar rata */
         .industry-list {
             display: grid;
-            grid-template-columns: repeat(5, 1fr); /* 5 kolom per baris */
+            grid-template-columns: repeat(5, 1fr);
             gap: 20px;
         }
 
@@ -301,11 +313,11 @@
             background: #fff;
             padding: 12px 15px;
             font-size: 16px;
-            font-weight: 500; /* agak bold tapi tidak terlalu tebal */
+            font-weight: 500;
             color: #222;
             cursor: pointer;
             transition: background 0.2s ease;
-            width: 100%; /* semua tombol full mengikuti grid */
+            width: 100%;
             text-align: center;
         }
 
@@ -329,13 +341,12 @@
             text-decoration: none;
         }
 
-        
         /* === Career Change Section (Merubah Karir) - TATA LETAK REFERENSI === */
         .career-change-section {
             width: 100%;
             padding: 0 40px;
             margin: 80px auto;
-            margin-top: 100px;  
+            margin-top: 100px;
         }
 
         .change-header {
@@ -385,7 +396,7 @@
 
         .change-card img {
             width: 100%;
-            height: 180px; /* semua gambar dipaksa sama */
+            height: 180px;
             object-fit: cover;
             flex-shrink: 0;
         }
@@ -410,7 +421,7 @@
             width: 100%;
             padding: 0 40px;
             margin: 80px auto;
-            margin-top: 100px;  
+            margin-top: 100px;
         }
 
         .salarytrend-header {
@@ -453,14 +464,14 @@
             overflow: hidden;
             box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
             flex: 1;
-            min-height: 230px; /* Dipertahankan sama dengan change-card */
+            min-height: 230px;
             display: flex;
             flex-direction: column;
         }
 
         .salarytrend-card img {
             width: 100%;
-            height: 180px; /* Semua gambar dipaksa sama */
+            height: 180px;
             object-fit: cover;
             flex-shrink: 0;
         }
@@ -480,7 +491,7 @@
             margin: 0;
         }
 
-        /* Responsif untuk card baru (disamakan dengan change-card jika ada) */
+        /* Responsif untuk card baru */
         @media (max-width: 992px) {
             .change-cards-row, .salarytrend-cards-row {
                 flex-wrap: wrap;
@@ -496,14 +507,14 @@
             }
         }
 
-          /* === Interview Practice Section === */
+        /* === Interview Practice Section === */
         .interview-practice-section {
-            width: 95%; /* beri ruang di kanan dan kiri */
-            background-color: #5564cc; /* warna biru seperti di gambar */
+            width: 95%;
+            background-color: #5564cc;
             border-radius: 16px;
             margin: 80px auto;
-            margin-top: 100px;  
-            padding: 80px 100px; /* perbesar isi card */
+            margin-top: 100px;
+            padding: 80px 100px;
             box-sizing: border-box;
         }
 
@@ -511,7 +522,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 60px; /* beri jarak lebih lebar antara teks dan gambar */
+            gap: 60px;
         }
 
         .interview-text {
@@ -520,7 +531,7 @@
         }
 
         .interview-text h2 {
-            font-size: 30px; /* lebih besar */
+            font-size: 30px;
             font-weight: 600;
             margin-bottom: 15px;
         }
@@ -529,7 +540,7 @@
             font-size: 18px;
             margin-bottom: 30px;
             color: #f0f0f0;
-            white-space: nowrap; /* supaya kalimat tidak turun ke baris baru */
+            white-space: nowrap;
         }
 
         .interview-text button {
@@ -557,18 +568,18 @@
         .interview-image img {
             max-width: 100%;
             height: auto;
-            width: 420px; /* ikon lebih besar dari sebelumnya */
+            width: 420px;
             object-fit: contain;
         }
 
-            /* ========================================================== */
+        /* ========================================================== */
         /* CSS UNTUK BAGIAN SUMBER DAYA DAN TEMPLAT (SUDAH SEJAJAR) */
         /* ========================================================== */
         .resource-template-section {
-            width: 100%;                 /* sama seperti .salary-trend-section */
-            padding: 0 40px;             /* sejajar kanan-kiri */
-            margin: 80px auto;           /* jarak bawah sama */
-            margin-top: 100px;           /* jarak atas sama */
+            width: 100%;
+            padding: 0 40px;
+            margin: 80px auto;
+            margin-top: 100px;
             box-sizing: border-box;
         }
 
@@ -629,7 +640,7 @@
         /* === Gambar Card === */
         .resource-card img {
             width: 100%;
-            height: 180px; /* Sama persis dengan .salary-trend-card img */
+            height: 180px;
             object-fit: cover;
             flex-shrink: 0;
         }
@@ -675,7 +686,6 @@
             }
         }
 
-            
         /* === Saran Gaji Section (Sama seperti JobStreet) === */
         .salary-advice-section {
             width: 100%;
@@ -739,7 +749,7 @@
 
         .salary-advice-card img {
             width: 100%;
-            height: 180px; /* Paksa semua gambar sama */
+            height: 180px;
             object-fit: cover;
             flex-shrink: 0;
         }
@@ -763,7 +773,6 @@
             .salary-advice-cards-row {
                 flex-wrap: wrap;
             }
-
             .salary-advice-card {
                 flex: 1 1 calc(50% - 10px);
             }
@@ -775,7 +784,7 @@
             }
         }
 
-            /* === Subscription Section (Berlangganan Panduan Karir) === */
+        /* === Subscription Section (Berlangganan Panduan Karir) === */
         .career-subscribe-section {
             width: 100%;
             padding: 60px 40px;
@@ -874,15 +883,15 @@
         /* === Garis bawah permanen pada link === */
         .career-subscribe-section small a {
             color: #0b0b54;
-            text-decoration: underline; /* underline permanen */
+            text-decoration: underline;
             font-weight: 500;
         }
 
         .career-subscribe-section small a:hover {
-            text-decoration: underline; /* tetap underline saat hover */
+            text-decoration: underline;
         }
-        
     </style>
+</head>
 </head>
 <body>
 

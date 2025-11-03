@@ -53,9 +53,9 @@
             <label for="location" class="form-label">Lokasi</label>
             <select name="location" id="location" class="form-select" onchange="this.form.submit()">
                 <option value="">Semua Lokasi</option>
-                @foreach(\App\Models\Lokasi::all() as $loc)
-                    <option value="{{ $loc->nama_lokasi }}" {{ request('location') == $loc->nama_lokasi ? 'selected' : '' }}>
-                        {{ $loc->nama_lokasi }}
+                @foreach(\App\Models\Regency::orderBy('name')->get() as $regency)
+                    <option value="{{ $regency->id }}" {{ request('location') == $regency->id ? 'selected' : '' }}>
+                        {{ $regency->name }}
                     </option>
                 @endforeach
             </select>
@@ -98,7 +98,7 @@
                     <th>Perusahaan</th>
                     <th>Lokasi</th>
                     <th>Tipe</th>
-                    <th>Gaji</th>
+                    <th>Gaji (Rp)</th>
                     <th>Deadline</th>
                     <th>Status</th>
                     <th class="text-center">Aksi</th>
@@ -109,7 +109,7 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration + ($jobs->currentPage() - 1) * $jobs->perPage() }}</td>
                         <td class="text-center">
-                            @if($job->company_logo && file_exists(public_path('storage/' . $job->company_logo)))
+                            @if($job->company_logo && Storage::disk('public')->exists($job->company_logo))
                                 <img src="{{ asset('storage/' . $job->company_logo) }}" class="rounded" style="width:50px; height:50px; object-fit:contain;">
                             @else
                                 <span class="text-muted">-</span>
@@ -117,15 +117,24 @@
                         </td>
                         <td>{{ $job->title }}</td>
                         <td>{{ $job->company }}</td>
-                        <td>{{ $job->location }}</td>
+                        <td>
+                            {{-- Tampilkan nama kabupaten saja --}}
+                            @if($job->regency)
+                                {{ $job->regency->name }}
+                            @elseif($job->province)
+                                {{ $job->province->name }}
+                            @else
+                                <span class="text-muted">-</span>
+                            @endif
+                        </td>
                         <td><span class="badge bg-info text-dark">{{ ucfirst($job->type) }}</span></td>
-                        <td>{{ $job->formatted_salary }}</td>
-                        <td>{{ $job->deadline ? \Carbon\Carbon::parse($job->deadline)->format('d M Y') : '-' }}</td>
+                        <td>{{ $job->salary_formatted }}</td>
+                        <td>{{ $job->deadline ? \Carbon\Carbon::parse($job->deadline)->format('d/m/Y') : '-' }}</td>
                         <td>
                             @if($job->is_public)
-                                <span class="badge bg-success">Publik</span>
+                                <span class="badge bg-success">Publish</span>
                             @else
-                                <span class="badge bg-secondary">Privat</span>
+                                <span class="badge bg-secondary">Draft</span>
                             @endif
                         </td>
                         <td class="text-center">

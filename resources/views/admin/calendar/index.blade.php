@@ -1,5 +1,6 @@
 @extends('admin.layout')
 
+@section('title', 'jangan males yaa')
 @section('content')
 @php
     // Ambil peran pengguna yang sedang login untuk logika tampilan

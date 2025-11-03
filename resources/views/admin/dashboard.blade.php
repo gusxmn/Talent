@@ -126,6 +126,22 @@
         font-size: 0.9rem;
         margin-bottom: 10px;
     }
+
+    /* Custom KPI Colors */
+    .kpi-card-pemagang {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        animation: none !important;
+    }
+
+    .kpi-card-campus {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%) !important;
+        animation: none !important;
+    }
+
+    .kpi-card-pemagang:hover, .kpi-card-campus:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+    }
 </style>
 
 <div class="container-fluid">
@@ -135,7 +151,7 @@
 
     {{-- KPI Boxes --}}
     <div class="row text-center mb-4">
-        <div class="col-md-3 mb-3">
+        <div class="col-md-2 mb-3">
             <div class="card kpi-card">
                 <div class="card-body">
                     <h3>{{ $activeJobsCount }}</h3>
@@ -147,7 +163,7 @@
             </div>
         </div>
 
-        <div class="col-md-3 mb-3">
+        <div class="col-md-2 mb-3">
             <div class="card kpi-card">
                 <div class="card-body">
                     <h3>{{ $newApplicationsCount }}</h3>
@@ -159,7 +175,7 @@
             </div>
         </div>
 
-        <div class="col-md-3 mb-3">
+        <div class="col-md-2 mb-3">
             <div class="card kpi-card">
                 <div class="card-body">
                     <h3>{{ $companiesCount }}</h3>
@@ -171,7 +187,7 @@
             </div>
         </div>
 
-        <div class="col-md-3 mb-3">
+        <div class="col-md-2 mb-3">
             <div class="card kpi-card">
                 <div class="card-body">
                     <h3>{{ $totalUsersCount }}</h3>
@@ -179,6 +195,32 @@
                 </div>
                 <div class="card-footer">
                     <a href="{{ route('admin.users.index') }}">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+
+        {{-- KPI Box Baru: Total Pemagang --}}
+        <div class="col-md-2 mb-3">
+            <div class="card kpi-card kpi-card-pemagang">
+                <div class="card-body">
+                    <h3>156</h3>
+                    <p>Total Pemagang</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ route('admin.magang.index') }}">Lihat Detail</a>
+                </div>
+            </div>
+        </div>
+
+        {{-- KPI Box Baru: Total Campus --}}
+        <div class="col-md-2 mb-3">
+            <div class="card kpi-card kpi-card-campus">
+                <div class="card-body">
+                    <h3>42</h3>
+                    <p>Total Campus</p>
+                </div>
+                <div class="card-footer">
+                    <a href="{{ route('admin.campuses.index') }}">Lihat Detail</a>
                 </div>
             </div>
         </div>
@@ -199,11 +241,43 @@
             </div>
         </div>
     </div>
+
+    {{-- Chart Baru: Statistik Pemagang & Campus --}}
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="chart-box">
+                <h6 class="text-center">Status Pemagang</h6>
+                <canvas id="internStatusChart" style="max-height:160px;"></canvas>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="chart-box">
+                <h6 class="text-center">Distribusi Campus</h6>
+                <canvas id="campusDistributionChart" style="max-height:160px;"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
 
 {{-- CHART SCRIPT --}}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{{-- === DATA UNTUK JAVASCRIPT === --}}
+{{-- Editor akan mengabaikan script type="application/json" ini --}}
+<script id="chart-data" type="application/json">
+    {
+        "userRoleLabels": @json($userRoles->keys()),
+        "userRoleData": @json($userRoles->values()),
+        "lokasiLabels": @json($lokasiStats->keys()),
+        "lokasiData": @json($lokasiStats->values())
+    }
+</script>
+
 <script>
+    // Ambil data dari tag script type="application/json" dan parse sebagai JSON
+    const chartDataElement = document.getElementById('chart-data');
+    const appChartData = JSON.parse(chartDataElement.textContent);
+
     Chart.defaults.font.family = "'Inter', sans-serif";
     Chart.defaults.color = '#6c757d';
 
@@ -213,10 +287,10 @@
         new Chart(userRoleCtx, {
             type: 'pie',
             data: {
-                labels: {!! json_encode($userRoles->keys()) !!},
+                labels: appChartData.userRoleLabels, 
                 datasets: [{
                     label: 'Jumlah User',
-                    data: {!! json_encode($userRoles->values()) !!},
+                    data: appChartData.userRoleData, 
                     backgroundColor: [
                         'rgb(0,123,255)',
                         'rgb(40,167,69)',
@@ -239,10 +313,10 @@
         new Chart(lokasiCtx, {
             type: 'bar',
             data: {
-                labels: {!! json_encode($lokasiStats->keys()) !!},
+                labels: appChartData.lokasiLabels, 
                 datasets: [{
                     label: 'Jumlah Lowongan',
-                    data: {!! json_encode($lokasiStats->values()) !!},
+                    data: appChartData.lokasiData, 
                     backgroundColor: 'rgba(23,162,184,0.8)',
                     borderColor: 'rgb(23,162,184)',
                     borderWidth: 1,
@@ -254,6 +328,87 @@
                 scales: {
                     y: { beginAtZero: true, ticks: { stepSize: 1 } },
                     x: { grid: { display: false } }
+                }
+            }
+        });
+    }
+
+    // Chart 3: Status Pemagang (Dummy Data)
+    const internStatusCtx = document.getElementById('internStatusChart');
+    if (internStatusCtx) {
+        new Chart(internStatusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Aktif', 'Selesai', 'Ditolak', 'Menunggu'],
+                datasets: [{
+                    label: 'Jumlah Pemagang',
+                    data: [89, 45, 12, 10],
+                    backgroundColor: [
+                        'rgb(40,167,69)',
+                        'rgb(0,123,255)',
+                        'rgb(220,53,69)',
+                        'rgb(255,193,7)'
+                    ],
+                    hoverOffset: 8
+                }]
+            },
+            options: {
+                plugins: { 
+                    legend: { 
+                        position: 'bottom', 
+                        labels: { boxWidth: 14 } 
+                    } 
+                }
+            }
+        });
+    }
+
+    // Chart 4: Distribusi Campus (Dummy Data)
+    const campusDistributionCtx = document.getElementById('campusDistributionChart');
+    if (campusDistributionCtx) {
+        new Chart(campusDistributionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Universitas', 'Politeknik', 'Sekolah Tinggi', 'Akademi', 'Institut'],
+                datasets: [{
+                    label: 'Jumlah Campus',
+                    data: [18, 12, 7, 3, 2],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.8)',
+                        'rgba(54, 162, 235, 0.8)',
+                        'rgba(255, 206, 86, 0.8)',
+                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(153, 102, 255, 0.8)'
+                    ],
+                    borderColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 206, 86)',
+                        'rgb(75, 192, 192)',
+                        'rgb(153, 102, 255)'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { 
+                        beginAtZero: true, 
+                        ticks: { stepSize: 5 },
+                        title: {
+                            display: true,
+                            text: 'Jumlah Campus'
+                        }
+                    },
+                    x: { 
+                        grid: { display: false },
+                        title: {
+                            display: true,
+                            text: 'Jenis Institusi'
+                        }
+                    }
                 }
             }
         });

@@ -1,8 +1,18 @@
 @extends('admin.layout')
 
+{{-- Hapus div class="container mt-4" di sini karena kita ingin form memenuhi lebar area konten --}}
 @section('content')
-<div class="container mt-4">
-    <h1 class="mb-4">Tambah Lowongan Baru</h1>
+
+{{-- 1. Area Judul Form (Area Hijau) --}}
+{{-- Menggunakan warna latar hijau (#28a745) dan padding --}}
+<div class="judul-form-area text-white p-3" style="background-color: #28a745;">
+    <h4 class="mb-0 fw-bold">Tambah Lowongan Baru</h4>
+</div>
+{{-- Akhir Area Judul Form --}}
+
+{{-- 2. Area Form Isian (Area Abu-abu Muda) --}}
+{{-- Tambahkan padding di sini. Gunakan warna abu-abu muda yang sedikit berbeda dari area abu-abu konten (jika ada) --}}
+<div class="form-isian-area p-4" style="background-color: #e9ecef;"> 
 
     {{-- Notifikasi error validasi --}}
     @if ($errors->any())
@@ -16,253 +26,443 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.job_listings.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
+    {{-- Bungkus semua field form dalam div abu-abu gelap (sesuai kotak di gambar) --}}
+    <div class="p-4 rounded shadow-sm" style="background-color: #cccccc;">
+        <form action="{{ route('admin.job_listings.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
 
-        {{-- Judul --}}
-        <div class="mb-3">
-            <label class="form-label">Judul Lowongan</label>
-            <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
-        </div>
+            <div class="row">
+                {{-- Judul dan Perusahaan (Dibuat berdampingan) --}}
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Judul Lowongan</label>
+                    <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Nama Perusahaan</label>
+                    <input type="text" name="company" class="form-control" value="{{ old('company') }}" required>
+                </div>
+            </div>
 
-        {{-- Perusahaan --}}
-        <div class="mb-3">
-            <label class="form-label">Nama Perusahaan</label>
-            <input type="text" name="company" class="form-control" value="{{ old('company') }}" required>
-        </div>
+            {{-- Logo dan Deadline (Dibuat berdampingan) --}}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Logo Perusahaan</label>
+                    <input type="file" name="company_logo" class="form-control" accept="image/*">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Deadline</label>
+                    <input type="date" name="deadline" class="form-control" value="{{ old('deadline') }}">
+                </div>
+            </div>
+            
+            {{-- Lokasi (Dropdown Bertingkat) --}}
+            <div class="mb-3 p-3 border rounded" style="background-color: #e0e0e0;">
+                <label class="form-label fw-bold">Lokasi Kerja <span class="text-danger">*</span></label>
+                
+                {{-- Display selected location --}}
+                <div class="alert alert-info py-2 mb-3" id="location-display" style="display: none;">
+                    <small class="fw-bold">Lokasi terpilih:</small>
+                    <span id="location-text">-</span>
+                </div>
 
-        {{-- Logo --}}
-        <div class="mb-3">
-            <label class="form-label">Logo Perusahaan</label>
-            <input type="file" name="company_logo" class="form-control" accept="image/*">
-        </div>
+                <div class="row g-2">
+                    <div class="col-md-3">
+                        <label class="form-label small">Provinsi</label>
+                        <select id="provinsi" class="form-select form-select-sm" required>
+                            <option value="">-- Pilih Provinsi --</option>
+                            @foreach ($provinces as $province)
+                                <option value="{{ $province->id }}" 
+                                    {{ old('province_id') == $province->id ? 'selected' : '' }}>
+                                    {{ $province->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="form-text small">Pilih provinsi terlebih dahulu</div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small">Kabupaten/Kota</label>
+                        <select id="kabupaten" class="form-select form-select-sm" disabled required>
+                            <option value="">-- Pilih Kabupaten --</option>
+                            @if(old('regency_id') && old('province_id'))
+                                {{-- Option akan diisi via JavaScript --}}
+                            @endif
+                        </select>
+                        <div class="form-text small">Pilih kabupaten/kota</div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small">Kecamatan</label>
+                        <select id="kecamatan" class="form-select form-select-sm" disabled required>
+                            <option value="">-- Pilih Kecamatan --</option>
+                            @if(old('district_id') && old('regency_id'))
+                                {{-- Option akan diisi via JavaScript --}}
+                            @endif
+                        </select>
+                        <div class="form-text small">Pilih kecamatan</div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label small">Desa/Kelurahan</label>
+                        <select id="desa" class="form-select form-select-sm" disabled>
+                            <option value="">-- Pilih Desa --</option>
+                            @if(old('village_id') && old('district_id'))
+                                {{-- Option akan diisi via JavaScript --}}
+                            @endif
+                        </select>
+                        <div class="form-text small">Pilih desa/kelurahan (opsional)</div>
+                    </div>
+                </div>
+                
+                {{-- Loading indicator --}}
+                <div id="loading-indicator" class="mt-2" style="display: none;">
+                    <div class="spinner-border spinner-border-sm text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <small class="text-muted ms-2">Memuat data...</small>
+                </div>
 
-        {{-- Lokasi (Dropdown Bertingkat) --}}
-        <div class="mb-3">
-            <label class="form-label">Lokasi</label>
-            <div class="row g-2">
-                <div class="col-md-3">
-                    <select id="provinsi" class="form-select" required>
-                        <option value="">-- Pilih Provinsi --</option>
-                        @foreach ($lokasi->unique('provinsi') as $l)
-                            <option value="{{ $l->provinsi }}">{{ $l->provinsi }}</option>
-                        @endforeach
+                {{-- Hidden fields untuk menyimpan ID wilayah --}}
+                <input type="hidden" name="province_id" id="province_id" value="{{ old('province_id') }}">
+                <input type="hidden" name="regency_id" id="regency_id" value="{{ old('regency_id') }}">
+                <input type="hidden" name="district_id" id="district_id" value="{{ old('district_id') }}">
+                <input type="hidden" name="village_id" id="village_id" value="{{ old('village_id') }}">
+                <input type="hidden" name="location" id="location" value="{{ old('location') }}">
+            </div>
+
+            {{-- Gaji --}}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Gaji Minimum</label>
+                    <input type="number" name="salary_min" class="form-control" value="{{ old('salary_min') }}">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Gaji Maksimum</label>
+                    <input type="number" name="salary_max" class="form-control" value="{{ old('salary_max') }}">
+                </div>
+            </div>
+
+            <div class="row">
+                {{-- Type --}}
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Tipe (Type)</label>
+                    <select name="type" class="form-select" required>
+                        <option value="">-- Pilih Tipe --</option>
+                        <option value="full-time" {{ old('type') == 'full-time' ? 'selected' : '' }}>Full-Time</option>
+                        <option value="part-time" {{ old('type') == 'part-time' ? 'selected' : '' }}>Part-Time</option>
+                        <option value="contract" {{ old('type') == 'contract' ? 'selected' : '' }}>Contract</option>
+                        <option value="internship" {{ old('type') == 'internship' ? 'selected' : '' }}>Internship</option>
                     </select>
                 </div>
-                <div class="col-md-3">
-                    <select id="kabupaten" class="form-select" disabled required>
-                        <option value="">-- Pilih Kabupaten --</option>
+                {{-- Jenis Pekerjaan --}}
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Jenis Pekerjaan</label>
+                    <select name="job_type" class="form-select" required>
+                        <option value="">-- Pilih Jenis --</option>
+                        <option value="penuh_waktu" {{ old('job_type') == 'penuh_waktu' ? 'selected' : '' }}>Penuh Waktu</option>
+                        <option value="paruh_waktu" {{ old('job_type') == 'paruh_waktu' ? 'selected' : '' }}>Paruh Waktu</option>
+                        <option value="kontrak" {{ old('job_type') == 'kontrak' ? 'selected' : '' }}>Kontrak</option>
+                        <option value="magang" {{ old('job_type') == 'magang' ? 'selected' : '' }}>Magang</option>
+                        <option value="freelance" {{ old('job_type') == 'freelance' ? 'selected' : '' }}>Freelance</option>
+                        <option value="harian" {{ old('job_type') == 'harian' ? 'selected' : '' }}>Harian</option>
                     </select>
                 </div>
-                <div class="col-md-3">
-                    <select id="kecamatan" class="form-select" disabled required>
-                        <option value="">-- Pilih Kecamatan --</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <select id="desa" class="form-select" disabled required>
-                        <option value="">-- Pilih Desa --</option>
+                {{-- Kebijakan Kerja --}}
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Kebijakan Kerja</label>
+                    <select name="work_policy" class="form-select" required>
+                        <option value="">-- Pilih Kebijakan --</option>
+                        <option value="kerja_di_kantor" {{ old('work_policy') == 'kerja_di_kantor' ? 'selected' : '' }}>Kerja di Kantor</option>
+                        <option value="hybrid" {{ old('work_policy') == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
+                        <option value="remote" {{ old('work_policy') == 'remote' ? 'selected' : '' }}>Remote</option>
                     </select>
                 </div>
             </div>
-            <input type="hidden" name="location" id="location" value="{{ old('location') }}">
-        </div>
 
-        {{-- Gaji --}}
-        <div class="row">
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Gaji Minimum</label>
-                <input type="number" name="salary_min" class="form-control" value="{{ old('salary_min') }}">
+            <div class="row">
+                {{-- Level Pengalaman --}}
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Level Pengalaman</label>
+                    <select name="experience_level" class="form-select" required>
+                        <option value="">-- Pilih Level --</option>
+                        <option value="tidak_berpengalaman" {{ old('experience_level') == 'tidak_berpengalaman' ? 'selected' : '' }}>Tidak Berpengalaman</option>
+                        <option value="fresh_graduate" {{ old('experience_level') == 'fresh_graduate' ? 'selected' : '' }}>Fresh Graduate</option>
+                        <option value="kurang_dari_setahun" {{ old('experience_level') == 'kurang_dari_setahun' ? 'selected' : '' }}>Kurang dari Setahun</option>
+                        <option value="1_3_tahun" {{ old('experience_level') == '1_3_tahun' ? 'selected' : '' }}>1–3 Tahun</option>
+                        <option value="3_5_tahun" {{ old('experience_level') == '3_5_tahun' ? 'selected' : '' }}>3–5 Tahun</option>
+                        <option value="5_10_tahun" {{ old('experience_level') == '5_10_tahun' ? 'selected' : '' }}>5–10 Tahun</option>
+                        <option value="lebih_dari_10_tahun" {{ old('experience_level') == 'lebih_dari_10_tahun' ? 'selected' : '' }}>Lebih dari 10 Tahun</option>
+                    </select>
+                </div>
+                {{-- Pendidikan Minimal --}}
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Pendidikan Minimal</label>
+                    <select name="education_level" class="form-select" required>
+                        <option value="">-- Pilih Pendidikan --</option>
+                        <option value="s3" {{ old('education_level') == 's3' ? 'selected' : '' }}>S3</option>
+                        <option value="s2" {{ old('education_level') == 's2' ? 'selected' : '' }}>S2</option>
+                        <option value="s1" {{ old('education_level') == 's1' ? 'selected' : '' }}>S1</option>
+                        <option value="d1_d4" {{ old('education_level') == 'd1_d4' ? 'selected' : '' }}>D1–D4</option>
+                        <option value="sma_smk" {{ old('education_level') == 'sma_smk' ? 'selected' : '' }}>SMA/SMK</option>
+                        <option value="smp" {{ old('education_level') == 'smp' ? 'selected' : '' }}>SMP</option>
+                        <option value="sd" {{ old('education_level') == 'sd' ? 'selected' : '' }}>SD</option>
+                    </select>
+                </div>
             </div>
-            <div class="col-md-6 mb-3">
-                <label class="form-label">Gaji Maksimum</label>
-                <input type="number" name="salary_max" class="form-control" value="{{ old('salary_max') }}">
+
+            {{-- Deskripsi --}}
+            <div class="mb-3">
+                <label class="form-label">Deskripsi Pekerjaan</label>
+                <textarea name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
             </div>
-        </div>
+            
+            {{-- Persyaratan --}}
+            <div class="mb-3">
+                <label class="form-label">Persyaratan</label>
+                <textarea name="requirements" class="form-control" rows="3">{{ old('requirements') }}</textarea>
+            </div>
 
-        {{-- ✅ Type (Full-Time, Part-Time, Contract, Internship) --}}
-        <div class="mb-3">
-            <label class="form-label">Tipe (Type)</label>
-            <select name="type" class="form-select" required>
-                <option value="">-- Pilih Tipe --</option>
-                <option value="full-time" {{ old('type') == 'full-time' ? 'selected' : '' }}>Full-Time</option>
-                <option value="part-time" {{ old('type') == 'part-time' ? 'selected' : '' }}>Part-Time</option>
-                <option value="contract" {{ old('type') == 'contract' ? 'selected' : '' }}>Contract</option>
-                <option value="internship" {{ old('type') == 'internship' ? 'selected' : '' }}>Internship</option>
-            </select>
-        </div>
+            {{-- Keahlian --}}
+            <div class="mb-3">
+                <label class="form-label">Keahlian yang Dibutuhkan</label>
+                <textarea name="skills" class="form-control" rows="3">{{ old('skills') }}</textarea>
+            </div>
 
-        {{-- Jenis Pekerjaan --}}
-        <div class="mb-3">
-            <label class="form-label">Jenis Pekerjaan</label>
-            <select name="job_type" class="form-select" required>
-                <option value="">-- Pilih Jenis --</option>
-                <option value="penuh_waktu" {{ old('job_type') == 'penuh_waktu' ? 'selected' : '' }}>Penuh Waktu</option>
-                <option value="paruh_waktu" {{ old('job_type') == 'paruh_waktu' ? 'selected' : '' }}>Paruh Waktu</option>
-                <option value="kontrak" {{ old('job_type') == 'kontrak' ? 'selected' : '' }}>Kontrak</option>
-                <option value="magang" {{ old('job_type') == 'magang' ? 'selected' : '' }}>Magang</option>
-                <option value="freelance" {{ old('job_type') == 'freelance' ? 'selected' : '' }}>Freelance</option>
-                <option value="harian" {{ old('job_type') == 'harian' ? 'selected' : '' }}>Harian</option>
-            </select>
-        </div>
+            {{-- Kualifikasi --}}
+            <div class="mb-3">
+                <label class="form-label">Kualifikasi Tambahan</label>
+                <textarea name="qualifications" class="form-control" rows="3">{{ old('qualifications') }}</textarea>
+            </div>
 
-        {{-- Kebijakan Kerja --}}
-        <div class="mb-3">
-            <label class="form-label">Kebijakan Kerja</label>
-            <select name="work_policy" class="form-select" required>
-                <option value="">-- Pilih Kebijakan --</option>
-                <option value="kerja_di_kantor" {{ old('work_policy') == 'kerja_di_kantor' ? 'selected' : '' }}>Kerja di Kantor</option>
-                <option value="hybrid" {{ old('work_policy') == 'hybrid' ? 'selected' : '' }}>Hybrid</option>
-                <option value="remote" {{ old('work_policy') == 'remote' ? 'selected' : '' }}>Remote</option>
-            </select>
-        </div>
+            {{-- Status --}}
+            <div class="mb-5">
+                <label for="is_public" class="form-label">Status</label>
+                @php
+                    $statusValue = old('is_public', '0'); 
+                @endphp
+                <select name="is_public" id="is_public" class="form-select" required>
+                    <option value="1" {{ $statusValue == '1' ? 'selected' : '' }}>
+                        Publish
+                    </option>
+                    <option value="0" {{ $statusValue == '0' ? 'selected' : '' }}>
+                        Draft
+                    </option>
+                </select>
+            </div>
 
-        {{-- Level Pengalaman --}}
-        <div class="mb-3">
-            <label class="form-label">Level Pengalaman</label>
-            <select name="experience_level" class="form-select" required>
-                <option value="">-- Pilih Level --</option>
-                <option value="tidak_berpengalaman" {{ old('experience_level') == 'tidak_berpengalaman' ? 'selected' : '' }}>Tidak Berpengalaman</option>
-                <option value="fresh_graduate" {{ old('experience_level') == 'fresh_graduate' ? 'selected' : '' }}>Fresh Graduate</option>
-                <option value="kurang_dari_setahun" {{ old('experience_level') == 'kurang_dari_setahun' ? 'selected' : '' }}>Kurang dari Setahun</option>
-                <option value="1_3_tahun" {{ old('experience_level') == '1_3_tahun' ? 'selected' : '' }}>1–3 Tahun</option>
-                <option value="3_5_tahun" {{ old('experience_level') == '3_5_tahun' ? 'selected' : '' }}>3–5 Tahun</option>
-                <option value="5_10_tahun" {{ old('experience_level') == '5_10_tahun' ? 'selected' : '' }}>5–10 Tahun</option>
-                <option value="lebih_dari_10_tahun" {{ old('experience_level') == 'lebih_dari_10_tahun' ? 'selected' : '' }}>Lebih dari 10 Tahun</option>
-            </select>
-        </div>
-
-        {{-- Pendidikan Minimal --}}
-        <div class="mb-3">
-            <label class="form-label">Pendidikan Minimal</label>
-            <select name="education_level" class="form-select" required>
-                <option value="">-- Pilih Pendidikan --</option>
-                <option value="s3" {{ old('education_level') == 's3' ? 'selected' : '' }}>S3</option>
-                <option value="s2" {{ old('education_level') == 's2' ? 'selected' : '' }}>S2</option>
-                <option value="s1" {{ old('education_level') == 's1' ? 'selected' : '' }}>S1</option>
-                <option value="d1_d4" {{ old('education_level') == 'd1_d4' ? 'selected' : '' }}>D1–D4</option>
-                <option value="sma_smk" {{ old('education_level') == 'sma_smk' ? 'selected' : '' }}>SMA/SMK</option>
-                <option value="smp" {{ old('education_level') == 'smp' ? 'selected' : '' }}>SMP</option>
-                <option value="sd" {{ old('education_level') == 'sd' ? 'selected' : '' }}>SD</option>
-            </select>
-        </div>
-
-        {{-- Persyaratan --}}
-        <div class="mb-3">
-            <label class="form-label">Persyaratan</label>
-            <textarea name="requirements" class="form-control" rows="3">{{ old('requirements') }}</textarea>
-        </div>
-
-        {{-- Keahlian --}}
-        <div class="mb-3">
-            <label class="form-label">Keahlian yang Dibutuhkan</label>
-            <textarea name="skills" class="form-control" rows="3">{{ old('skills') }}</textarea>
-        </div>
-
-        {{-- Kualifikasi --}}
-        <div class="mb-3">
-            <label class="form-label">Kualifikasi Tambahan</label>
-            <textarea name="qualifications" class="form-control" rows="3">{{ old('qualifications') }}</textarea>
-        </div>
-
-        {{-- Deadline --}}
-        <div class="mb-3">
-            <label class="form-label">Deadline</label>
-            <input type="date" name="deadline" class="form-control" value="{{ old('deadline') }}">
-        </div>
-
-        {{-- Publik --}}
-        <div class="form-check mb-3">
-            <input class="form-check-input" type="checkbox" name="is_public" value="1" {{ old('is_public') ? 'checked' : '' }}>
-            <label class="form-check-label">Tampilkan ke Publik</label>
-        </div>
-
-        {{-- Deskripsi --}}
-        <div class="mb-3">
-            <label class="form-label">Deskripsi Pekerjaan</label>
-            <textarea name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
-        </div>
-
-        {{-- Tombol --}}
-        <div class="d-flex justify-content-between">
-            <a href="{{ route('admin.job_listings.index') }}" class="btn btn-secondary">Kembali</a>
-            <button type="submit" class="btn btn-primary">Simpan Lowongan</button>
-        </div>
-    </form>
+            {{-- Tombol Simpan dan Batal (Area tombol abu-abu tua berbentuk oval) --}}
+            <div class="d-flex justify-content-end pt-3">
+                <a href="{{ route('admin.job_listings.index') }}" class="btn text-white me-3" style="background-color: #343a40; border-radius: 20px; min-width: 100px;">
+                    Batal
+                </a>
+                <button type="submit" class="btn text-white" style="background-color: #343a40; border-radius: 20px; min-width: 100px;">
+                    Simpan
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
+{{-- Akhir Area Form Isian --}}
 
-{{-- Script Dropdown Lokasi --}}
+{{-- Script Dropdown Lokasi dengan AJAX (Tidak Berubah, ditempatkan setelah konten) --}}
 <script>
-    const lokasiData = @json($lokasi);
-
     const provinsiEl = document.getElementById('provinsi');
     const kabupatenEl = document.getElementById('kabupaten');
     const kecamatanEl = document.getElementById('kecamatan');
     const desaEl = document.getElementById('desa');
+    const provinceIdInput = document.getElementById('province_id');
+    const regencyIdInput = document.getElementById('regency_id');
+    const districtIdInput = document.getElementById('district_id');
+    const villageIdInput = document.getElementById('village_id');
     const locationInput = document.getElementById('location');
+    const locationDisplay = document.getElementById('location-display');
+    const locationText = document.getElementById('location-text');
+    const loadingIndicator = document.getElementById('loading-indicator');
 
-    provinsiEl.addEventListener('change', function () {
-        kabupatenEl.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
-        kecamatanEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
-        desaEl.innerHTML = '<option value="">-- Pilih Desa --</option>';
-        kabupatenEl.disabled = true;
-        kecamatanEl.disabled = true;
-        desaEl.disabled = true;
-
-        if (this.value) {
-            const kabupatenList = lokasiData.filter(l => l.provinsi === this.value).map(l => l.kabupaten);
-            [...new Set(kabupatenList)].forEach(kab => {
-                kabupatenEl.innerHTML += `<option value="${kab}">${kab}</option>`;
-            });
-            kabupatenEl.disabled = false;
+    // Reset dropdown dependen
+    function resetDependentDropdowns(level) {
+        if (level === 'provinsi') {
+            kabupatenEl.innerHTML = '<option value="">-- Pilih Kabupaten --</option>';
+            kecamatanEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+            desaEl.innerHTML = '<option value="">-- Pilih Desa --</option>';
+            kabupatenEl.disabled = true;
+            kecamatanEl.disabled = true;
+            desaEl.disabled = true;
+            
+            regencyIdInput.value = '';
+            districtIdInput.value = '';
+            villageIdInput.value = '';
+        } else if (level === 'kabupaten') {
+            kecamatanEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
+            desaEl.innerHTML = '<option value="">-- Pilih Desa --</option>';
+            kecamatanEl.disabled = true;
+            desaEl.disabled = true;
+            
+            districtIdInput.value = '';
+            villageIdInput.value = '';
+        } else if (level === 'kecamatan') {
+            desaEl.innerHTML = '<option value="">-- Pilih Desa --</option>';
+            desaEl.disabled = true;
+            villageIdInput.value = '';
         }
-        updateLocation();
+    }
+
+    // Tampilkan loading
+    function showLoading() {
+        loadingIndicator.style.display = 'block';
+    }
+
+    // Sembunyikan loading
+    function hideLoading() {
+        loadingIndicator.style.display = 'none';
+    }
+
+    // Load data via AJAX
+    async function loadWilayah(url, targetElement, level) {
+        showLoading();
+        try {
+            const response = await fetch(url);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            
+            targetElement.innerHTML = `<option value="">-- Pilih ${level} --</option>`;
+            data.forEach(item => {
+                const selected = (
+                    (level === 'Kabupaten/Kota' && item.id == "{{ old('regency_id') }}") ||
+                    (level === 'Kecamatan' && item.id == "{{ old('district_id') }}") ||
+                    (level === 'Desa/Kelurahan' && item.id == "{{ old('village_id') }}")
+                ) ? 'selected' : '';
+
+                targetElement.innerHTML += `<option value="${item.id}" ${selected}>${item.name}</option>`;
+            });
+            targetElement.disabled = false;
+        } catch (error) {
+            console.error('Error loading wilayah:', error);
+            targetElement.innerHTML = `<option value="">-- Error loading data --</option>`;
+        } finally {
+            hideLoading();
+        }
+    }
+
+    // Update lokasi yang dipilih
+    function updateLocationDisplay() {
+        const provName = provinsiEl.options[provinsiEl.selectedIndex]?.text || '';
+        const kabName = kabupatenEl.options[kabupatenEl.selectedIndex]?.text || '';
+        const kecName = kecamatanEl.options[kecamatanEl.selectedIndex]?.text || '';
+        const desaName = desaEl.options[desaEl.selectedIndex]?.text || '';
+        
+        const selectedParts = [];
+        if (desaName && desaName !== '-- Pilih Desa --') selectedParts.unshift(desaName);
+        if (kecName && kecName !== '-- Pilih Kecamatan --') selectedParts.unshift(kecName);
+        if (kabName && kabName !== '-- Pilih Kabupaten --') selectedParts.unshift(kabName);
+        if (provName && provName !== '-- Pilih Provinsi --') selectedParts.unshift(provName);
+        
+        if (selectedParts.length > 0) {
+            const fullLocation = selectedParts.join(', ');
+            locationText.textContent = fullLocation;
+            locationInput.value = fullLocation;
+            locationDisplay.style.display = 'block';
+        } else {
+            locationDisplay.style.display = 'none';
+            locationInput.value = '';
+        }
+    }
+
+    // Event listeners
+    provinsiEl.addEventListener('change', function () {
+        const provinceId = this.value;
+        provinceIdInput.value = provinceId;
+        resetDependentDropdowns('provinsi');
+        
+        if (provinceId) {
+            loadWilayah(`/admin/api/regencies/${provinceId}`, kabupatenEl, 'Kabupaten/Kota');
+        }
+        updateLocationDisplay();
     });
 
     kabupatenEl.addEventListener('change', function () {
-        kecamatanEl.innerHTML = '<option value="">-- Pilih Kecamatan --</option>';
-        desaEl.innerHTML = '<option value="">-- Pilih Desa --</option>';
-        kecamatanEl.disabled = true;
-        desaEl.disabled = true;
-
-        if (this.value) {
-            const kecamatanList = lokasiData.filter(l => l.provinsi === provinsiEl.value && l.kabupaten === this.value).map(l => l.kecamatan);
-            [...new Set(kecamatanList)].forEach(kec => {
-                kecamatanEl.innerHTML += `<option value="${kec}">${kec}</option>`;
-            });
-            kecamatanEl.disabled = false;
+        const regencyId = this.value;
+        regencyIdInput.value = regencyId;
+        resetDependentDropdowns('kabupaten');
+        
+        if (regencyId) {
+            loadWilayah(`/admin/api/districts/${regencyId}`, kecamatanEl, 'Kecamatan');
         }
-        updateLocation();
+        updateLocationDisplay();
     });
 
     kecamatanEl.addEventListener('change', function () {
-        desaEl.innerHTML = '<option value="">-- Pilih Desa --</option>';
-        desaEl.disabled = true;
-
-        if (this.value) {
-            const desaList = lokasiData.filter(l =>
-                l.provinsi === provinsiEl.value &&
-                l.kabupaten === kabupatenEl.value &&
-                l.kecamatan === this.value
-            ).map(l => l.desa);
-
-            [...new Set(desaList)].forEach(ds => {
-                desaEl.innerHTML += `<option value="${ds}">${ds}</option>`;
-            });
-            desaEl.disabled = false;
+        const districtId = this.value;
+        districtIdInput.value = districtId;
+        resetDependentDropdowns('kecamatan');
+        
+        if (districtId) {
+            loadWilayah(`/admin/api/villages/${districtId}`, desaEl, 'Desa/Kelurahan');
         }
-        updateLocation();
+        updateLocationDisplay();
     });
 
-    desaEl.addEventListener('change', updateLocation);
+    desaEl.addEventListener('change', function () {
+        const villageId = this.value;
+        villageIdInput.value = villageId;
+        updateLocationDisplay();
+    });
 
-    function updateLocation() {
-        const prov = provinsiEl.value;
-        const kab = kabupatenEl.value;
-        const kec = kecamatanEl.value;
-        const desa = desaEl.value;
-        let fullLocation = [prov, kab, kec, desa].filter(Boolean).join(' - ');
-        locationInput.value = fullLocation;
-    }
+    // Initialize form jika ada data old
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-load data berdasarkan old input
+        const loadOldData = async () => {
+            const oldProvinceId = "{{ old('province_id') }}";
+            const oldRegencyId = "{{ old('regency_id') }}";
+            const oldDistrictId = "{{ old('district_id') }}";
+            const oldVillageId = "{{ old('village_id') }}";
+
+            // Jika ada oldProvinceId, mulai loading bertingkat
+            if (oldProvinceId) {
+                // Gunakan promise/await untuk memastikan urutan loading yang benar
+                
+                // 1. Load Kabupaten/Kota
+                await loadWilayah(`/admin/api/regencies/${oldProvinceId}`, kabupatenEl, 'Kabupaten/Kota');
+                
+                if (oldRegencyId) {
+                    kabupatenEl.value = oldRegencyId;
+                    
+                    // 2. Load Kecamatan
+                    await loadWilayah(`/admin/api/districts/${oldRegencyId}`, kecamatanEl, 'Kecamatan');
+                    
+                    if (oldDistrictId) {
+                        kecamatanEl.value = oldDistrictId;
+                        
+                        // 3. Load Desa/Kelurahan
+                        await loadWilayah(`/admin/api/villages/${oldDistrictId}`, desaEl, 'Desa/Kelurahan');
+                        
+                        if (oldVillageId) {
+                            desaEl.value = oldVillageId;
+                        }
+                    }
+                }
+            }
+
+            // Panggil display update setelah semua data old dimuat
+            updateLocationDisplay();
+        };
+
+        // Panggil loadOldData saat DOM siap
+        loadOldData();
+    });
 </script>
+
+<style>
+    /* Styling kustom untuk form */
+    .form-label {
+        font-weight: 600; /* Sedikit lebih tebal */
+    }
+    .form-text {
+        font-size: 0.75rem; /* Teks bantuan lebih kecil */
+    }
+    
+    #location-display {
+        background-color: #f8f9fa;
+        border-left: 4px solid #0d6efd;
+    }
+</style>
 @endsection

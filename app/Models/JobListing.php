@@ -2,66 +2,104 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class JobListing extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'title',
         'company',
         'company_logo',
-        'location',
+        'provinsi_id',
+        'kabupaten_id',
+        'kecamatan_id',
+        'desa_id',
         'salary_min',
         'salary_max',
         'type',
-        'job_type',          // ✅ kolom baru
-        'work_policy',       // ✅ kolom baru
-        'experience_level',  // ✅ kolom baru
-        'education_level',   // ✅ kolom baru
-        'requirements',      // ✅ kolom baru
-        'skills',            // ✅ kolom baru
-        'qualifications',    // ✅ kolom baru
+        'job_type',
+        'work_policy',
+        'experience_level',
+        'education_level',
+        'requirements',
+        'skills',
+        'qualifications',
         'deadline',
         'is_public',
-        'description',
+        'description'
     ];
 
-    /**
-     * Scope untuk ambil lowongan publik yang masih aktif.
-     */
-    public function scopePublic($query)
+    protected $casts = [
+        'deadline' => 'date',
+        'is_public' => 'boolean',
+        'salary_min' => 'integer',
+        'salary_max' => 'integer',
+    ];
+
+    // Relasi ke tabel wilayah
+    public function province()
     {
-        return $query->where('is_public', true)
-                     ->whereDate('deadline', '>=', now());
+        return $this->belongsTo(Province::class, 'provinsi_id', 'id');
     }
 
-    /**
-     * Format gaji untuk tampilan publik.
-     */
-    public function getFormattedSalaryAttribute(): string
+    public function regency()
     {
-        if ($this->salary_min && $this->salary_max) {
-            return 'Rp ' . number_format($this->salary_min, 0, ',', '.') . ' – Rp ' . number_format($this->salary_max, 0, ',', '.');
+        return $this->belongsTo(Regency::class, 'kabupaten_id', 'id');
+    }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'kecamatan_id', 'id');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo(Village::class, 'desa_id', 'id');
+    }
+
+    // Accessor untuk mendapatkan lokasi lengkap
+    public function getFullLocationAttribute()
+    {
+        $parts = [];
+        
+        if ($this->village) {
+            $parts[] = $this->village->name;
+        }
+        if ($this->district) {
+            $parts[] = $this->district->name;
+        }
+        if ($this->regency) {
+            $parts[] = $this->regency->name;
+        }
+        if ($this->province) {
+            $parts[] = $this->province->name;
         }
 
-        return 'Gaji tidak disebutkan';
+        return implode(', ', $parts);
     }
 
-    /**
-     * Format waktu posting (misal: "6 hari yang lalu").
-     */
-    public function getPostedAgoAttribute(): string
+    // Scope untuk lowongan yang aktif
+    public function scopeActive($query)
     {
-        return $this->created_at->diffForHumans();
+        return $query->where('is_public', true)
+                    ->where(function($q) {
+                        $q->whereNull('deadline')
+                          ->orWhere('deadline', '>=', now());
+                    });
     }
 
-    /**
-     * Path logo perusahaan untuk ditampilkan di Blade.
-     */
-    public function getLogoUrlAttribute(): string
+    // Accessor untuk gaji format
+    public function getSalaryFormattedAttribute()
     {
-        return $this->company_logo
-            ? asset('storage/' . $this->company_logo)
-            : asset('images/default-company.png'); // fallback jika tidak ada logo
+        if ($this->salary_min && $this->salary_max) {
+            return ' ' . number_format($this->salary_min, 0, ',', '.') . ' -  ' . number_format($this->salary_max, 0, ',', '.');
+        } elseif ($this->salary_min) {
+            return ' ' . number_format($this->salary_min, 0, ',', '.');
+        } else {
+            return 'Tidak Menampilkan Gaji';
+        }
     }
 }

@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talenthub</title>
+    <title>Kontak Kami | Next Jobz</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('123.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
@@ -181,29 +182,68 @@
         <div class="container">
             <div class="row contact-content">
                 <div class="col-lg-6 contact-form-wrapper">
-                    <h2 class="contact-form-heading">Hubungi Kami</h2>
-                    <h3 class="contact-form-subheading">Punya Pertanyaan ?</h3>
-                    <p class="contact-form-text">
-                        Apabila Anda memiliki pertanyaan terkait lowongan kerja, atau informasi lainnya, silahkan hubungi kami melalui formulir di bawah ini:
-                    </p>
-                    <form>
-                        <div class="mb-3">
-                            <input type="text" class="form-control form-control-custom" placeholder="Nama Anda">
-                        </div>
-                        <div class="mb-3">
-                            <input type="email" class="form-control form-control-custom" placeholder="Alamat Email Anda">
-                        </div>
-                        <div class="mb-3">
-                            <input type="text" class="form-control form-control-custom" placeholder="Subjek">
-                        </div>
-                        <div class="mb-3">
-                            <textarea class="form-control form-control-custom" rows="4" placeholder="Pesan Anda"></textarea>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-kirim">Kirim Pesan</button>
-                        </div>
-                    </form>
-                </div>
+    <h2 class="contact-form-heading">Hubungi Kami</h2>
+    <h3 class="contact-form-subheading">Punya Pertanyaan ?</h3>
+    <p class="contact-form-text">
+        Apabila Anda memiliki pertanyaan terkait lowongan kerja, atau informasi lainnya, silahkan hubungi kami melalui formulir di bawah ini:
+    </p>
+
+    {{-- Form yang sudah disesuaikan dengan Laravel --}}
+    <form action="{{ route('contact.store') }}" method="POST">
+        @csrf 
+
+        {{-- Notifikasi Sukses/Error --}}
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        {{-- Input Nama --}}
+        <div class="mb-3">
+            <input type="text" name="nama" class="form-control form-control-custom @error('nama') is-invalid @enderror" placeholder="Nama Anda" value="{{ old('nama') }}">
+            @error('nama')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        {{-- Input Email --}}
+        <div class="mb-3">
+            <input type="email" name="email" class="form-control form-control-custom @error('email') is-invalid @enderror" placeholder="Alamat Email Anda" value="{{ old('email') }}">
+            @error('email')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        {{-- Input Subjek --}}
+        <div class="mb-3">
+            <input type="text" name="subjek" class="form-control form-control-custom @error('subjek') is-invalid @enderror" placeholder="Subjek" value="{{ old('subjek') }}">
+            @error('subjek')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        {{-- Input Pesan --}}
+        <div class="mb-3">
+            <textarea name="pesan" class="form-control form-control-custom @error('pesan') is-invalid @enderror" rows="4" placeholder="Pesan Anda">{{ old('pesan') }}</textarea>
+            @error('pesan')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        {{-- Tombol Kirim --}}
+        <div class="d-grid">
+            <button type="submit" class="btn btn-kirim">Kirim Pesan</button>
+        </div>
+    </form>
+</div>
 
                 <div class="col-lg-6 contact-info-wrapper">
                     <div class="contact-card">

@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class Village extends Model
+{
+    protected $table = 'villages';
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+
+    protected $fillable = [
+        'id',
+        'district_id',
+        'name'
+    ];
+
+    public function district(): BelongsTo
+    {
+        return $this->belongsTo(District::class, 'district_id', 'id');
+    }
+}

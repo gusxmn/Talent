@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talenthub</title>
+    <title>Next Jobz Situs Lowongan kerja terbaik di jawa</title>
+    <link rel="icon" type="image/png" href="{{ asset('1.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -20,7 +21,7 @@
 
         /* Search Header */
         .search-header {
-            background: url('{{ asset('images/Header.png') }}') no-repeat center center;
+            background: url('/images/Header.png') no-repeat center center;
             background-size: cover;
             padding: 3rem 0;
             min-height: 200px;
@@ -84,7 +85,8 @@
             right: 0;
             bottom: 0;
             left: 0;
-            background-image: url('{{ asset('images/hero-image.png') }}');
+            background-image:  url('/images/hero-image.png');
+
             background-size: contain;
             background-position: right 0px;
             background-repeat: no-repeat;

@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Talenthub</title>
+    <title>Lowongan Kerja - Cari Lowongan Kerja | Next Jobz</title>
 
+    <link rel="icon" type="image/png" href="{{ asset('123.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
@@ -14,16 +15,13 @@
 
         /* === Search Header === */
         .search-header {
-            
-            background: url('{{ asset('images/Header.png') }}') no-repeat center center;
+            background: url('/images/Header.png') no-repeat center center;
             background-size: cover;
             padding: 3rem 0;
             min-height: 200px;
             color: #fff;
             display: flex;
             align-items: center;
-
-            
         }
         .search-box .form-control,
         .search-box .form-select {
@@ -84,6 +82,30 @@
         .skills span { display: inline-block; background: #e9ecef; border-radius: 20px; padding: 4px 12px; font-size: 0.85rem; margin: 2px; }
         .apply-btn { background: #0d6efd; color: #fff; font-weight: bold; padding: 6px 20px; border-radius: 5px; text-decoration: none; transition: all 0.3s; }
         .apply-btn:hover { background: #0b5ed7; color: #fff; transform: scale(1.05); }
+
+        /* Logo perusahaan */
+        .company-logo {
+            width: 80px;
+            height: 80px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+            background: #fff;
+            padding: 5px;
+        }
+        .logo-placeholder {
+            width: 80px;
+            height: 80px;
+            background: #f8f9fa;
+            border: 1px dashed #dee2e6;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 0.8rem;
+            text-align: center;
+        }
 
         /* === Sidebar Filter === */
         .sidebar { 
@@ -147,6 +169,10 @@
         @media (max-width: 768px) {
             .search-header { padding: 2rem 0; }
             .sidebar { position: static; margin-bottom: 20px; }
+            .company-logo, .logo-placeholder {
+                width: 60px;
+                height: 60px;
+            }
         }
     </style>
 </head>
@@ -173,43 +199,7 @@
                             <i class="bi bi-chevron-down"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-scrollable w-100" aria-labelledby="dropdownKlasifikasi">
-                            {{-- Example checkbox items: give them names so search can use them --}}
-                            <li>
-                                <label class="dropdown-item dropdown-item-custom">
-                                    <div>
-                                        <input type="checkbox" class="form-check-input me-2 category-checkbox" name="categories[]" value="devops" id="devOps-infrastructure">
-                                        <span>DevOps & Infrastructure</span>
-                                    </div>
-                                    <span class="count">1,248</span>
-                                </label>
-                            </li>
-                            <li>
-                                <label class="dropdown-item dropdown-item-custom">
-                                    <div>
-                                        <input type="checkbox" class="form-check-input me-2 category-checkbox" name="categories[]" value="analyst" id="analyst-consultant">
-                                        <span>Analyst & Consultant</span>
-                                    </div>
-                                    <span class="count">5,677</span>
-                                </label>
-                            </li>
-                            <li>
-                                <label class="dropdown-item dropdown-item-custom">
-                                    <div>
-                                        <input type="checkbox" class="form-check-input me-2 category-checkbox" name="categories[]" value="design" id="design-ux">
-                                        <span>Design & UX</span>
-                                    </div>
-                                    <span class="count">3,421</span>
-                                </label>
-                            </li>
-                            <li>
-                                <label class="dropdown-item dropdown-item-custom">
-                                    <div>
-                                        <input type="checkbox" class="form-check-input me-2 category-checkbox" name="categories[]" value="marketing" id="marketing-sales">
-                                        <span>Marketing & Sales</span>
-                                    </div>
-                                    <span class="count">4,892</span>
-                                </label>
-                            </li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -247,10 +237,7 @@
                             Prioritaskan <i class="fas fa-chevron-down"></i>
                         </div>
                         <div class="collapse show" id="collapsePrioritas">
-                            <div class="d-flex flex-wrap">
-                                <button type="button" class="priority-btn active" data-priority="relevan">Paling Relevan</button>
-                                <button type="button" class="priority-btn" data-priority="baru">Baru Ditambahkan</button>
-                            </div>
+                            
                         </div>
                     </div>
 
@@ -395,9 +382,7 @@
                         </div>
                     </div>
 
-                    <button type="button" class="btn btn-sm btn-primary w-100 mt-2" id="applyFilters">
-                        <i class="bi bi-funnel me-2"></i>Terapkan Filter
-                    </button>
+                    <!-- Tombol Reset Filter saja -->
                     <button type="button" class="btn btn-sm btn-outline-secondary w-100 mt-2" id="resetFilters">
                         <i class="bi bi-arrow-clockwise me-2"></i>Reset Filter
                     </button>
@@ -426,13 +411,19 @@
                             <div class="job-card" data-job-type="{{ $job->type }}" data-work-policy="{{ $job->work_policy ?? 'office' }}" data-experience="{{ $job->experience_level }}" data-education="{{ $job->education_level }}">
                                 <div class="d-flex justify-content-between">
                                     <div class="d-flex align-items-start flex-grow-1">
-                                        {{-- Logo --}}
-                                        <div class="me-3" style="width:80px; flex:0 0 80px;">
-                                            @if(!empty($job->company_logo))
-                                                <img src="{{ $job->logo_url }}" alt="Logo {{ $job->company }}" style="width:80px; height:80px; object-fit:contain;" class="rounded">
+                                        {{-- Logo Perusahaan --}}
+                                        <div class="me-3" style="flex: 0 0 80px;">
+                                            @if($job->company_logo && Storage::disk('public')->exists($job->company_logo))
+                                                <img src="{{ asset('storage/' . $job->company_logo) }}" 
+                                                     alt="Logo {{ $job->company }}" 
+                                                     class="company-logo"
+                                                     onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                <div class="logo-placeholder" style="display: none;">
+                                                    <span>{{ substr($job->company, 0, 2) }}</span>
+                                                </div>
                                             @else
-                                                <div class="bg-light border rounded d-flex align-items-center justify-content-center" style="width:80px; height:80px;">
-                                                    <span class="text-muted small">No Logo</span>
+                                                <div class="logo-placeholder">
+                                                    <span>{{ substr($job->company, 0, 2) }}</span>
                                                 </div>
                                             @endif
                                         </div>
@@ -441,25 +432,47 @@
                                             <div class="job-title">
                                                 <a href="{{ route('jobs.show', $job->id) }}" class="text-decoration-none text-dark">{{ $job->title }}</a>
                                                 @if($job->created_at && $job->created_at->greaterThan(\Carbon\Carbon::now()->subDays(3)))
-                                                    <span class="badge badge-new ms-2">Baru</span>
+                                                    <span class="badge bg-success ms-2">Baru</span>
                                                 @endif
-                                                @if($job->is_featured)
-                                                    <span class="badge badge-featured ms-1">Featured</span>
+                                                @if($job->is_featured ?? false)
+                                                    <span class="badge bg-danger ms-1">Featured</span>
                                                 @endif
                                             </div>
                                             <p class="text-muted mb-1">
                                                 <i class="bi bi-building me-1"></i>{{ $job->company }} - 
-                                                <i class="bi bi-geo-alt me-1 ms-2"></i>{{ $job->location }}
+                                                <i class="bi bi-geo-alt me-1 ms-2"></i>
+                                                {{-- Tampilkan lokasi lengkap --}}
+                                                @if($job->full_location && $job->full_location != 'Lokasi tidak tersedia')
+                                                    {{ $job->full_location }}
+                                                @elseif($job->province && $job->regency)
+                                                    {{ $job->province->name }}, {{ $job->regency->name }}
+                                                @elseif($job->province)
+                                                    {{ $job->province->name }}
+                                                @else
+                                                    Lokasi tidak tersedia
+                                                @endif
                                             </p>
 
                                             <p class="salary mb-1">
                                                 <i class="bi bi-currency-dollar me-1"></i>
-                                                {{ $job->formatted_salary ?? 'Gaji tidak ditampilkan' }}
+                                                {{ $job->salary_formatted ?? 'Gaji tidak ditampilkan' }}
                                             </p>
 
                                             <p class="mb-1 text-muted small">
                                                 <span class="me-2"><span class="badge bg-info text-dark">{{ ucfirst($job->type) }}</span></span>
-                                                <span class="me-2"><span class="badge bg-warning text-dark">{{ ucfirst($job->work_policy ?? 'Office') }}</span></span>
+                                                <span class="me-2">
+                                                    <span class="badge bg-warning text-dark">
+                                                        @if($job->work_policy == 'kerja_di_kantor')
+                                                            Kantor
+                                                        @elseif($job->work_policy == 'remote')
+                                                            Remote
+                                                        @elseif($job->work_policy == 'hybrid')
+                                                            Hybrid
+                                                        @else
+                                                            Office
+                                                        @endif
+                                                    </span>
+                                                </span>
                                                 <i class="bi bi-clock me-1"></i>Deadline: {{ $job->deadline ? \Carbon\Carbon::parse($job->deadline)->format('d M Y') : 'Tidak ada' }}
                                             </p>
 
@@ -471,8 +484,12 @@
                                             <div class="skills mt-2">
                                                 @if($job->skills)
                                                     @foreach(explode(',', $job->skills) as $skill)
-                                                        <span>{{ trim($skill) }}</span>
+                                                        @if(trim($skill))
+                                                            <span>{{ trim($skill) }}</span>
+                                                        @endif
                                                     @endforeach
+                                                @else
+                                                    <span class="text-muted">Tidak ada keterampilan spesifik</span>
                                                 @endif
                                             </div>
 
@@ -480,7 +497,7 @@
                                                 @if($job->created_at && $job->created_at->greaterThan(\Carbon\Carbon::now()->subDays(7)))
                                                     <span class="badge bg-success me-2">Baru untuk kamu</span>
                                                 @endif
-                                                <i class="bi bi-calendar3 me-1"></i>Tayang {{ $job->posted_ago ?? (isset($job->created_at) ? $job->created_at->diffForHumans() : '') }}
+                                                <i class="bi bi-calendar3 me-1"></i>Tayang {{ $job->created_at ? $job->created_at->diffForHumans() : '' }}
                                                 · Diperbarui {{ $job->updated_at ? $job->updated_at->diffForHumans() : '' }}
                                             </p>
                                         </div>
@@ -497,68 +514,15 @@
                         <div class="mt-4">
                             {{ $jobs->appends(request()->query())->links('pagination::bootstrap-5') }}
                         </div>
+                    
                     @else
-                        {{-- fallback sample cards (data seadanya) --}}
-                        <div class="job-card" data-job-type="full-time" data-work-policy="kerja_di_kantor" data-experience="1-3_tahun" data-education="smk_sma">
-                            <div class="d-flex justify-content-between">
-                                <div class="flex-grow-1">
-                                    <div class="job-title">Talent Host Live</div>
-                                    <p class="text-muted mb-1"><i class="bi bi-building me-1"></i>Aquila - <i class="bi bi-geo-alt me-1 ms-2"></i>Indramayu, Jawa Barat</p>
-                                    <p class="salary"><i class="bi bi-currency-dollar me-1"></i>Rp 3 jt - 3,5 jt</p>
-                                    <p class="mb-1 text-muted small">
-                                        <span class="me-2"><span class="badge bg-info text-dark">Full-time</span></span>
-                                        <span class="me-2"><span class="badge bg-warning text-dark">Kerja di Kantor</span></span>
-                                    </p>
-                                    <p class="mb-1">
-                                        <strong>Persyaratan:</strong> Kerja di kantor · 1 - 3 tahun pengalaman · Minimal SMA/SMK · 20-30 tahun · Perempuan saja
-                                    </p>
-                                    <div class="skills">
-                                        <span>Teamwork</span>
-                                        <span>Public Speaking</span>
-                                        <span>Communicative</span>
-                                    </div>
-                                    <p class="text-muted small mt-2"><i class="bi bi-calendar3 me-1"></i>Tayang 4 bulan lalu · Diperbarui 9 hari lalu</p>
-                                </div>
-                                <div class="d-flex align-items-center ms-3">
-                                    <a href="#" class="apply-btn">Lamar</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="job-card" data-job-type="contract" data-work-policy="hybrid" data-experience="1-3_tahun" data-education="s1">
-                            <div class="d-flex justify-content-between">
-                                <div class="flex-grow-1">
-                                    <div class="job-title">Video Editor</div>
-                                    <p class="text-muted mb-1"><i class="bi bi-building me-1"></i>Perusahaan Premium - <i class="bi bi-geo-alt me-1 ms-2"></i>Jakarta</p>
-                                    <p class="salary"><i class="bi bi-currency-dollar me-1"></i>Gaji Tidak Ditampilkan</p>
-                                    <p class="mb-1 text-muted small">
-                                        <span class="me-2"><span class="badge bg-info text-dark">Contract</span></span>
-                                        <span class="me-2"><span class="badge bg-warning text-dark">Hybrid</span></span>
-                                    </p>
-                                    <p class="mb-1">
-                                        <strong>Persyaratan:</strong> Kontrak · 1 - 3 tahun pengalaman · Minimal D3/S1
-                                    </p>
-                                    <div class="skills">
-                                        <span>Editing</span>
-                                        <span>Creativity</span>
-                                        <span>Teamwork</span>
-                                    </div>
-                                    <p class="text-muted small mt-2"><i class="bi bi-calendar3 me-1"></i>Tayang 2 minggu lalu · Diperbarui 3 hari lalu</p>
-                                </div>
-                                <div class="d-flex align-items-center ms-3">
-                                    <a href="#" class="apply-btn">Lamar</a>
-                                </div>
-                            </div>
+                        <div class="text-center py-5">
+                            <i class="bi bi-search display-1 text-muted"></i>
+                            <h4 class="mt-3 text-muted">Tidak ada lowongan yang ditemukan</h4>
+                            <p class="text-muted">Coba ubah kriteria pencarian atau filter Anda</p>
+                            <a href="{{ route('jobs.index') }}" class="btn btn-primary mt-2">Reset Pencarian</a>
                         </div>
                     @endif
-                </div>
-
-                {{-- No Results Message --}}
-                <div class="text-center py-5 d-none" id="noResults">
-                    <i class="bi bi-search display-1 text-muted"></i>
-                    <h4 class="mt-3 text-muted">Tidak ada lowongan yang ditemukan</h4>
-                    <p class="text-muted">Coba ubah kriteria pencarian atau filter Anda</p>
-                    <button class="btn btn-primary mt-2" id="resetSearch">Reset Pencarian</button>
                 </div>
             </div>
         </div>
@@ -572,9 +536,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Elements
             const searchForm = document.getElementById('searchForm');
-            const applyFiltersBtn = document.getElementById('applyFilters');
             const resetFiltersBtn = document.getElementById('resetFilters');
-            const resetSearchBtn = document.getElementById('resetSearch');
             const jobCards = document.querySelectorAll('.job-card');
             const jobResults = document.getElementById('jobResults');
             const noResults = document.getElementById('noResults');
@@ -596,7 +558,10 @@
 
             // Update klasifikasi text based on selected categories
             categoryCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', updateKlasifikasiText);
+                checkbox.addEventListener('change', function() {
+                    updateKlasifikasiText();
+                    filterJobs(); // Filter otomatis saat checkbox berubah
+                });
             });
 
             function updateKlasifikasiText() {
@@ -618,6 +583,7 @@
                 button.addEventListener('click', function() {
                     priorityButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
+                    filterJobs(); // Filter otomatis saat prioritas berubah
                 });
             });
 
@@ -667,11 +633,11 @@
             function updateResultsDisplay(visibleCount) {
                 if (visibleCount === 0) {
                     jobResults.style.display = 'none';
-                    noResults.classList.remove('d-none');
+                    if (noResults) noResults.classList.remove('d-none');
                     searchAlert.classList.add('d-none');
                 } else {
                     jobResults.style.display = 'block';
-                    noResults.classList.add('d-none');
+                    if (noResults) noResults.classList.add('d-none');
                     
                     // Show alert if filters are active
                     const activeFilters = document.querySelectorAll('.filter-options input:checked');
@@ -718,12 +684,29 @@
                 searchAlert.classList.add('d-none');
             }
 
-            // Event listeners
-            applyFiltersBtn.addEventListener('click', filterJobs);
+            // Event listeners untuk filter otomatis
+            jobTypeFilters.forEach(filter => {
+                filter.addEventListener('change', filterJobs);
+            });
+            
+            workPolicyFilters.forEach(filter => {
+                filter.addEventListener('change', filterJobs);
+            });
+            
+            experienceFilters.forEach(filter => {
+                filter.addEventListener('change', filterJobs);
+            });
+            
+            educationFilters.forEach(filter => {
+                filter.addEventListener('change', filterJobs);
+            });
+            
+            updateFilters.forEach(filter => {
+                filter.addEventListener('change', filterJobs);
+            });
+
+            // Reset event listeners
             resetFiltersBtn.addEventListener('click', resetAllFilters);
-            if (resetSearchBtn) {
-                resetSearchBtn.addEventListener('click', resetAllFilters);
-            }
 
             // Real-time search filtering
             const keywordInput = document.getElementById('keywordInput');
