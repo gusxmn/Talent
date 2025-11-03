@@ -251,7 +251,7 @@
             </div>
 
             <p class="company-link mt-3 mb-0">
-                Untuk perusahaan, kunjungi <a href="/untuk-perusahaan">laman berikut.</a>
+                Untuk perusahaan, kunjungi <a href="/perusahaan">laman berikut.</a>
             </p>
         </div>
     </div>

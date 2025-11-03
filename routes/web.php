@@ -27,7 +27,7 @@ Route::get('/daftar', fn() => view('daftar'))->name('register');
 Route::get('/masuk', fn() => view('login'))->name('login');
 Route::get('/perusahaan/kampus', fn() => view('perusahaan_kampus'))->name('perusahaan_kampus');
 Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
-Route::get('/kontak', fn() => view('contact_us'))->name('contact');
+Route::get('/kontak', fn() => view('contact'))->name('contact');
 Route::get('/tentang-perusahaan', fn() => view('about_company'))->name('about');
 Route::get('/explore-perusahaan', fn() => view('explore_company'));
 Route::get('/open-intership', fn() => view('open_intership'));
@@ -50,6 +50,41 @@ Route::get('/sumber-daya-karir/kehidupan-kerja', function () {
 Route::get('/sumber-daya-karir/jelajahi-gaji', function () {
     return view('salary_explore');
 })->name('salary.explore');
+
+// Halaman pengaturan akun dan fungsionalitasnya
+Route::middleware(['auth'])->group(function () {
+    // Rute utama halaman pengaturan akun (Detail Login)
+    Route::get('/pengaturan/detail', [AccountSettingsController::class, 'index'])->name('account.settings');
+    
+    // RUTE BARU: Halaman Kontak Saya
+    Route::get('/pengaturan/kontak', [AccountSettingsController::class, 'contactIndex'])->name('account.contact');
+
+    // RUTE BARU: Halaman Akun Terhubung
+    Route::get('/pengaturan/akun-terhubung', [AccountSettingsController::class, 'linkedAccountsIndex'])->name('account.linked');
+
+    // 👇 RUTE BARU: Halaman Preferensi Notifikasi
+    Route::get('/pengaturan/notifikasi', [AccountSettingsController::class, 'notificationIndex'])->name('account.notifications');
+    
+    // 👇 RUTE BARU: Halaman Bantuan & Dukungan (Tambahan Sesuai Permintaan)
+    Route::get('/pengaturan/bantuan-dukungan', [AccountSettingsController::class, 'helpSupportIndex'])->name('account.help.support');
+
+    // Rute POST untuk ganti kata sandi
+    Route::post('/pengaturan/update-password', [AccountSettingsController::class, 'updatePassword'])->name('account.update.password');
+
+    // Rute POST untuk perbarui email
+    Route::post('/pengaturan/update-email', [AccountSettingsController::class, 'updateEmail'])->name('account.update.email');
+    
+    // RUTE BARU: Rute POST untuk perbarui WhatsApp
+    Route::post('/pengaturan/update-whatsapp', [AccountSettingsController::class, 'updateWhatsapp'])->name('account.update.whatsapp');
+
+    // 🌟 RUTE BARU: Proses Hapus Akun Permanen
+    Route::post('/pengaturan/delete-account', [AccountSettingsController::class, 'deleteAccount'])->name('account.delete.process');
+
+    // RUTE BARU: Rute POST untuk SIMULASI pemutusan koneksi akun
+    // Ini hanya akan menyimpan status session 'disconnected'
+    Route::post('/pengaturan/dummy-disconnect', [AccountSettingsController::class, 'dummyDisconnect'])->name('account.dummy.disconnect'); // 👈 Rute Baru
+});
+
 
 
 // Halaman tipe pekerjaan
