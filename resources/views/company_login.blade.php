@@ -315,7 +315,7 @@
             </div>
 
             <div class="login-link">
-                Belum punya akun? <a href="untuk-perusahaan">Daftar di sini</a>
+                Belum punya akun? <a href="perusahaan">Daftar di sini</a>
             </div>
         </div>
     </div>

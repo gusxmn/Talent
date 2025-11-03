@@ -1,5 +1,4 @@
 <style>
-    /* === Navbar === */
     .navbar {
         font-size: 1rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
@@ -36,7 +35,6 @@
         align-items: center;
     }
 
-    /* underline interaktif */
     .nav-underline {
         position: absolute;
         bottom: 0;
@@ -45,7 +43,6 @@
         transition: all 0.3s ease;
     }
 
-    /* === Tombol Daftar & Masuk === */
     .btn-primary,
     .btn-outline-primary {
         border-radius: 4px;
@@ -94,7 +91,6 @@
         border-color: #0d47a1;
     }
 
-    /* === Ikon & Profil User === */
     .nav-icon {
         font-size: 1.2rem;
         color: #2c2c2c;
@@ -119,7 +115,7 @@
         color: #333;
         margin-left: 0.5rem;
         position: relative;
-        box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     }
 
     .user-dropdown-name {
@@ -149,12 +145,10 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    /* hapus panah default bootstrap */
     .dropdown-toggle::after {
         display: none;
     }
 
-    /* === Warna khusus menu "Untuk Perusahaan" === */
     .nav-link.company-link {
         color: #0d47a1 !important;
         font-weight: 600 !important;
@@ -170,7 +164,6 @@
         border: none !important;
     }
 
-    /* perbaikan posisi saat halaman daftar */
     .navbar .d-flex.align-items-center {
         gap: 0.75rem;
     }
@@ -182,7 +175,32 @@
         padding-top: 0.25rem;
     }
 
-    /* === Glints Style Dropdown === */
+    .btn-company-outline {
+        border-radius: 4px;
+        padding: 0.35rem 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        color: #0d47a1;
+        border: 1px solid #0d47a1;
+        background-color: transparent;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        height: 100%;
+    }
+
+    .btn-company-outline:hover {
+        background-color: #0d47a1;
+        color: #fff;
+        border-color: #0d47a1;
+    }
+
+    /* Perubahan pada CSS */
+    /* Menggunakan margin-left agar panah memiliki jarak setelah teks */
+    .btn-company-outline .fas.fa-arrow-right {
+        margin-left: 0.5rem; 
+    }
+
     .glints-dropdown {
         min-width: 12rem;
         padding: 0.2rem 0;
@@ -226,7 +244,6 @@
         color: #0d47a1;
     }
 
-    /* === Animasi panah dropdown === */
     .chevron-icon {
         transition: transform 0.3s ease;
         font-size: 0.7rem;
@@ -269,7 +286,7 @@
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('jobs.index') ? 'active' : '' }}"
-                       href="{{ route('jobs.index') }}">
+                        href="{{ route('jobs.index') }}">
                         Lowongan Kerja
                     </a>
                 </li>
@@ -277,42 +294,34 @@
                 <li class="nav-item">
                     <a class="nav-link
                         {{ request()->is('sumber-daya-karir') ||
-                           request()->is('sumber-daya-karir/jelajahi-karier') ||
-                           request()->is('sumber-daya-karir/pencarian-lowongan-kerja') ||
-                           request()->is('sumber-daya-karir/kehidupan-kerja') ||
-                           request()->is('sumber-daya-karir/jelajahi-gaji')
+                            request()->is('sumber-daya-karir/jelajahi-karier') ||
+                            request()->is('sumber-daya-karir/pencarian-lowongan-kerja') ||
+                            request()->is('sumber-daya-karir/kehidupan-kerja') ||
+                            request()->is('sumber-daya-karir/jelajahi-gaji')
                             ? 'active' : '' }}"
-                       href="/sumber-daya-karir">
-                       Sumber Daya Karir
+                        href="/sumber-daya-karir">
+                        Sumber Daya Karir
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a class="nav-link {{ request()->is('explore-perusahaan') ? 'active' : '' }}"
-                       href="/explore-perusahaan">
+                        href="/explore-perusahaan">
                         Explore Perusahaan
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->is('tentang-perusahaan') ? 'active' : '' }}"
-                       href="/tentang-perusahaan">
-                        Tentang Perusahaan
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->is('kontak') ? 'active' : '' }}"
-                       href="/kontak">
-                        Kontak
+                    <a class="nav-link {{ request()->is('open-intership') ? 'active' : '' }}"
+                        href="/open-intership">
+                        Open Intership
                     </a>
                 </li>
 
                 <li class="nav-item d-lg-none">
-                    <a class="nav-link company-link {{ request()->is('untuk-perusahaan') ? 'active' : '' }}"
-                       href="/untuk-perusahaan">
-                        Untuk Perusahaan
-                    </a>
+                    <a href="{{ url('/perusahaan/kampus') }}"
+                        class="btn-company-outline"> Perusahaan/Kampus
+                         </a>
                 </li>
 
                 <span class="nav-underline" id="navUnderline"></span>
@@ -321,7 +330,6 @@
             <div class="d-flex align-items-center">
 
                 @auth
-                    {{-- HANYA tampilkan ikon & dropdown jika ROLE adalah "user" --}}
                     @if (Auth::user()->role === 'user')
                         
                         <i class="fas fa-bell nav-icon" title="Notifikasi"></i>
@@ -331,9 +339,31 @@
                             <a class="user-dropdown-toggle" href="#" role="button"
                                id="userDropdownToggle" data-bs-toggle="dropdown" aria-expanded="false">
 
-                                <div class="user-profile-icon">
-                                    <i class="fas fa-user"></i>
-                                </div>
+                               <div class="user-profile-icon">
+                                
+                                @if (Auth::user()->avatar)
+                                    <img src="{{ Auth::user()->avatar }}" alt="Profile Avatar" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">
+                                @else
+                                    @php
+                                        $name = Auth::user()->name;
+                                        $nameParts = explode(' ', trim($name));
+                                        $initials = '';
+                                        if (count($nameParts) >= 2) {
+                                            $initials = strtoupper(substr($nameParts[0], 0, 1) . substr(end($nameParts), 0, 1));
+                                        } elseif (count($nameParts) == 1 && !empty($nameParts[0])) {
+                                            $initials = strtoupper(substr($nameParts[0], 0, 2));
+                                        } else {
+                                            $initials = '<i class="fas fa-user"></i>';
+                                        }
+                                    @endphp
+                                    
+                                    @if (strpos($initials, 'fas fa-user') !== false)
+                                        <i class="fas fa-user"></i>
+                                    @else
+                                        {{ $initials }}
+                                    @endif
+                                @endif
+                               </div>
 
                                 <span class="user-dropdown-name d-none d-lg-inline">
                                     {{ Auth::user()->name }}
@@ -354,7 +384,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a class="dropdown-item" href="{{ url('/pengaturan-akun') }}">
+                                    <a class="dropdown-item" href="{{ url('/pengaturan/detail') }}">
                                         <i class="fas fa-cog"></i> PENGATURAN AKUN
                                     </a>
                                 </li>
@@ -371,23 +401,21 @@
                         </div>
 
                     @else
-                        {{-- Jika bukan role "user", kembalikan ke tampilan seperti pengunjung biasa --}}
                         <a href="{{ url('/daftar') }}" class="btn btn-primary btn-primary-custom">Daftar</a>
                         <a href="{{ url('/masuk') }}" class="btn btn-outline-primary btn-outline-primary-custom ms-3">Masuk</a>
-                        <a href="{{ url('/untuk-perusahaan') }}"
-                           class="nav-link company-link ms-3 d-none d-lg-block {{ request()->is('untuk-perusahaan') ? 'active' : '' }}">
-                           Untuk Perusahaan
-                        </a>
+                        <a href="{{ url('/perusahaan/kampus') }}"
+                                class="btn-company-outline ms-3 d-none d-lg-block">
+                                Perusahaan/kampus
+                              </a>
                     @endif
 
                 @else
-                    {{-- BELUM LOGIN --}}
                     <a href="{{ url('/daftar') }}" class="btn btn-primary btn-primary-custom">Daftar</a>
                     <a href="{{ url('/masuk') }}" class="btn btn-outline-primary btn-outline-primary-custom ms-3">Masuk</a>
-                    <a href="{{ url('/untuk-perusahaan') }}"
-                       class="nav-link company-link ms-3 d-none d-lg-block {{ request()->is('untuk-perusahaan') ? 'active' : '' }}">
-                       Untuk Perusahaan
-                    </a>
+                    <a href="{{ url('/perusahaan/kampus') }}"
+                        class="btn-company-outline ms-3 d-none d-lg-block">
+                        Perusahaan/kampus
+                       </a>
                 @endauth
 
             </div>
@@ -422,7 +450,6 @@
         if (active) moveUnderline(active);
     });
 
-    // dropdown user animasi chevron
     const userDropdownContainer = document.getElementById('userDropdownContainer');
     const chevronIcon = userDropdownContainer ? userDropdownContainer.querySelector('.chevron-icon') : null;
 

@@ -47,46 +47,68 @@
         cursor: pointer;
     }
 
+    /* ===== MENU FIX SESUAI GAMBAR ===== */
     .career-menu {
         background-color: #002e6d;
-        padding: 15px 0;
+        padding: 0;
         text-align: center;
         margin-bottom: 40px;
     }
 
     .career-menu ul {
         list-style: none;
-        margin: 0;
+        margin: 0 auto;
         padding: 0;
+        max-width: 1100px;
         display: flex;
-        justify-content: center;
-        gap: 150px;
+        justify-content: space-between;
+        align-items:stretch;
+        height: 70px; /* ✅ DITINGGIKAN */
     }
 
     .career-menu ul li {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
         color: #fff;
         font-size: 18px;
         font-weight: 500;
-        cursor: pointer;
-        padding-bottom: 8px;
-        position: relative;
+        border-radius: 0;
+        transition: background-color 0.25s ease;
+        height: 100%; /* ✅ pastikan ikut full tinggi */
     }
 
-    /* Hapus efek khusus pada Jelajahi Karier */
     .career-menu ul li a {
-        color: #fff;
+        color: inherit;
         text-decoration: none;
-        transition: color 0.3s ease;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
-    .career-menu ul li a:hover {
-        text-decoration: underline;
+    /* ✅ warna hover diubah sesuai permintaan */
+    .career-menu ul li:hover {
+        background-color: #0b0b54;
+    }
+
+    /* ✅ active tetap sama */
+    .career-menu ul li.active {
+        background-color: #0077f6;
+        font-weight: 600;
     }
 
     @media (max-width: 992px) {
         .career-menu ul {
-            gap: 40px;
             flex-wrap: wrap;
+            height: auto;
+        }
+        .career-menu ul li {
+            flex: 1 1 50%;
+            height: 60px; /* versi mobile sedikit lebih pendek */
         }
     }
 </style>
@@ -103,9 +125,17 @@
 
 <div class="career-menu">
     <ul>
-        <li><a href="{{ route('career.explore') }}">Jelajahi karier</a></li>
-        <li><a href="{{ route('salary.explore') }}">Jelajahi gaji</a></li>
-        <li><a href="{{ route('job.search.page') }}">Pencarian lowongan kerja</a></li>
-        <li><a href="{{ route('job.life') }}">Kehidupan kerja</a></li>
+        <li class="{{ Route::is('career.explore') ? 'active' : '' }}">
+            <a href="{{ route('career.explore') }}">Jelajahi karier</a>
+        </li>
+        <li class="{{ Route::is('salary.explore') ? 'active' : '' }}">
+            <a href="{{ route('salary.explore') }}">Jelajahi gaji</a>
+        </li>
+        <li class="{{ Route::is('job.search.page') ? 'active' : '' }}">
+            <a href="{{ route('job.search.page') }}">Pencarian lowongan kerja</a>
+        </li>
+        <li class="{{ Route::is('job.life') ? 'active' : '' }}">
+            <a href="{{ route('job.life') }}">Kehidupan kerja</a>
+        </li>
     </ul>
 </div>

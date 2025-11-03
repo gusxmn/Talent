@@ -8,19 +8,14 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\JobListingController;
 use App\Http\Controllers\Admin\ApplicantController;
-use App\Http\Controllers\Admin\CalendarController;
+use App\Http\Controllers\Admin\CalendarController; // <-- CONTROLLER BARU UNTUK KALENDER
 use App\Http\Controllers\Admin\ReportController; 
-use App\Http\Controllers\Admin\CompanyController; 
+use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\Admin\CandidateController; 
-use App\Http\Controllers\Admin\NotifController;
-use App\Http\Controllers\Admin\InternController; // TAMBAHAN: Controller untuk Pemagang
-use App\Http\Controllers\Admin\CampusController; // TAMBAHAN: Controller untuk Campus
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\Admin\MagangController;
-
-
 // Public Controllers
 use App\Http\Controllers\JobController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,11 +25,14 @@ use App\Http\Controllers\JobController;
 Route::get('/', fn() => view('home'))->name('home');
 Route::get('/daftar', fn() => view('daftar'))->name('register');
 Route::get('/masuk', fn() => view('login'))->name('login');
+Route::get('/perusahaan/kampus', fn() => view('perusahaan_kampus'))->name('perusahaan_kampus');
 Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
 Route::get('/kontak', fn() => view('contact_us'))->name('contact');
-Route::post('/kontak', [ContactController::class, 'store'])->name('contact.store');
 Route::get('/tentang-perusahaan', fn() => view('about_company'))->name('about');
 Route::get('/explore-perusahaan', fn() => view('explore_company'));
+Route::get('/open-intership', fn() => view('open_intership'));
+Route::get('/registrasi-perusahaan', fn() => view('daftar_perusahaan'));
+Route::get('/registrasi-kampus', fn() => view('daftar_kampus'));
 Route::get('/sumber-daya-karir', fn() => view('career_resources'));
 
 Route::get('/sumber-daya-karir/jelajahi-karier', function () {
@@ -53,13 +51,20 @@ Route::get('/sumber-daya-karir/jelajahi-gaji', function () {
     return view('salary_explore');
 })->name('salary.explore');
 
+
 // Halaman tipe pekerjaan
 Route::get('/tipe-pekerjaan', fn() => view('job_type'))->name('job.type');
 
-// Halaman untuk perusahaan
-Route::get('/untuk-perusahaan', fn() => view('company'))->name('company');
+// Halaman perusahaan
+Route::get('/perusahaan', fn() => view('company'))->name('company');
 Route::get('/login-perusahaan', fn() => view('company_login'))->name('company.login');
 Route::get('/daftar-perusahaan', fn() => view('company_register'))->name('company.register');
+
+// Halaman kampus
+Route::get('/kampus', fn() => view('campus'))->name('campus');
+Route::get('/login-kampus', fn() => view('campus_login'))->name('campus.login');
+Route::get('/daftar-kampus', fn() => view('campus_register'))->name('campus.register');
+
 
 // Halaman publik Job
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
@@ -74,6 +79,7 @@ Route::get('/jobs/{job}/apply', [JobController::class, 'apply'])->name('jobs.app
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process'); 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); 
+
 
 /*
 |--------------------------------------------------------------------------
@@ -173,14 +179,7 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
     
     // 5. Laporan & Analitik
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
-/*
-    // 6. NOTIFIKASI
-    Route::prefix('admin')->name('admin.')->middleware(['auth', 'is_admin'])->group(function () {
-    Route::get('/notif', [NotifController::class, 'index'])->name('NOTIF.index');
-    Route::post('/notif/send', [NotifController::class, 'send'])->name('NOTIF.send');
-    Route::get('/notif/user/{id}', [NotifController::class, 'userNotifications'])->name('NOTIF.user'); // opsional
-    });
-    */
+
 
     /*
     |--------------------------------------------------

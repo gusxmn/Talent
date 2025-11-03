@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Talenthub</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
+
+    <style>
+        body {
+            background-color: #f7f9fb;
+            font-family: Arial, sans-serif;
+        }
+
+        /* NAVBAR */
+    .navbar {
+        font-size: 1rem; /* disamakan */
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        background: #fff;
+        border-bottom: 1px solid #dee2e6;
+        padding: 0.5rem 1rem; /* lebih mendekati ukuran bootstrap default */
+    }
+    .navbar-logo {
+        height: 38px; /* disamakan */
+        width: auto;
+    }
+    .btn-login {
+        border-radius: 6px;
+        padding: 0.35rem 1rem;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #0d47a1 !important;
+        background-color: #fff;
+        border: 2px solid #0d47a1;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    .btn-login:hover {
+        background-color: #0d47a1;
+        color: #fff !important;
+        border: 2px solid #0d47a1;
+    }
+    
+        /* REGISTER / LOGIN CONTAINER */
+        .register-container {
+            max-width: 700px;
+            min-height: 490px;
+            margin: 40px auto 60px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Kiri */
+        .register-left {
+            background: #c0eed5ff;
+            padding: 30px 20px;
+            max-width: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: flex-start;
+            text-align: left;
+            gap: 25px;
+            flex-shrink: 0;
+        }
+        .register-left .feature {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .register-left .feature img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .register-left .feature img.people-img {
+            width: 65px;
+            height: 65px;
+        }
+        .register-left .feature h6 {
+            margin: 0;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 1.4;
+            color: #333;
+        }
+
+        /* Kanan */
+        .register-right {
+            padding: 45px 50px;
+            flex: 1;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .register-right h3 {
+            font-weight: bold;
+            margin-bottom: 25px;
+            font-size: 30px;
+            line-height: 1.4;
+        }
+
+        /* Form */
+        .form-label {
+            align-self: flex-start;
+            margin-bottom: 5px;
+            font-weight: normal;
+            color: black;
+        }
+        .form-control {
+            border-radius: 6px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            color: #333;
+            height: auto;
+        }
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #aaa;
+            font-size: 1.25rem;
+        }
+        .forgot-password {
+            display: block;
+            text-align: left;
+            margin-top: 8px;
+            font-size: 0.85rem;
+            color: black;
+            text-decoration: underline;
+            font-weight: normal;
+        }
+        .btn-submit {
+            background-color: #00b14f;
+            color: #fff;
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-weight: normal;
+            font-size: 1rem;
+            border: none;
+            width: 100%;
+            margin-top: 20px;
+        }
+        .btn-submit:hover {
+            background-color: #00b14f;
+        }
+
+        /* Social login */
+        .social-login {
+            margin-top: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+            width: 100%;
+        }
+        .social-login span {
+            color: #666;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+        .social-login a img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            background: #fff;
+            transition: 0.3s;
+            object-fit: contain;
+            padding: 5px;
+        }
+        .social-login a img.linkedin,
+        .social-login a img.facebook,
+        .social-login a img.google-icon {
+            padding: 1px;
+        }
+        .social-login a img:hover {
+            background: #f5f5f5;
+        }
+
+        /* Terms */
+        .terms {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #6c757d;
+            line-height: 1.5;
+            max-width: 90%;
+        }
+        .terms a {
+            color: #000;
+            font-weight: normal;
+            text-decoration: none;
+        }
+        .terms a:hover {
+            text-decoration: underline;
+        }
+
+        /* Login link */
+        .login-link {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: #6c757d;
+        }
+        .login-link a {
+            color: #00b14f;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* QR Code Floating */
+        .qr-code-float {
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            text-align: center;
+            z-index: 1000;
+            width: 150px;
+        }
+        .qr-code-float img {
+            width: 100px;
+            height: auto;
+            margin-bottom: 10px;
+        }
+        .qr-code-float p {
+            font-size: 14px;
+            line-height: 1.4;
+            color: #333;
+            font-weight: 500;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="container-fluid d-flex justify-content-between align-items-center mx-lg-5">
+        <a href="/" class="navbar-brand d-flex align-items-center py-2">
+            <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
+        </a>
+        <a href="{{ url('/login-kampus') }}" class="btn-login">Masuk</a>
+    </div>
+</nav>
+
+    <div class="register-container">
+        <div class="register-left">
+            <div class="feature">
+                <img src="{{ asset('images/people_green.png') }}" alt="People" class="people-img">
+                <h6>Akses 9 Juta+<br>Talenta</h6>
+            </div>
+            <div class="feature">
+                <img src="{{ asset('images/chat_green.png') }}" alt="Chat">
+                <h6>Chat dan Rekrut<br>Talenta Langsung</h6>
+            </div>
+            <div class="feature">
+                <img src="{{ asset('images/ai_green.png') }}" alt="AI">
+                <h6>Rekrutmen Cepat<br>dengan Bantuan AI</h6>
+            </div>
+        </div>
+
+        <div class="register-right">
+            <h3>Pasang Iklan Intership<br>Sekarang!</h3>
+
+            <form action="#" method="POST" style="width: 100%;">
+                <div class="mb-3 text-start">
+                    <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="nama_lengkap" placeholder="Ketik nama lengkap Anda" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="no_hp" class="form-label">No. HP</label>
+                    <input type="tel" class="form-control" id="no_hp" placeholder="Ketik nomor HP Anda" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="email" class="form-label">Alamat Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Masukkan email Anda" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="password-container">
+                        <input type="password" class="form-control" id="password" placeholder="Masukkan password baru" required>
+                        <i class="fa-regular fa-eye password-toggle"></i>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-submit">Daftar</button>
+            </form>
+
+            <div class="social-login">
+                <span>Atau dengan</span>
+                <a href="#"><img src="{{ asset('images/googles.png') }}" alt="Google" class="google-icon"></a>
+                <a href="#"><img src="{{ asset('images/logo linkedin.png') }}" alt="LinkedIn" class="linkedin"></a>
+                <a href="#"><img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook"></a>
+            </div>
+
+            <div class="terms">
+                Dengan melanjutkan, anda menyetujui
+                <a href="#">Perjanjian Pengguna</a>,
+                <a href="#">Kebijakan Privasi</a> dan
+                <a href="#">Syarat Ketentuan Layanan</a>
+            </div>
+
+            <div class="login-link">
+                Sudah punya akun? <a href="login-kampus">Login di sini</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="qr-code-float">
+        <img src="{{ asset('images/qr code.png') }}" alt="QR Code Glints App">
+        <p>Rekrut Cepat<br>dengan Talenthub App</p>
+    </div>
+
+    @include('partials.footer')
+
+    <script>
+        const passwordToggle = document.querySelector('.password-toggle');
+        const passwordInput = document.querySelector('#password');
+
+        passwordToggle.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
+</html>
