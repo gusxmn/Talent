@@ -80,6 +80,10 @@ Route::post('/login', [AuthController::class, 'login'])->name('login.process');
 Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process'); 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); 
 
+// ✅ TAMBAHAN RUTE GOOGLE LOGIN
+Route::get('auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
+
 
 /*
 |--------------------------------------------------------------------------
