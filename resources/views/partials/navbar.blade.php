@@ -321,7 +321,7 @@
                 <li class="nav-item d-lg-none">
                     <a href="{{ url('/perusahaan/kampus') }}"
                         class="btn-company-outline"> Perusahaan/Kampus
-                        <i class="fas fa-arrow-right"></i> </a>
+                         </a>
                 </li>
 
                 <span class="nav-underline" id="navUnderline"></span>
@@ -406,7 +406,7 @@
                         <a href="{{ url('/perusahaan/kampus') }}"
                                 class="btn-company-outline ms-3 d-none d-lg-block">
                                 Perusahaan/kampus
-                                <i class="fas fa-arrow-right"></i> </a>
+                              </a>
                     @endif
 
                 @else
@@ -415,7 +415,7 @@
                     <a href="{{ url('/perusahaan/kampus') }}"
                         class="btn-company-outline ms-3 d-none d-lg-block">
                         Perusahaan/kampus
-                        <i class="fas fa-arrow-right"></i> </a>
+                       </a>
                 @endauth
 
             </div>
