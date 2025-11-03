@@ -58,7 +58,7 @@
 
         /* Kiri */
         .register-left {
-            background: #e9f6fd;
+            background: #c0eed5ff;
             padding: 30px 20px;
             max-width: 220px;
             display: flex;
@@ -145,7 +145,7 @@
             font-weight: normal;
         }
         .btn-submit {
-            background-color: #0d47a1;
+            background-color: #00b14f;
             color: #fff;
             padding: 8px 15px;
             border-radius: 6px;
@@ -156,7 +156,7 @@
             margin-top: 20px;
         }
         .btn-submit:hover {
-            background-color: #0d47a1;
+            background-color: #00b14f;
         }
 
         /* Social login */
@@ -217,7 +217,7 @@
             color: #6c757d;
         }
         .login-link a {
-            color: #4393fc;
+            color: #00b14f;
             font-weight: 600;
             text-decoration: none;
         }
@@ -260,28 +260,28 @@
             <a href="/" class="navbar-brand d-flex align-items-center py-2">
                 <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
             </a>
-            <a href="{{ url('/login-perusahaan') }}" class="btn-login">Masuk</a>
+            <a href="{{ url('/login-kampus') }}" class="btn-login">Masuk</a>
         </div>
     </nav>
 
     <div class="register-container">
         <div class="register-left">
             <div class="feature">
-                <img src="{{ asset('images/people.png') }}" alt="People" class="people-img">
+                <img src="{{ asset('images/people_green.png') }}" alt="People" class="people-img">
                 <h6>Akses 9 Juta+<br>Talenta</h6>
             </div>
             <div class="feature">
-                <img src="{{ asset('images/chat.png') }}" alt="Chat">
+                <img src="{{ asset('images/chat_green.png') }}" alt="Chat">
                 <h6>Chat dan Rekrut<br>Talenta Langsung</h6>
             </div>
             <div class="feature">
-                <img src="{{ asset('images/ai.png') }}" alt="AI">
+                <img src="{{ asset('images/ai_green.png') }}" alt="AI">
                 <h6>Rekrutmen Cepat<br>dengan Bantuan AI</h6>
             </div>
         </div>
 
         <div class="register-right">
-            <h3>Pasang Iklan Lowongan<br>Kerja Gratis!</h3>
+            <h3>Pasang Iklan Intership<br>Sekarang!</h3>
 
             <form action="#" method="POST" style="width: 100%;">
                 <div class="mb-3 text-start">
@@ -314,7 +314,7 @@
             </div>
 
             <div class="login-link">
-                Belum punya akun? <a href="perusahaan">Daftar di sini</a>
+                Belum punya akun? <a href="kampus">Daftar di sini</a>
             </div>
         </div>
     </div>

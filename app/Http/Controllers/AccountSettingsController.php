@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Models\User;
 use Illuminate\Validation\ValidationException;
 
 class AccountSettingsController extends Controller
@@ -34,6 +35,100 @@ class AccountSettingsController extends Controller
         
         // Data pengguna akan diakses langsung di view melalui Auth::user()
         return view('contact_detail');
+    }
+
+    /**
+     * Menangani proses pembaruan detail kontak (nama, bio, dll.) pada halaman Kontak Saya.
+     * (Asumsi fungsi ini ada dari versi sebelumnya, jika tidak ada, ini adalah tambahan yang logis)
+     */
+    public function updateContactDetails(Request $request)
+    {
+        $user = Auth::user();
+        
+        // 1. Validasi input
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'bio' => 'nullable|string|max:500', // Asumsi ada kolom 'bio'
+        ], [
+            'name.required' => 'Nama wajib diisi.',
+            'bio.max' => 'Bio tidak boleh lebih dari 500 karakter.',
+        ]);
+
+        // 2. Update detail kontak
+        $user->name = $request->name;
+        // Hanya update bio jika kolom 'bio' ada pada model User
+        if (property_exists($user, 'bio')) {
+             $user->bio = $request->bio ?? null; 
+        }
+        $user->save();
+
+        return back()->with('success_contact', 'Detail kontak berhasil diperbarui.');
+    }
+
+    /**
+     * Menampilkan halaman Akun Terhubung.
+     */
+    public function linkedAccountsIndex(Request $request)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        
+        // Cek apakah ada session yang menandakan akun sudah diputuskan (hanya simulasi)
+        $isDisconnected = $request->session()->pull('disconnected_status', false);
+
+        // Data akun terhubung (Google ID) akan diakses di view
+        return view('linked_accounts', compact('isDisconnected'));
+    }
+
+    /**
+     * Menampilkan halaman Preferensi Notifikasi.
+     */
+    public function notificationIndex()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+        
+        return view('notification_preferences'); // Ganti 'notification_preferences' dengan nama file view Anda
+    }
+    
+    /**
+     * Menangani proses pembaruan preferensi notifikasi.
+     * (Asumsi fungsi ini ada dari versi sebelumnya, jika tidak ada, ini adalah tambahan yang logis)
+     */
+    public function updateNotificationPreferences(Request $request)
+    {
+        $user = Auth::user();
+
+        // 1. Validasi input
+        $request->validate([
+            'notify_email' => 'nullable|boolean', // Asumsi kolom ini ada
+            'notify_whatsapp' => 'nullable|boolean', // Asumsi kolom ini ada
+        ]);
+
+        // 2. Update preferensi
+        $user->notify_email = $request->has('notify_email');
+        $user->notify_whatsapp = $request->has('notify_whatsapp');
+        
+        $user->save();
+
+        return back()->with('success_notification', 'Preferensi notifikasi berhasil diperbarui.');
+    }
+
+    // ⭐ FUNGSI BARU: Menampilkan halaman Bantuan & Dukungan
+    /**
+     * Menampilkan halaman Bantuan & Dukungan.
+     */
+    public function helpSupportIndex()
+    {
+        // Pengguna harus login untuk mengakses halaman dukungan
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        // Anda dapat menambahkan data dinamis di sini jika diperlukan (misalnya FAQ)
+        return view('help_support'); 
     }
 
     /**
@@ -99,14 +194,9 @@ class AccountSettingsController extends Controller
     {
         // 1. Validasi input
         $request->validate([
-            // ATURAN BARU:
-            // 1. Maksimal 15 karakter.
-            // 2. Hanya berisi angka (0-9) dan simbol plus (+).
-            // 3. Harus diawali dengan '08' atau '+628' atau '8'
             'whatsapp' => [
                 'required',
                 'max:15',
-                // Regex yang lebih fleksibel, menerima +628, 08, atau 8 di awal, dan minimal 10 digit (termasuk 08)
                 'regex:/^(\+628|08|8)[0-9]{8,13}$/', 
             ],
         ], [
@@ -119,18 +209,15 @@ class AccountSettingsController extends Controller
         $whatsapp_input = $request->whatsapp;
 
         // 2. Bersihkan dan Standarisasi Nomor sebelum disimpan ke database
-        // Jika diawali '08', hapus '0'
+        $cleaned_whatsapp = $whatsapp_input;
+
         if (substr($whatsapp_input, 0, 2) === '08') {
-            $cleaned_whatsapp = substr($whatsapp_input, 1); // Menjadi 8xxxx
+            $cleaned_whatsapp = substr($whatsapp_input, 1);
         } 
-        // Jika diawali '+628', hapus '+62'
         elseif (substr($whatsapp_input, 0, 4) === '+628') {
-            $cleaned_whatsapp = substr($whatsapp_input, 3); // Menjadi 8xxxx
+            $cleaned_whatsapp = substr($whatsapp_input, 3);
         }
-        // Jika sudah diawali '8' atau format lain yang valid, gunakan apa adanya
-        else {
-            $cleaned_whatsapp = $whatsapp_input;
-        }
+        // Jika sudah dimulai dengan 8, biarkan saja.
 
         // Simpan nomor yang sudah distandarisasi (tanpa +62 atau 0)
         $user->whatsapp = $cleaned_whatsapp;
@@ -138,4 +225,68 @@ class AccountSettingsController extends Controller
 
         return back()->with('success_whatsapp', 'Nomor WhatsApp berhasil diperbarui.');
     }
+
+    /**
+     * Menangani SIMULASI pemutusan koneksi akun.
+     */
+    public function dummyDisconnect(Request $request)
+    {
+        // Set session flash untuk menampilkan empty state di view
+        $request->session()->flash('disconnected_status', true);
+
+        // Redirect ke halaman Akun Terhubung
+        return redirect()->route('account.linked');
+    }
+
+    public function deleteAccount(Request $request)
+    {
+        // Pastikan pengguna sudah login
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        // 1. Validasi Input Kunci ("DELETE")
+        $request->validate([
+            'confirmation_word' => 'required|in:DELETE',
+            'delete_reason' => 'required|string', // Alasan utama dari Langkah 2
+            // DIUBAH: Penjelasan detail dari Langkah 3 diubah dari min:10 menjadi min:1
+            'reason_explanation' => 'required|string|min:1', 
+        ], [
+            'confirmation_word.required' => 'Kata konfirmasi wajib diisi.',
+            'confirmation_word.in' => 'Kata konfirmasi harus "DELETE".',
+            'delete_reason.required' => 'Alasan penghapusan wajib dipilih.',
+            'reason_explanation.required' => 'Penjelasan alasan wajib diisi.',
+            'reason_explanation.min' => 'Penjelasan alasan minimal 1 karakter.', // DIUBAH: Pesan error disesuaikan
+        ]);
+
+        $user = Auth::user();
+
+        // 2. LOGIKA KRUSIAL: Pencatatan Alasan
+        // Anda harus menyimpan alasan ini (misalnya ke tabel 'account_deletion_logs') sebelum menghapus.
+        // Di sini saya hanya melakukan simulasi penyimpanan log.
+
+        // Simulasikan penyimpanan log penghapusan
+        // LogDeletion::create([
+        //     'user_id' => $user->id,
+        //     'primary_reason' => $request->delete_reason,
+        //     'detail_explanation' => $request->reason_explanation,
+        // ]);
+
+        // 3. LOGIKA KRUSIAL: Menghapus Akun Permanen
+        $userId = $user->id;
+        
+        // Logout pengguna sebelum menghapus
+        Auth::logout();
+
+        // Hapus akun dari database
+        // Gunakan $user->delete() jika Anda menggunakan Soft Deletes
+        // Atau: User::find($userId)->forceDelete(); atau $user->forceDelete(); untuk penghapusan permanen
+        // Asumsi menggunakan penghapusan permanen (sesuai permintaan "benar-benar terhapus otomatis")
+        User::destroy($userId);
+
+        // 4. Redirect ke halaman login dengan status sukses
+        // Gunakan session flash untuk menampilkan pop-up sukses di halaman login
+        return redirect()->route('login')->with('account_deleted', 'Akun dihapus');
+    }
 }
+

@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Talenthub</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" />
 
     <style>
         body {
@@ -43,7 +43,7 @@
         color: #fff !important;
         border: 2px solid #0d47a1;
     }
-
+    
         /* REGISTER / LOGIN CONTAINER */
         .register-container {
             max-width: 700px;
@@ -51,14 +51,14 @@
             margin: 40px auto 60px auto;
             background: #fff;
             border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             display: flex;
             overflow: hidden;
         }
 
         /* Kiri */
         .register-left {
-            background: #e9f6fd;
+            background: #c0eed5ff;
             padding: 30px 20px;
             max-width: 220px;
             display: flex;
@@ -145,7 +145,7 @@
             font-weight: normal;
         }
         .btn-submit {
-            background-color: #0d47a1;
+            background-color: #00b14f;
             color: #fff;
             padding: 8px 15px;
             border-radius: 6px;
@@ -156,7 +156,7 @@
             margin-top: 20px;
         }
         .btn-submit:hover {
-            background-color: #0d47a1;
+            background-color: #00b14f;
         }
 
         /* Social login */
@@ -196,7 +196,7 @@
         /* Terms */
         .terms {
             margin-top: 10px;
-            font-size: 0.85rem; /* Disamakan dengan .login-link */
+            font-size: 0.85rem;
             color: #6c757d;
             line-height: 1.5;
             max-width: 90%;
@@ -213,11 +213,11 @@
         /* Login link */
         .login-link {
             margin-top: 15px;
-            font-size: 1 rem;
+            font-size: 1rem;
             color: #6c757d;
         }
         .login-link a {
-            color: #4393fc;
+            color: #00b14f;
             font-weight: 600;
             text-decoration: none;
         }
@@ -255,35 +255,43 @@
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="container-fluid d-flex justify-content-between align-items-center mx-lg-5">
-            <a href="/" class="navbar-brand d-flex align-items-center py-2">
-                <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
-            </a>
-            <a href="{{ url('/login-perusahaan') }}" class="btn-login">Masuk</a>
-        </div>
-    </nav>
+  <nav class="navbar">
+    <div class="container-fluid d-flex justify-content-between align-items-center mx-lg-5">
+        <a href="/" class="navbar-brand d-flex align-items-center py-2">
+            <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
+        </a>
+        <a href="{{ url('/login-kampus') }}" class="btn-login">Masuk</a>
+    </div>
+</nav>
 
     <div class="register-container">
         <div class="register-left">
             <div class="feature">
-                <img src="{{ asset('images/people.png') }}" alt="People" class="people-img">
+                <img src="{{ asset('images/people_green.png') }}" alt="People" class="people-img">
                 <h6>Akses 9 Juta+<br>Talenta</h6>
             </div>
             <div class="feature">
-                <img src="{{ asset('images/chat.png') }}" alt="Chat">
+                <img src="{{ asset('images/chat_green.png') }}" alt="Chat">
                 <h6>Chat dan Rekrut<br>Talenta Langsung</h6>
             </div>
             <div class="feature">
-                <img src="{{ asset('images/ai.png') }}" alt="AI">
+                <img src="{{ asset('images/ai_green.png') }}" alt="AI">
                 <h6>Rekrutmen Cepat<br>dengan Bantuan AI</h6>
             </div>
         </div>
 
         <div class="register-right">
-            <h3>Pasang Iklan Lowongan<br>Kerja Gratis!</h3>
+            <h3>Pasang Iklan Intership<br>Sekarang!</h3>
 
             <form action="#" method="POST" style="width: 100%;">
+                <div class="mb-3 text-start">
+                    <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
+                    <input type="text" class="form-control" id="nama_lengkap" placeholder="Ketik nama lengkap Anda" required>
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="no_hp" class="form-label">No. HP</label>
+                    <input type="tel" class="form-control" id="no_hp" placeholder="Ketik nomor HP Anda" required>
+                </div>
                 <div class="mb-3 text-start">
                     <label for="email" class="form-label">Alamat Email</label>
                     <input type="email" class="form-control" id="email" placeholder="Masukkan email Anda" required>
@@ -291,12 +299,11 @@
                 <div class="mb-3 text-start">
                     <label for="password" class="form-label">Password</label>
                     <div class="password-container">
-                        <input type="password" class="form-control" id="password" placeholder="Masukkan password anda" required>
+                        <input type="password" class="form-control" id="password" placeholder="Masukkan password baru" required>
                         <i class="fa-regular fa-eye password-toggle"></i>
                     </div>
                 </div>
-                <a href="#" class="forgot-password">Lupa password?</a>
-                <button type="submit" class="btn btn-submit">Masuk</button>
+                <button type="submit" class="btn btn-submit">Daftar</button>
             </form>
 
             <div class="social-login">
@@ -314,7 +321,7 @@
             </div>
 
             <div class="login-link">
-                Belum punya akun? <a href="perusahaan">Daftar di sini</a>
+                Sudah punya akun? <a href="login-kampus">Login di sini</a>
             </div>
         </div>
     </div>

@@ -2,213 +2,357 @@
 <html lang="id">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Talenthub</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Talenthub</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-    <style>
-        /* Mengimpor font Serif untuk judul */
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+  <style>
+    /* Body & Container */
+    body {
+      background-color: #f8f9fa;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            /* Latar belakang halaman diubah menjadi putih total */
-            background-color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+    /* === Judul diangkat sedikit ke atas === */
+    .title-glints {
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      margin: 25px auto 15px; /* sebelumnya 35px -> dikurangi agar naik lebih dekat ke navbar */
+    }
 
-        /* Styling untuk container utama */
-        .main-container {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            position: relative;
-            
-            /* Padding atas dipertahankan (40px) agar dekat dengan navbar */
-            padding: 40px 20px 50px; 
-        }
+    .title-glints span {
+      color: #00b14f;
+    }
 
-        /* Elemen wave dan card telah dihilangkan */
-        .wave-background {
-            display: none;
-        }
+    /* Card pendaftaran */
+    .registration-box {
+      max-width: 700px;
+      margin: 0 auto 40px;
+      background: #fff;
+      border-radius: 6px;
+      padding: 30px 40px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      min-height: calc(100vh - 200px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
 
-        /* Konten utama sekarang hanya berfungsi sebagai wrapper yang terpusat */
-        .main-content {
-            position: relative;
-            z-index: 1;
-            max-width: 650px;
-            text-align: center;
-            background-color: transparent;
-            padding: 0;
-            box-shadow: none;
-        }
+    /* Input style */
+    .form-control,
+    .input-group-text {
+      height: 45px;
+      font-size: 14px;
+      border: 1px solid #999;
+      border-radius: 2px;
+      box-shadow: none;
+    }
 
-        /* Styling untuk judul utama */
-        .title-glints {
-            font-family: 'Playfair Display', serif;
-            font-size: 56px;
-            font-weight: 700;
-            text-align: center;
-            margin: 0 0 20px;
-            line-height: 1.1;
+    .form-control:focus {
+      border-color: #333;
+      box-shadow: none;
+    }
 
-            /* Diatur sebagai parent untuk garis ::after */
-            display: inline-block;
-            position: relative;
-            padding-bottom: 25px;
-            /* Memberi ruang di bawah judul */
-        }
+    .row .col {
+      margin-bottom: 15px;
+    }
 
-        /* Membuat garis bawah (underline) kustom */
-        .title-glints::after {
-            content: '';
-            display: block;
-            /* Lebar 100% dari teks judul */
-            width: 100%;
-            height: 2px;
-            /* Ketebalan garis */
-            background-color: #333;
-            /* Warna garis */
-            position: absolute;
-            bottom: 0;
-            /* Menempatkan garis di bawah teks */
-            left: 0;
-        }
+    /* Password container */
+    .password-container {
+      position: relative;
+    }
 
-        /* Styling untuk teks deskripsi */
-        .description-text {
-            font-size: 16px;
-            line-height: 1.6;
-            color: #555;
-            /* Disesuaikan margin agar berjarak dengan garis baru */
-            margin-bottom: 40px;
-            margin-top: 20px;
-        }
+    .password-container .password-toggle {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #6c757d;
+    }
 
-        /* Container untuk tombol */
-        .btn-container {
-            display: flex;
-            justify-content: center; /* Memastikan tombol dan gambar ada di tengah */
-            align-items: flex-start;
-            
-            /* Jarak antar tombol dipertahankan (120px) */
-            gap: 120px; 
-            
-            max-width: none; 
-            width: 100%;
-            margin: 0 auto;
-        }
+    /* Lokasi Dropdown */
+    .dropdown-location {
+      position: relative;
+    }
 
-        /* **STYLING GAMBAR/ILUSTRASI** */
-        .registration-img {
-            /* **PENYESUAIAN 1: Ukuran gambar dikecilkan (110px -> 95px)** */
-            width: 95px;
-            height: 95px;
-            object-fit: contain;
-            margin-bottom: 15px;
-            display: block;
-        }
+    .dropdown-location .caret-icon {
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: #555;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: transform 0.3s ease;
+    }
 
-        /* Container untuk setiap pilihan (Kampus/Perusahaan) */
-        .choice-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            flex-shrink: 0;
-        }
+    .dropdown-location .caret-icon.open {
+      transform: translateY(-50%) rotate(180deg);
+    }
 
-        .btn-choose {
-            /* **PENYESUAIAN 2: Lebar tombol dikecilkan (260px -> 240px)** */
-            width: 240px; 
-            /* **PENYESUAIAN 3: Tinggi tombol dikecilkan (65px -> 55px)** */
-            height: 55px;
-            /* **PENYESUAIAN 4: Ukuran font dikecilkan (18px -> 17px)** */
-            font-size: 17px;
-            font-weight: 600;
-            border-radius: 30px;
-            border: none;
-            transition: all 0.3s ease;
-        }
+    .dropdown-list {
+      position: absolute;
+      top: 100%;
+      left: 0.75rem;
+      right: 0.75rem;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-top: none;
+      z-index: 1000;
+      max-height: 180px;
+      overflow-y: auto;
+      display: none;
+    }
 
-        /* Tombol DAFTAR PERUSAHAAN -> BIRU SOLID */
-        .btn-company {
-            background-color: #0d47a1;
-            color: #fff;
-            border: none;
-        }
+    .dropdown-list div {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
 
-        .btn-company:hover {
-            background-color: #0b3d8b;
-            color: #fff;
-        }
+    .dropdown-list div:hover {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+      font-weight: 600;
+    }
 
-        /* Tombol DAFTAR KAMPUS -> HIJAU SOLID */
-        .btn-campus {
-            background-color: #00b14f;
-            color: #fff;
-            border: none;
-        }
+    /* Input WhatsApp */
+    .input-group .form-control {
+      border: 1px solid #999 !important;
+      border-radius: 2px !important;
+    }
 
-        .btn-campus:hover {
-            background-color: #029a45;
-            color: #fff;
-        }
-    </style>
+    /* Button */
+    .btn-daftar {
+      background-color: #e60000;
+      color: #fff;
+      font-weight: 600;
+      height: 45px;
+      border: none;
+      font-size: 15px;
+      width: 180px;
+      margin: 15px auto 25px;
+      display: block;
+    }
+
+    .btn-daftar:hover {
+      background-color: #c70000;
+    }
+
+    /* Footer text */
+    .company-link,
+    .terms,
+    .footer-line {
+      text-align: center;
+      margin-top: 10px;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .terms a {
+      text-decoration: none;
+      font-weight: 500;
+      color: #000;
+    }
+
+    .footer-line a {
+      font-weight: 600;
+      color: #0d47a1;
+      text-decoration: none;
+    }
+
+    .footer-line a:hover {
+      text-decoration: underline;
+    }
+
+    .text-danger-custom {
+      color: #e60000;
+      font-size: 13px;
+      margin-top: 3px;
+    }
+  </style>
 </head>
 
 <body>
+  {{-- Navbar --}}
+  @include('partials.navbar')
 
-    {{-- Navbar --}}
-    @include('partials.navbar')
+  {{-- Judul --}}
+  <h2 class="title-glints">Mari buat profil Talenthub kamu</h2>
 
-    <div class="main-container">
-        {{-- Elemen Background Wave telah disembunyikan di CSS --}}
-        <div class="wave-background"></div>
+  {{-- Konten --}}
+  <div class="registration-box">
+    <form action="{{ route('register.process') }}" method="POST">
+      @csrf
 
-        <div class="main-content">
-            {{-- Garis bawah kustom diterapkan menggunakan ::after --}}
-            <h2 class="title-glints">Pilih jenis pendaftaran</h2>
+      @if (session('error'))
+      <div class="alert alert-danger" role="alert">
+        {{ session('error') }}
+      </div>
+      @endif
 
-            <p class="description-text">
-                Silakan pilih jenis pendaftaran yang sesuai untuk melanjutkan ke proses registrasi.
-                Pilih Daftar Perusahaan jika Anda ingin melamar pekerjaan, atau pilih Daftar Kampus jika Anda ingin melamar pemagangan.
-            </p>
-
-            {{-- Struktur Flexbox untuk mengatur jarak --}}
-            <div class="btn-container">
-                <div class="choice-item">
-                    {{-- GAMBAR KAMPUS DITAMBAHKAN --}}
-                    <img src="images/kampus.png" alt="Ilustrasi Kampus" class="registration-img">
-                    {{-- Tombol Daftar Kampus: HIJAU SOLID --}}
-                    <a href="/registrasi-kampus" class="btn btn-choose btn-campus d-flex align-items-center justify-content-center">
-                        Daftar Kampus
-                    </a>
-                </div>
-                <div class="choice-item">
-                    {{-- GAMBAR PERUSAHAAN DITAMBAHKAN --}}
-                    <img src="images/perusahaan.png" alt="Ilustrasi Perusahaan" class="registration-img">
-                    {{-- Tombol Daftar Perusahaan: BIRU SOLID --}}
-                    <a href="/registrasi-perusahaan" class="btn btn-choose btn-company d-flex align-items-center justify-content-center">
-                        Daftar Perusahaan
-                    </a>
-                </div>
-            </div>
+      <div class="row">
+        <div class="col">
+          <input type="text" class="form-control @error('nama_depan') is-invalid @enderror" name="nama_depan"
+            placeholder="Nama depan" value="{{ old('nama_depan') }}" required>
+          @error('nama_depan')
+          <div class="text-danger-custom">{{ $message }}</div>
+          @enderror
         </div>
-    </div>
+        <div class="col">
+          <input type="text" class="form-control @error('nama_belakang') is-invalid @enderror" name="nama_belakang"
+            placeholder="Nama Belakang" value="{{ old('nama_belakang') }}" required>
+          @error('nama_belakang')
+          <div class="text-danger-custom">{{ $message }}</div>
+          @enderror
+        </div>
+      </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+      <div class="row">
+        <div class="col">
+          <input type="email" class="form-control @error('email') is-invalid @enderror" name="email"
+            placeholder="Email" value="{{ old('email') }}" required>
+          @error('email')
+          <div class="text-danger-custom">{{ $message }}</div>
+          @enderror
+        </div>
+        <div class="col">
+          <div class="password-container">
+            <input type="password" class="form-control @error('password') is-invalid @enderror" id="passwordInput"
+              name="password" placeholder="Buat kata sandi" required>
+            <i class="fa-regular fa-eye password-toggle"></i>
+            @error('password')
+            <div class="text-danger-custom">{{ $message }}</div>
+            @enderror
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col dropdown-location">
+          <input type="text" class="form-control @error('lokasi') is-invalid @enderror" id="locationInput" name="lokasi"
+            placeholder="Masukkan lokasimu (Kota & Negara)" value="{{ old('lokasi') }}" autocomplete="off" required>
+          <i class="bi bi-chevron-down caret-icon" id="locationCaret"></i>
+          <div class="dropdown-list" id="locationDropdown"></div>
+          @error('lokasi')
+          <div class="text-danger-custom">{{ $message }}</div>
+          @enderror
+        </div>
+
+        <div class="col">
+          <div class="input-group">
+            <input type="tel" class="form-control @error('whatsapp') is-invalid @enderror" id="whatsappInput"
+              name="whatsapp" placeholder="Nomor WhatsApp" value="{{ old('whatsapp') }}" pattern="[0-9]*" required>
+          </div>
+          @error('whatsapp')
+          <div class="text-danger-custom">{{ $message }}</div>
+          @enderror
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-daftar">DAFTAR</button>
+      </div>
+    </form>
+
+    <p class="company-link">Untuk perusahaan, kunjungi <a href="/perusahaan">halaman ini</a></p>
+    <p class="terms">Dengan mendaftar, saya setuju dengan <a href="#">Ketentuan Layanan</a></p>
+
+    <div class="footer-line">
+      <span>Sudah punya akun Talenthub ?</span>
+      <a href="{{ url('/masuk') }}"> Masuk</a>
+    </div>
+  </div>
+
+  <script>
+    const locations = [
+      "Jakarta Pusat, DKI Jakarta", "Jakarta Selatan, DKI Jakarta", "Jakarta Barat, DKI Jakarta", "Jakarta Utara, DKI Jakarta",
+      "Jakarta Timur, DKI Jakarta", "Bandung, Jawa Barat", "Bogor, Jawa Barat", "Depok, Jawa Barat", "Bekasi, Jawa Barat",
+      "Tangerang, Banten", "Serang, Banten", "Yogyakarta, DI Yogyakarta", "Surabaya, Jawa Timur", "Malang, Jawa Timur",
+      "Sidoarjo, Jawa Timur", "Semarang, Jawa Tengah", "Solo, Jawa Tengah", "Medan, Sumatera Utara", "Padang, Sumatera Barat",
+      "Denpasar, Bali"
+    ];
+
+    const input = document.getElementById("locationInput");
+    const dropdown = document.getElementById("locationDropdown");
+    const caret = document.getElementById("locationCaret");
+
+    input.addEventListener("input", function () {
+      const value = this.value.toLowerCase();
+      dropdown.innerHTML = "";
+      if (value) {
+        const filtered = locations.filter(loc => loc.toLowerCase().includes(value));
+        filtered.forEach(loc => {
+          const div = document.createElement("div");
+          div.textContent = loc;
+          div.addEventListener("click", function () {
+            input.value = loc;
+            dropdown.style.display = "none";
+            caret.classList.remove('open');
+          });
+          dropdown.appendChild(div);
+        });
+        dropdown.style.display = filtered.length > 0 ? "block" : "none";
+        caret.classList.toggle('open', filtered.length > 0);
+      } else {
+        dropdown.style.display = "none";
+        caret.classList.remove('open');
+      }
+    });
+
+    caret.addEventListener("click", function () {
+      if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+        caret.classList.remove('open');
+      } else {
+        dropdown.innerHTML = "";
+        locations.forEach(loc => {
+          const div = document.createElement("div");
+          div.textContent = loc;
+          div.addEventListener("click", function () {
+            input.value = loc;
+            dropdown.style.display = "none";
+            caret.classList.remove('open');
+          });
+          dropdown.appendChild(div);
+        });
+        dropdown.style.display = "block";
+        caret.classList.add('open');
+      }
+    });
+
+    document.addEventListener("click", function (e) {
+      if (!e.target.closest(".dropdown-location")) {
+        dropdown.style.display = "none";
+        caret.classList.remove('open');
+      }
+    });
+
+    const whatsappInput = document.getElementById("whatsappInput");
+    whatsappInput.addEventListener('input', function () {
+      this.value = this.value.replace(/[^0-9]/g, '');
+    });
+
+    const passwordInput = document.getElementById("passwordInput");
+    const passwordToggle = document.querySelector(".password-toggle");
+
+    passwordToggle.addEventListener("click", function () {
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
+      this.classList.toggle("fa-eye");
+      this.classList.toggle("fa-eye-slash");
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

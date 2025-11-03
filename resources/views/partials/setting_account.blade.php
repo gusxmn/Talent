@@ -196,13 +196,13 @@
                         <a href="{{ route('account.contact') }}" class="text-decoration-none">KONTAK SAYA</a>
                     </li>
                     <li>
-                        <a href="#" class="text-decoration-none">AKUN TERHUBUNG</a>
+                        <a href="{{ route('account.linked') }}" class="text-decoration-none">AKUN TERHUBUNG</a>
                     </li>
                     <li>
-                        <a href="#" class="text-decoration-none">PREFERENSI NOTIFIKASI</a>
+                        <a href="{{ route('account.notifications') }}" class="text-decoration-none">PREFERENSI NOTIFIKASI</a>
                     </li>
                     <li>
-                        <a href="#" class="text-decoration-none">BANTUAN & DUKUNGAN</a>
+                        <a href="{{ route('account.help.support') }}" class="text-decoration-none">BANTUAN & DUKUNGAN</a>
                     </li>
                 </ul>
             </div>

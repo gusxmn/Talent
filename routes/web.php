@@ -28,6 +28,7 @@ use App\Http\Controllers\ContactController;
 Route::get('/', fn() => view('home'))->name('home');
 Route::get('/daftar', fn() => view('daftar'))->name('register');
 Route::get('/masuk', fn() => view('login'))->name('login');
+Route::get('/perusahaan/kampus', fn() => view('perusahaan_kampus'))->name('perusahaan_kampus');
 Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
 
 // START: PERUBAHAN DI BAGIAN KONTAK (Sekarang hanya menggunakan 2 rute di satu URI)
@@ -67,6 +68,15 @@ Route::middleware(['auth'])->group(function () {
     // RUTE BARU: Halaman Kontak Saya
     Route::get('/pengaturan/kontak', [AccountSettingsController::class, 'contactIndex'])->name('account.contact');
 
+    // RUTE BARU: Halaman Akun Terhubung
+    Route::get('/pengaturan/akun-terhubung', [AccountSettingsController::class, 'linkedAccountsIndex'])->name('account.linked');
+
+    // 👇 RUTE BARU: Halaman Preferensi Notifikasi
+    Route::get('/pengaturan/notifikasi', [AccountSettingsController::class, 'notificationIndex'])->name('account.notifications');
+    
+    // 👇 RUTE BARU: Halaman Bantuan & Dukungan (Tambahan Sesuai Permintaan)
+    Route::get('/pengaturan/bantuan-dukungan', [AccountSettingsController::class, 'helpSupportIndex'])->name('account.help.support');
+
     // Rute POST untuk ganti kata sandi
     Route::post('/pengaturan/update-password', [AccountSettingsController::class, 'updatePassword'])->name('account.update.password');
 
@@ -75,16 +85,28 @@ Route::middleware(['auth'])->group(function () {
     
     // RUTE BARU: Rute POST untuk perbarui WhatsApp
     Route::post('/pengaturan/update-whatsapp', [AccountSettingsController::class, 'updateWhatsapp'])->name('account.update.whatsapp');
-});
 
+    // 🌟 RUTE BARU: Proses Hapus Akun Permanen
+    Route::post('/pengaturan/delete-account', [AccountSettingsController::class, 'deleteAccount'])->name('account.delete.process');
+
+    // RUTE BARU: Rute POST untuk SIMULASI pemutusan koneksi akun
+    // Ini hanya akan menyimpan status session 'disconnected'
+    Route::post('/pengaturan/dummy-disconnect', [AccountSettingsController::class, 'dummyDisconnect'])->name('account.dummy.disconnect'); // 👈 Rute Baru
+});
 
 // Halaman tipe pekerjaan
 Route::get('/tipe-pekerjaan', fn() => view('job_type'))->name('job.type');
 
-// Halaman untuk perusahaan
-Route::get('/untuk-perusahaan', fn() => view('company'))->name('company');
+// Halaman perusahaan
+Route::get('/perusahaan', fn() => view('company'))->name('company');
 Route::get('/login-perusahaan', fn() => view('company_login'))->name('company.login');
 Route::get('/daftar-perusahaan', fn() => view('company_register'))->name('company.register');
+
+// Halaman kampus
+Route::get('/kampus', fn() => view('campus'))->name('campus');
+Route::get('/login-kampus', fn() => view('campus_login'))->name('campus.login');
+Route::get('/daftar-kampus', fn() => view('campus_register'))->name('campus.register');
+
 
 // Halaman publik Job
 Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');

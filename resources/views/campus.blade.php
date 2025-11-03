@@ -44,7 +44,7 @@
         border: 2px solid #0d47a1;
     }
 
-        /* REGISTER / LOGIN CONTAINER */
+        /* REGISTER CONTAINER */
         .register-container {
             max-width: 700px;
             min-height: 490px;
@@ -58,7 +58,7 @@
 
         /* Kiri */
         .register-left {
-            background: #e9f6fd;
+            background: #c0eed5ff;
             padding: 30px 20px;
             max-width: 220px;
             display: flex;
@@ -73,11 +73,13 @@
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            margin-bottom: 0;
         }
         .register-left .feature img {
             width: 50px;
             height: 50px;
             margin-bottom: 10px;
+            flex-shrink: 0;
         }
         .register-left .feature img.people-img {
             width: 65px;
@@ -107,56 +109,30 @@
             font-size: 30px;
             line-height: 1.4;
         }
-
-        /* Form */
-        .form-label {
-            align-self: flex-start;
-            margin-bottom: 5px;
-            font-weight: normal;
-            color: black;
-        }
-        .form-control {
-            border-radius: 6px;
-            padding: 10px 15px;
-            font-size: 1rem;
-            color: #333;
-            height: auto;
-        }
-        .password-container {
-            position: relative;
-            width: 100%;
-        }
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
+        .register-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            padding: 12px 20px;
+            margin: 8px 0;
             cursor: pointer;
-            color: #aaa;
-            font-size: 1.25rem;
-        }
-        .forgot-password {
-            display: block;
-            text-align: left;
-            margin-top: 8px;
-            font-size: 0.85rem;
-            color: black;
-            text-decoration: underline;
-            font-weight: normal;
-        }
-        .btn-submit {
-            background-color: #0d47a1;
-            color: #fff;
-            padding: 8px 15px;
-            border-radius: 6px;
-            font-weight: normal;
+            font-weight: 500;
             font-size: 1rem;
-            border: none;
+            background: #fff;
             width: 100%;
-            margin-top: 20px;
+            transition: 0.3s;
+            text-decoration: none;
+            color: #333;
         }
-        .btn-submit:hover {
-            background-color: #0d47a1;
+        .register-btn:hover {
+            background: #f8f9fa;
+        }
+        .register-btn img {
+            width: 24px;
+            height: 24px;
+            margin-right: 12px;
         }
 
         /* Social login */
@@ -185,8 +161,7 @@
             padding: 5px;
         }
         .social-login a img.linkedin,
-        .social-login a img.facebook,
-        .social-login a img.google-icon {
+        .social-login a img.facebook {
             padding: 1px;
         }
         .social-login a img:hover {
@@ -196,13 +171,13 @@
         /* Terms */
         .terms {
             margin-top: 10px;
-            font-size: 0.85rem; /* Disamakan dengan .login-link */
+            font-size: 0.85rem;
             color: #6c757d;
             line-height: 1.5;
             max-width: 90%;
         }
         .terms a {
-            color: #000;
+            color: #000; 
             font-weight: normal;
             text-decoration: none;
         }
@@ -217,7 +192,7 @@
             color: #6c757d;
         }
         .login-link a {
-            color: #4393fc;
+            color: #00b14f;
             font-weight: 600;
             text-decoration: none;
         }
@@ -256,52 +231,45 @@
 <body>
 
     <nav class="navbar">
-        <div class="container-fluid d-flex justify-content-between align-items-center mx-lg-5">
-            <a href="/" class="navbar-brand d-flex align-items-center py-2">
-                <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
-            </a>
-            <a href="{{ url('/login-perusahaan') }}" class="btn-login">Masuk</a>
-        </div>
-    </nav>
+    <div class="container-fluid d-flex justify-content-between align-items-center mx-lg-5">
+        <a href="/" class="navbar-brand d-flex align-items-center py-2">
+            <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
+        </a>
+        <a href="{{ url('/login-kampus') }}" class="btn-login">Masuk</a>
+    </div>
+</nav>
 
     <div class="register-container">
         <div class="register-left">
             <div class="feature">
-                <img src="{{ asset('images/people.png') }}" alt="People" class="people-img">
+                <img src="{{ asset('images/people_green.png') }}" alt="People" class="people-img">
                 <h6>Akses 9 Juta+<br>Talenta</h6>
             </div>
             <div class="feature">
-                <img src="{{ asset('images/chat.png') }}" alt="Chat">
+                <img src="{{ asset('images/chat_green.png') }}" alt="Chat">
                 <h6>Chat dan Rekrut<br>Talenta Langsung</h6>
             </div>
             <div class="feature">
-                <img src="{{ asset('images/ai.png') }}" alt="AI">
+                <img src="{{ asset('images/ai_green.png') }}" alt="AI">
                 <h6>Rekrutmen Cepat<br>dengan Bantuan AI</h6>
             </div>
         </div>
 
         <div class="register-right">
-            <h3>Pasang Iklan Lowongan<br>Kerja Gratis!</h3>
+            <h3>Pasang Iklan Intership<br>Sekarang!</h3>
 
-            <form action="#" method="POST" style="width: 100%;">
-                <div class="mb-3 text-start">
-                    <label for="email" class="form-label">Alamat Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Masukkan email Anda" required>
-                </div>
-                <div class="mb-3 text-start">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="password-container">
-                        <input type="password" class="form-control" id="password" placeholder="Masukkan password anda" required>
-                        <i class="fa-regular fa-eye password-toggle"></i>
-                    </div>
-                </div>
-                <a href="#" class="forgot-password">Lupa password?</a>
-                <button type="submit" class="btn btn-submit">Masuk</button>
-            </form>
+            <div class="register-btn">
+                <img src="{{ asset('images/googles.png') }}" alt="Google">
+                Daftar dengan Google
+            </div>
+
+            <a href="http://127.0.0.1:8000/daftar-kampus" class="register-btn">
+                <img src="{{ asset('images/gmail.png') }}" alt="Email">
+                Daftar dengan Email
+            </a>
 
             <div class="social-login">
                 <span>Atau dengan</span>
-                <a href="#"><img src="{{ asset('images/googles.png') }}" alt="Google" class="google-icon"></a>
                 <a href="#"><img src="{{ asset('images/logo linkedin.png') }}" alt="LinkedIn" class="linkedin"></a>
                 <a href="#"><img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook"></a>
             </div>
@@ -314,7 +282,7 @@
             </div>
 
             <div class="login-link">
-                Belum punya akun? <a href="perusahaan">Daftar di sini</a>
+                Sudah punya akun? <a href="{{ url('/login-kampus') }}">Login di sini</a>
             </div>
         </div>
     </div>
@@ -326,16 +294,5 @@
 
     @include('partials.footer')
 
-    <script>
-        const passwordToggle = document.querySelector('.password-toggle');
-        const passwordInput = document.querySelector('#password');
-
-        passwordToggle.addEventListener('click', function () {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
-        });
-    </script>
 </body>
 </html>
