@@ -11,10 +11,13 @@ use App\Http\Controllers\Admin\ApplicantController;
 use App\Http\Controllers\Admin\CalendarController; // <-- CONTROLLER BARU UNTUK KALENDER
 use App\Http\Controllers\Admin\ReportController; 
 use App\Http\Controllers\Admin\CompanyController;
-use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\Admin\CandidateController; 
+use App\Http\Controllers\Admin\ContactController as AdminContactController;
+
 // Public Controllers
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\AccountSettingsController;
+use App\Http\Controllers\contactController;
 
 
 /*
@@ -27,7 +30,13 @@ Route::get('/daftar', fn() => view('daftar'))->name('register');
 Route::get('/masuk', fn() => view('login'))->name('login');
 Route::get('/perusahaan/kampus', fn() => view('perusahaan_kampus'))->name('perusahaan_kampus');
 Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
-Route::get('/kontak', fn() => view('contact'))->name('contact');
+
+// START: PERUBAHAN DI BAGIAN KONTAK (Sekarang hanya menggunakan 2 rute di satu URI)
+// KEDUA ROUTE INI SUDAH BENAR DAN MENGARAH KE ContactController
+Route::get('/kontak', [ContactController::class, 'index'])->name('contact');
+Route::post('/kontak', [ContactController::class, 'store'])->name('contact.store');
+// END: PERUBAHAN DI BAGIAN KONTAK
+
 Route::get('/tentang-perusahaan', fn() => view('about_company'))->name('about');
 Route::get('/explore-perusahaan', fn() => view('explore_company'));
 Route::get('/open-intership', fn() => view('open_intership'));
@@ -218,6 +227,12 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
     
     // 5. Laporan & Analitik
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+
+    
+    // Contact messages admin management
+    Route::resource('contact-messages', AdminContactController::class)->only(['index','show','destroy']);
+    Route::post('contact-messages/{id}/restore', [AdminContactController::class, 'restore'])->name('contact-messages.restore');
+    
 
 
     /*
