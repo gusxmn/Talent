@@ -13,11 +13,16 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\CandidateController; 
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
+use App\Http\Controllers\Admin\NotifController;
+use App\Http\Controllers\Admin\MagangController;
+
 
 // Public Controllers
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\contactController;
+use App\Http\Controllers\UserNotifController;
+
 
 
 /*
@@ -93,8 +98,13 @@ Route::middleware(['auth'])->group(function () {
     // Ini hanya akan menyimpan status session 'disconnected'
     Route::post('/pengaturan/dummy-disconnect', [AccountSettingsController::class, 'dummyDisconnect'])->name('account.dummy.disconnect'); // 👈 Rute Baru
 });
-
-
+// 🌟 API NOTIFIKASI VERSI USER
+Route::middleware(['auth'])->group(function () {
+    // Halaman notifikasi user
+     Route::get('/notifications/my', [UserNotifController::class, 'myNotifications'])->name('notifications.my');
+    Route::get('/notifications/api', [UserNotifController::class, 'getMyNotificationsApi'])->name('notifications.api');
+    Route::put('/notifications/api/read/{id}', [UserNotifController::class, 'markAsReadApi'])->name('notifications.api.read');
+});
 
 // Halaman tipe pekerjaan
 Route::get('/tipe-pekerjaan', fn() => view('job_type'))->name('job.type');

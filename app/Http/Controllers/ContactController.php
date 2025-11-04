@@ -42,7 +42,7 @@ class ContactController extends Controller
         // 3. Kirim Email ke Alamat Tujuan
         try {
             // PERBAIKAN KRUSIAL: Mengubah 'gmaul.com' menjadi 'gmail.com'
-            $recipientEmail = 'ilhamwiguna2005@gmail.com'; 
+            $recipientEmail = 'septiangeorgio@gmail.com'; 
             
             // Kirim email menggunakan Mailable Class ContactUsMail
             Mail::to($recipientEmail)->send(new ContactUsMail($validatedData));

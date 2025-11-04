@@ -195,8 +195,6 @@
         border-color: #0d47a1;
     }
 
-    /* Perubahan pada CSS */
-    /* Menggunakan margin-left agar panah memiliki jarak setelah teks */
     .btn-company-outline .fas.fa-arrow-right {
         margin-left: 0.5rem; 
     }
@@ -252,6 +250,103 @@
 
     .chevron-icon.open {
         transform: rotate(180deg);
+    }
+
+    /* CSS untuk Notifikasi */
+    .notification-dropdown {
+        min-width: 350px;
+        max-width: 400px;
+        max-height: 500px;
+        overflow-y: auto;
+    }
+
+    .notification-item {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #f0f0f0;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .notification-item:hover {
+        background-color: #f8f9fa;
+    }
+
+    .notification-item.unread {
+        background-color: #f0f7ff;
+    }
+
+    .notification-title {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #2c2c2c;
+        margin-bottom: 0.25rem;
+    }
+
+    .notification-message {
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-bottom: 0.25rem;
+        line-height: 1.3;
+    }
+
+    .notification-time {
+        font-size: 0.75rem;
+        color: #999;
+    }
+
+    .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: #dc3545;
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .notification-empty {
+        padding: 2rem 1rem;
+        text-align: center;
+        color: #6c757d;
+    }
+
+    .notification-empty i {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+        color: #dee2e6;
+    }
+
+    .notification-header {
+        padding: 0.75rem 1rem;
+        border-bottom: 1px solid #dee2e6;
+        background-color: #f8f9fa;
+        font-weight: 600;
+    }
+
+    .notification-footer {
+        padding: 0.5rem 1rem;
+        border-top: 1px solid #dee2e6;
+        text-align: center;
+    }
+
+    .notification-footer a {
+        color: #0d47a1;
+        text-decoration: none;
+        font-size: 0.85rem;
+    }
+
+    .notification-footer a:hover {
+        text-decoration: underline;
+    }
+
+    .notification-icon-container {
+        position: relative;
+        display: inline-block;
     }
 
     @media (max-width: 992px) {
@@ -332,9 +427,31 @@
                 @auth
                     @if (Auth::user()->role === 'user')
                         
-                        <i class="fas fa-bell nav-icon" title="Notifikasi"></i>
-                        <i class="fas fa-comment-dots nav-icon" title="Pesan"></i>
+                        <!-- Notifikasi Dropdown -->
+                        <div class="dropdown me-2" id="notificationDropdownContainer">
+                            <a class="nav-icon notification-icon-container" href="#" role="button"
+                               id="notificationDropdownToggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-bell" title="Notifikasi"></i>
+                                <span class="notification-badge d-none" id="notificationBadge">0</span>
+                            </a>
 
+                            <ul class="dropdown-menu dropdown-menu-end notification-dropdown" aria-labelledby="notificationDropdownToggle">
+                                <li class="notification-header">
+                                    Notifikasi
+                                </li>
+                                <div id="notificationList">
+                                    <li class="notification-empty">
+                                        <i class="fas fa-bell-slash"></i>
+                                        <div>Tidak ada notifikasi</div>
+                                    </li>
+                                </div>
+                                <li class="notification-footer">
+                                    <a href="{{ route('notifications.my') }}">Lihat Semua Notifikasi</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- User Profile Dropdown -->
                         <div class="dropdown" id="userDropdownContainer">
                             <a class="user-dropdown-toggle" href="#" role="button"
                                id="userDropdownToggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -424,6 +541,7 @@
 </nav>
 
 <script>
+    // Kode untuk underline navigasi
     const underline = document.getElementById('navUnderline');
     const navLinks = document.querySelectorAll('#navMenu .nav-link');
 
@@ -450,6 +568,7 @@
         if (active) moveUnderline(active);
     });
 
+    // Kode untuk user dropdown
     const userDropdownContainer = document.getElementById('userDropdownContainer');
     const chevronIcon = userDropdownContainer ? userDropdownContainer.querySelector('.chevron-icon') : null;
 
@@ -457,4 +576,151 @@
         userDropdownContainer.addEventListener('show.bs.dropdown', () => chevronIcon.classList.add('open'));
         userDropdownContainer.addEventListener('hide.bs.dropdown', () => chevronIcon.classList.remove('open'));
     }
+
+    // Kode untuk notifikasi
+    class NotificationManager {
+        constructor() {
+            this.notificationDropdown = document.getElementById('notificationDropdownContainer');
+            this.notificationList = document.getElementById('notificationList');
+            this.notificationBadge = document.getElementById('notificationBadge');
+            this.pollingInterval = null;
+            this.isLoading = false;
+            
+            this.init();
+        }
+
+        init() {
+            this.loadNotifications();
+            this.startPolling();
+            
+            // Event listener untuk menandai notifikasi sebagai dibaca
+            this.notificationList.addEventListener('click', (e) => {
+                const notificationItem = e.target.closest('.notification-item');
+                if (notificationItem) {
+                    const notificationId = notificationItem.dataset.id;
+                    this.markAsRead(notificationId);
+                }
+            });
+
+            // Refresh notifikasi ketika dropdown dibuka
+            if (this.notificationDropdown) {
+                this.notificationDropdown.addEventListener('show.bs.dropdown', () => {
+                    this.loadNotifications();
+                });
+            }
+        }
+
+        async loadNotifications() {
+            if (this.isLoading) return;
+            
+            this.isLoading = true;
+            
+            try {
+                const response = await fetch('{{ route("notifications.api") }}');
+                const data = await response.json();
+                
+                if (data.success) {
+                    this.renderNotifications(data.notifications);
+                    this.updateBadge(data.unread_count);
+                }
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+            } finally {
+                this.isLoading = false;
+            }
+        }
+
+        renderNotifications(notifications) {
+            if (!notifications || notifications.length === 0) {
+                this.notificationList.innerHTML = `
+                    <li class="notification-empty">
+                        <i class="fas fa-bell-slash"></i>
+                        <div>Tidak ada notifikasi</div>
+                    </li>
+                `;
+                return;
+            }
+
+            const notificationsHtml = notifications.map(notification => `
+                <li class="notification-item ${notification.read_at ? '' : 'unread'}" 
+                    data-id="${notification.id}">
+                    <div class="notification-title">${this.escapeHtml(notification.data.title)}</div>
+                    <div class="notification-message">${this.escapeHtml(notification.data.message)}</div>
+                    <div class="notification-time">${this.formatTime(notification.created_at)}</div>
+                </li>
+            `).join('');
+
+            this.notificationList.innerHTML = notificationsHtml;
+        }
+
+        async markAsRead(notificationId) {
+            try {
+                const response = await fetch(`/notifications/${notificationId}/mark-as-read`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                });
+
+                if (response.ok) {
+                    // Refresh notifikasi setelah menandai sebagai dibaca
+                    this.loadNotifications();
+                }
+            } catch (error) {
+                console.error('Error marking notification as read:', error);
+            }
+        }
+
+        updateBadge(unreadCount) {
+            if (unreadCount > 0) {
+                this.notificationBadge.textContent = unreadCount > 99 ? '99+' : unreadCount;
+                this.notificationBadge.classList.remove('d-none');
+            } else {
+                this.notificationBadge.classList.add('d-none');
+            }
+        }
+
+        startPolling() {
+            // Poll setiap 30 detik untuk update notifikasi
+            this.pollingInterval = setInterval(() => {
+                this.loadNotifications();
+            }, 30000);
+        }
+
+        stopPolling() {
+            if (this.pollingInterval) {
+                clearInterval(this.pollingInterval);
+            }
+        }
+
+        formatTime(isoString) {
+            const date = new Date(isoString);
+            const now = new Date();
+            const diffInMinutes = Math.floor((now - date) / (1000 * 60));
+            
+            if (diffInMinutes < 1) return 'Baru saja';
+            if (diffInMinutes < 60) return `${diffInMinutes} menit lalu`;
+            if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)} jam lalu`;
+            return `${Math.floor(diffInMinutes / 1440)} hari lalu`;
+        }
+
+        escapeHtml(unsafe) {
+            return unsafe
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+    }
+
+    // Inisialisasi notifikasi manager ketika user sudah login
+    @auth
+        @if (Auth::user()->role === 'user')
+            document.addEventListener('DOMContentLoaded', function() {
+                new NotificationManager();
+            });
+        @endif
+    @endauth
 </script>
