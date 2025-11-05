@@ -104,6 +104,13 @@ Route::middleware(['auth'])->group(function () {
      Route::get('/notifications/my', [UserNotifController::class, 'myNotifications'])->name('notifications.my');
     Route::get('/notifications/api', [UserNotifController::class, 'getMyNotificationsApi'])->name('notifications.api');
     Route::put('/notifications/api/read/{id}', [UserNotifController::class, 'markAsReadApi'])->name('notifications.api.read');
+     // 🌟 Tambahkan ini
+    Route::post('/notifications/mark-all-read', [UserNotifController::class, 'markAllRead'])
+        ->name('notifications.markAllRead');
+        // Tandai notifikasi sebagai sudah dibaca (untuk satu notifikasi)
+Route::post('/notifications/read/{id}', [UserNotifController::class, 'markAsRead'])
+    ->name('notifications.markRead');
+
 });
 
 // Halaman tipe pekerjaan
