@@ -45,11 +45,11 @@
         border: 2px solid #0d47a1;
     }
 
-        /* REGISTER CONTAINER */
+        /* REGISTER CONTAINER - DIKECILKAN SEDIKIT */
         .register-container {
-            max-width: 700px;
-            min-height: 490px;
-            margin: 40px auto 60px auto;
+            max-width: 650px; /* DIKECILKAN SEDIKIT dari 700px */
+            min-height: 450px; /* DIKECILKAN SEDIKIT dari 490px */
+            margin: 35px auto 50px auto; /* DIKECILKAN SEDIKIT margin */
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -57,17 +57,17 @@
             overflow: hidden;
         }
 
-        /* Kiri */
+        /* Kiri - DIKECILKAN SEDIKIT */
         .register-left {
             background: #e9f6fd;
-            padding: 30px 20px;
-            max-width: 220px;
+            padding: 28px 18px; /* DIKECILKAN SEDIKIT */
+            max-width: 200px; /* DIKECILKAN SEDIKIT dari 220px */
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: flex-start;
             text-align: left;
-            gap: 25px;
+            gap: 22px; /* DIKECILKAN SEDIKIT */
             flex-shrink: 0;
         }
         .register-left .feature {
@@ -77,26 +77,26 @@
             margin-bottom: 0;
         }
         .register-left .feature img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 10px;
+            width: 45px; /* DIKECILKAN SEDIKIT dari 50px */
+            height: 45px; /* DIKECILKAN SEDIKIT dari 50px */
+            margin-bottom: 9px; /* DIKECILKAN SEDIKIT */
             flex-shrink: 0;
         }
         .register-left .feature img.people-img {
-            width: 65px;
-            height: 65px;
+            width: 60px; /* DIKECILKAN SEDIKIT dari 65px */
+            height: 60px; /* DIKECILKAN SEDIKIT dari 65px */
         }
         .register-left .feature h6 {
             margin: 0;
             font-weight: 600;
-            font-size: 14px;
-            line-height: 1.4;
+            font-size: 13.5px; /* DIKECILKAN SEDIKIT dari 14px */
+            line-height: 1.35; /* DIKECILKAN SEDIKIT dari 1.4 */
             color: #333;
         }
 
-        /* Kanan */
+        /* Kanan - DIKECILKAN SEDIKIT */
         .register-right {
-            padding: 45px 50px;
+            padding: 40px 45px; /* DIKECILKAN SEDIKIT dari 45px 50px */
             flex: 1;
             text-align: center;
             display: flex;
@@ -106,9 +106,9 @@
         }
         .register-right h3 {
             font-weight: bold;
-            margin-bottom: 25px;
-            font-size: 30px;
-            line-height: 1.4;
+            margin-bottom: 22px; /* DIKECILKAN SEDIKIT dari 25px */
+            font-size: 23px; /* DIKECILKAN SEDIKIT dari 25px */
+            line-height: 1.35; /* DIKECILKAN SEDIKIT dari 1.4 */
         }
         .register-btn {
             display: flex;
@@ -116,11 +116,11 @@
             justify-content: center;
             border: 1px solid #ddd;
             border-radius: 25px;
-            padding: 12px 20px;
-            margin: 8px 0;
+            padding: 11px 19px; /* DIKECILKAN SEDIKIT dari 12px 20px */
+            margin: 7px 0; /* DIKECILKAN SEDIKIT dari 8px 0 */
             cursor: pointer;
             font-weight: 500;
-            font-size: 1rem;
+            font-size: 0.98rem; /* DIKECILKAN SEDIKIT */
             background: #fff;
             width: 100%;
             transition: 0.3s;
@@ -131,35 +131,35 @@
             background: #f8f9fa;
         }
         .register-btn img {
-            width: 24px;
-            height: 24px;
-            margin-right: 12px;
+            width: 23px; /* DIKECILKAN SEDIKIT dari 24px */
+            height: 23px; /* DIKECILKAN SEDIKIT dari 24px */
+            margin-right: 11px; /* DIKECILKAN SEDIKIT dari 12px */
         }
 
-        /* Social login */
+        /* Social login - DIKECILKAN SEDIKIT */
         .social-login {
-            margin-top: 20px;
-            margin-bottom: 15px;
+            margin-top: 18px; /* DIKECILKAN SEDIKIT dari 20px */
+            margin-bottom: 14px; /* DIKECILKAN SEDIKIT dari 15px */
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 11px; /* DIKECILKAN SEDIKIT dari 12px */
             justify-content: center;
             width: 100%;
         }
         .social-login span {
             color: #666;
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.83rem; /* DIKECILKAN SEDIKIT dari 0.85rem */
         }
         .social-login a img {
-            width: 40px;
-            height: 40px;
+            width: 38px; /* DIKECILKAN SEDIKIT dari 40px */
+            height: 38px; /* DIKECILKAN SEDIKIT dari 40px */
             border-radius: 50%;
             border: 1px solid #ccc;
             background: #fff;
             transition: 0.3s;
             object-fit: contain;
-            padding: 5px;
+            padding: 4.5px; /* DIKECILKAN SEDIKIT dari 5px */
         }
         .social-login a img.linkedin,
         .social-login a img.facebook {
@@ -169,12 +169,12 @@
             background: #f5f5f5;
         }
 
-        /* Terms */
+        /* Terms - DIKECILKAN SEDIKIT */
         .terms {
-            margin-top: 10px;
-            font-size: 0.85rem;
+            margin-top: 9px; /* DIKECILKAN SEDIKIT dari 10px */
+            font-size: 0.83rem; /* DIKECILKAN SEDIKIT dari 0.85rem */
             color: #6c757d;
-            line-height: 1.5;
+            line-height: 1.45; /* DIKECILKAN SEDIKIT dari 1.5 */
             max-width: 90%;
         }
         .terms a {
@@ -186,10 +186,10 @@
             text-decoration: underline;
         }
 
-        /* Login link */
+        /* Login link - DIKECILKAN SEDIKIT */
         .login-link {
-            margin-top: 15px;
-            font-size: 1 rem;
+            margin-top: 14px; /* DIKECILKAN SEDIKIT dari 15px */
+            font-size: 0.98rem; /* DIKECILKAN SEDIKIT dari 1rem */
             color: #6c757d;
         }
         .login-link a {
@@ -201,7 +201,7 @@
             text-decoration: underline;
         }
 
-        /* QR Code Floating */
+        /* QR Code Floating - DIKECILKAN SEDIKIT */
         .qr-code-float {
             position: fixed;
             right: 20px;
@@ -210,19 +210,19 @@
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 15px;
+            padding: 14px; /* DIKECILKAN SEDIKIT dari 15px */
             text-align: center;
             z-index: 1000;
-            width: 150px;
+            width: 140px; /* DIKECILKAN SEDIKIT dari 150px */
         }
         .qr-code-float img {
-            width: 100px;
+            width: 95px; /* DIKECILKAN SEDIKIT dari 100px */
             height: auto;
-            margin-bottom: 10px;
+            margin-bottom: 9px; /* DIKECILKAN SEDIKIT dari 10px */
         }
         .qr-code-float p {
-            font-size: 14px;
-            line-height: 1.4;
+            font-size: 13.5px; /* DIKECILKAN SEDIKIT dari 14px */
+            line-height: 1.35; /* DIKECILKAN SEDIKIT dari 1.4 */
             color: #333;
             font-weight: 500;
             margin: 0;
@@ -269,11 +269,11 @@
                 Daftar dengan Email
             </a>
 
-            <div class="social-login">
+            <!-- <div class="social-login">
                 <span>Atau dengan</span>
                 <a href="#"><img src="{{ asset('images/logo linkedin.png') }}" alt="LinkedIn" class="linkedin"></a>
                 <a href="#"><img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook"></a>
-            </div>
+            </div> -->
 
             <div class="terms">
                 Dengan melanjutkan, anda menyetujui

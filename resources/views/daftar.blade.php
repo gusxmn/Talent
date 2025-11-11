@@ -140,7 +140,7 @@
       border: none;
       font-size: 15px;
       width: 180px;
-      margin: 15px auto 25px;
+      margin: 15px auto 12px; /* margin bawah dikurangi dari 18px jadi 12px */
       display: block;
     }
 
@@ -148,12 +148,12 @@
       background-color: #c70000;
     }
 
-    /* Footer text */
+    /* Footer text - jarak diperkecil lagi */
     .company-link,
     .terms,
     .footer-line {
       text-align: center;
-      margin-top: 10px;
+      margin-top: 5px; /* dikurangi dari 8px jadi 5px untuk jarak lebih dekat lagi */
       font-size: 15px;
       line-height: 1.4;
     }

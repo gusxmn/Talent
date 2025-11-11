@@ -45,11 +45,11 @@
         border: 2px solid #0d47a1;
     }
 
-        /* REGISTER / LOGIN CONTAINER */
+        /* REGISTER / LOGIN CONTAINER - DISESUAIKAN SAMA DENGAN HALAMAN PERUSAHAAN */
         .register-container {
-            max-width: 700px;
-            min-height: 490px;
-            margin: 40px auto 60px auto;
+            max-width: 650px; /* DISESUAIKAN SAMA */
+            min-height: 450px; /* DISESUAIKAN SAMA */
+            margin: 35px auto 50px auto; /* DISESUAIKAN SAMA */
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -57,44 +57,46 @@
             overflow: hidden;
         }
 
-        /* Kiri */
+        /* Kiri - DISESUAIKAN SAMA */
         .register-left {
             background: #e9f6fd;
-            padding: 30px 20px;
-            max-width: 220px;
+            padding: 28px 18px; /* DISESUAIKAN SAMA */
+            max-width: 200px; /* DISESUAIKAN SAMA */
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: flex-start;
             text-align: left;
-            gap: 25px;
+            gap: 22px; /* DISESUAIKAN SAMA */
             flex-shrink: 0;
         }
         .register-left .feature {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
+            margin-bottom: 0;
         }
         .register-left .feature img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 10px;
+            width: 45px; /* DISESUAIKAN SAMA */
+            height: 45px; /* DISESUAIKAN SAMA */
+            margin-bottom: 9px; /* DISESUAIKAN SAMA */
+            flex-shrink: 0;
         }
         .register-left .feature img.people-img {
-            width: 65px;
-            height: 65px;
+            width: 60px; /* DISESUAIKAN SAMA */
+            height: 60px; /* DISESUAIKAN SAMA */
         }
         .register-left .feature h6 {
             margin: 0;
             font-weight: 600;
-            font-size: 14px;
-            line-height: 1.4;
+            font-size: 13.5px; /* DISESUAIKAN SAMA */
+            line-height: 1.35; /* DISESUAIKAN SAMA */
             color: #333;
         }
 
-        /* Kanan */
+        /* Kanan - DISESUAIKAN SAMA */
         .register-right {
-            padding: 45px 50px;
+            padding: 40px 45px; /* DISESUAIKAN SAMA */
             flex: 1;
             text-align: center;
             display: flex;
@@ -104,24 +106,19 @@
         }
         .register-right h3 {
             font-weight: bold;
-            margin-bottom: 25px;
-            font-size: 30px;
-            line-height: 1.4;
+            margin-bottom: 22px; /* DISESUAIKAN SAMA */
+            font-size: 23px; /* DISESUAIKAN SAMA */
+            line-height: 1.35; /* DISESUAIKAN SAMA */
         }
 
-        /* Form */
-        .form-label {
-            align-self: flex-start;
-            margin-bottom: 5px;
-            font-weight: normal;
-            color: black;
-        }
+        /* Form - Hanya border yang diubah menjadi 1px solid #999 seperti halaman daftar */
         .form-control {
-            border-radius: 6px;
+            border-radius: 2px;
             padding: 10px 15px;
             font-size: 1rem;
             color: #333;
             height: auto;
+            border: 1px solid #999; /* Diubah ketebalan border menjadi 1px solid #999 */
         }
         .password-container {
             position: relative;
@@ -153,37 +150,37 @@
             font-weight: normal;
             font-size: 1rem;
             border: none;
-            width: 100%;
+            width: 180px;
             margin-top: 20px;
         }
         .btn-submit:hover {
             background-color: #0d47a1;
         }
 
-        /* Social login */
+        /* Social login - DISESUAIKAN SAMA */
         .social-login {
-            margin-top: 20px;
-            margin-bottom: 15px;
+            margin-top: 18px; /* DISESUAIKAN SAMA */
+            margin-bottom: 14px; /* DISESUAIKAN SAMA */
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 11px; /* DISESUAIKAN SAMA */
             justify-content: center;
             width: 100%;
         }
         .social-login span {
             color: #666;
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.83rem; /* DISESUAIKAN SAMA */
         }
         .social-login a img {
-            width: 40px;
-            height: 40px;
+            width: 38px; /* DISESUAIKAN SAMA */
+            height: 38px; /* DISESUAIKAN SAMA */
             border-radius: 50%;
             border: 1px solid #ccc;
             background: #fff;
             transition: 0.3s;
             object-fit: contain;
-            padding: 5px;
+            padding: 4.5px; /* DISESUAIKAN SAMA */
         }
         .social-login a img.linkedin,
         .social-login a img.facebook,
@@ -194,12 +191,12 @@
             background: #f5f5f5;
         }
 
-        /* Terms */
+        /* Terms - DISESUAIKAN SAMA */
         .terms {
-            margin-top: 10px;
-            font-size: 0.85rem; /* Disamakan dengan .login-link */
+            margin-top: 9px; /* DISESUAIKAN SAMA */
+            font-size: 0.83rem; /* DISESUAIKAN SAMA */
             color: #6c757d;
-            line-height: 1.5;
+            line-height: 1.45; /* DISESUAIKAN SAMA */
             max-width: 90%;
         }
         .terms a {
@@ -211,10 +208,10 @@
             text-decoration: underline;
         }
 
-        /* Login link */
+        /* Login link - DISESUAIKAN SAMA */
         .login-link {
-            margin-top: 15px;
-            font-size: 1 rem;
+            margin-top: 14px; /* DISESUAIKAN SAMA */
+            font-size: 0.98rem; /* DISESUAIKAN SAMA */
             color: #6c757d;
         }
         .login-link a {
@@ -226,7 +223,7 @@
             text-decoration: underline;
         }
 
-        /* QR Code Floating */
+        /* QR Code Floating - DISESUAIKAN SAMA */
         .qr-code-float {
             position: fixed;
             right: 20px;
@@ -235,19 +232,19 @@
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 15px;
+            padding: 14px; /* DISESUAIKAN SAMA */
             text-align: center;
             z-index: 1000;
-            width: 150px;
+            width: 140px; /* DISESUAIKAN SAMA */
         }
         .qr-code-float img {
-            width: 100px;
+            width: 95px; /* DISESUAIKAN SAMA */
             height: auto;
-            margin-bottom: 10px;
+            margin-bottom: 9px; /* DISESUAIKAN SAMA */
         }
         .qr-code-float p {
-            font-size: 14px;
-            line-height: 1.4;
+            font-size: 13.5px; /* DISESUAIKAN SAMA */
+            line-height: 1.35; /* DISESUAIKAN SAMA */
             color: #333;
             font-weight: 500;
             margin: 0;
@@ -284,18 +281,38 @@
         <div class="register-right">
             <h3>Pasang Iklan Lowongan<br>Kerja Gratis!</h3>
 
-            <form action="#" method="POST" style="width: 100%;">
-                <div class="mb-3 text-start">
-                    <label for="email" class="form-label">Alamat Email</label>
-                    <input type="email" class="form-control" id="email" placeholder="Masukkan email Anda" required>
+            @if(session('error'))
+                <div class="alert alert-danger w-100 text-start">
+                    <i class="fa-solid fa-circle-exclamation me-2"></i> {{ session('error') }}
                 </div>
+            @endif
+
+            @if($errors->any())
+                <div class="alert alert-danger w-100 text-start">
+                    <ul class="mb-0">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('company.login.submit') }}" method="POST" style="width: 100%;">
+                @csrf
+
                 <div class="mb-3 text-start">
-                    <label for="password" class="form-label">Password</label>
+                    <!-- <label for="email" class="form-label">Alamat Email</label> -->
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email Anda" required>
+                </div>
+
+                <div class="mb-3 text-start">
+                    <!-- <label for="password" class="form-label">Password</label> -->
                     <div class="password-container">
-                        <input type="password" class="form-control" id="password" placeholder="Masukkan password anda" required>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password anda" required>
                         <i class="fa-regular fa-eye password-toggle"></i>
                     </div>
                 </div>
+
                 <a href="#" class="forgot-password">Lupa password?</a>
                 <button type="submit" class="btn btn-submit">Masuk</button>
             </form>
@@ -303,8 +320,8 @@
             <div class="social-login">
                 <span>Atau dengan</span>
                 <a href="#"><img src="{{ asset('images/googles.png') }}" alt="Google" class="google-icon"></a>
-                <a href="#"><img src="{{ asset('images/logo linkedin.png') }}" alt="LinkedIn" class="linkedin"></a>
-                <a href="#"><img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook"></a>
+                <!-- <a href="#"><img src="{{ asset('images/logo linkedin.png') }}" alt="LinkedIn" class="linkedin"></a>
+                <a href="#"><img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook"></a> -->
             </div>
 
             <div class="terms">

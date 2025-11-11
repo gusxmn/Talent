@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Company; // Pastikan Model Anda bernama 'Company'
+use App\Models\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str; // Tambahkan ini untuk membuat slug
 
 class CompanyController extends Controller
 {
@@ -15,8 +14,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        // Mengambil semua data perusahaan, diurutkan berdasarkan kolom 'nama'
-        $companies = Company::orderBy('nama')->paginate(10); 
+        // Mengambil semua data perusahaan, diurutkan berdasarkan kolom 'nama_perusahaan'
+        $companies = Company::orderBy('nama_perusahaan')->paginate(10); 
 
         return view('admin.companies.index', compact('companies'));
     }
@@ -36,21 +35,25 @@ class CompanyController extends Controller
     {
         // 1. Validasi Data
         $validatedData = $request->validate([
-            'nama' => 'required|string|max:255|unique:companies,nama',
-            'deskripsi' => 'required|string',
+            'nama_lengkap' => 'required|string|max:255',
+            'no_hp' => 'required|string|max:255',
+            'jabatan' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:companies,email',
+            'password' => 'required|string|min:8',
+            'nama_perusahaan' => 'required|string|max:255',
+            'jumlah_karyawan' => 'required|integer',
             'industri' => 'required|string|max:255',
-            'website' => 'nullable|url|max:255',
-            'email' => 'nullable|email|max:255',
-            'telepon' => 'nullable|string|max:255',
-            'alamat' => 'nullable|string',
+            'provinsi' => 'required|string|max:255',
+            'kota' => 'required|string|max:255',
+            'alamat_lengkap' => 'required|string',
             'is_active' => 'nullable|boolean',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Maks 2MB
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = $validatedData;
 
-        // 2. Tambahkan SLUG secara otomatis
-        $data['slug'] = Str::slug($request->nama);
+        // 2. Hash password
+        $data['password'] = bcrypt($request->password);
 
         // 3. Menyimpan Logo jika ada
         if ($request->hasFile('logo')) {
@@ -59,6 +62,7 @@ class CompanyController extends Controller
 
         // 4. Handle is_active (untuk checkbox)
         $data['is_active'] = $request->has('is_active');
+        // HAPUS: $data['is_verified'] = false;
         
         // 5. Menyimpan ke Database
         Company::create($data);
@@ -69,7 +73,7 @@ class CompanyController extends Controller
     }
 
     /**
-     * Menampilkan detail perusahaan tertentu (Show)
+     * Menampilkan detail perusahaan tertentu (Show) - TAMBAHKAN METHOD SHOW
      */
     public function show(Company $company)
     {
@@ -77,65 +81,34 @@ class CompanyController extends Controller
     }
 
     /**
-     * Menampilkan form untuk mengedit perusahaan (Edit)
+     * Menampilkan form untuk mengedit perusahaan (Edit) - TIDAK DIPERLUKAN
      */
     public function edit(Company $company)
     {
-        return view('admin.companies.edit', compact('company'));
+        // Redirect ke index karena edit tidak diperlukan
+        return redirect()->route('admin.companies.index');
     }
 
     /**
-     * Memperbarui data perusahaan di database (Update)
+     * Memperbarui data perusahaan di database (Update) - TIDAK DIPERLUKAN
      */
     public function update(Request $request, Company $company)
     {
-        // 1. Validasi Data
-        $validatedData = $request->validate([
-            // Abaikan ID saat ini untuk aturan 'unique' pada kolom 'nama'
-            'nama' => 'required|string|max:255|unique:companies,nama,' . $company->id,
-            'deskripsi' => 'required|string',
-            'industri' => 'required|string|max:255',
-            'website' => 'nullable|url|max:255',
-            'email' => 'nullable|email|max:255',
-            'telepon' => 'nullable|string|max:255',
-            'alamat' => 'nullable|string',
-            'is_active' => 'nullable|boolean',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
-        ]);
-
-        $data = $validatedData;
-        
-        // 2. Perbarui SLUG jika nama berubah
-        if ($request->nama !== $company->nama) {
-            $data['slug'] = Str::slug($request->nama);
-        } else {
-            // Pastikan slug tidak diubah jika nama tidak berubah
-            unset($data['slug']);
-        }
-
-        // 3. Memproses update logo
-        if ($request->hasFile('logo')) {
-            // Hapus logo lama
-            if ($company->logo) {
-                Storage::disk('public')->delete($company->logo);
-            }
-            // Simpan logo baru
-            $data['logo'] = $request->file('logo')->store('company_logos', 'public');
-        } else {
-            // Hapus 'logo' dari array $data agar tidak menimpa logo lama
-            unset($data['logo']);
-        }
-        
-        // 4. Handle is_active
-        $data['is_active'] = $request->has('is_active');
-
-        // 5. Memperbarui Database
-        $company->update($data);
-
-        return redirect()
-            ->route('admin.companies.index')
-            ->with('success', 'Data perusahaan berhasil diperbarui!');
+        // Redirect ke index karena update tidak diperlukan
+        return redirect()->route('admin.companies.index');
     }
+
+    /**
+     * HAPUS: Method verify tidak diperlukan lagi
+     */
+    // public function verify(Company $company)
+    // {
+    //     $company->update(['is_verified' => true]);
+        
+    //     return redirect()
+    //         ->route('admin.companies.index')
+    //         ->with('success', 'Perusahaan berhasil diverifikasi!');
+    // }
 
     /**
      * Menghapus perusahaan dari database (Destroy)

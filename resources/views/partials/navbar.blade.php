@@ -414,8 +414,8 @@
                 </li>
 
                 <li class="nav-item d-lg-none">
-                    <a href="{{ url('/perusahaan/kampus') }}"
-                        class="btn-company-outline"> Perusahaan/Kampus
+                    <a href="{{ url('/kampus/perusahaan') }}"
+                        class="btn-company-outline"> Kampus/Perusahaan
                          </a>
                 </li>
 
@@ -520,18 +520,18 @@
                     @else
                         <a href="{{ url('/daftar') }}" class="btn btn-primary btn-primary-custom">Daftar</a>
                         <a href="{{ url('/masuk') }}" class="btn btn-outline-primary btn-outline-primary-custom ms-3">Masuk</a>
-                        <a href="{{ url('/perusahaan/kampus') }}"
+                        <a href="{{ url('/kampus/perusahaan') }}"
                                 class="btn-company-outline ms-3 d-none d-lg-block">
-                                Perusahaan/kampus
+                                Kampus/Perusahaan
                               </a>
                     @endif
 
                 @else
                     <a href="{{ url('/daftar') }}" class="btn btn-primary btn-primary-custom">Daftar</a>
                     <a href="{{ url('/masuk') }}" class="btn btn-outline-primary btn-outline-primary-custom ms-3">Masuk</a>
-                    <a href="{{ url('/perusahaan/kampus') }}"
+                    <a href="{{ url('/kampus/perusahaan') }}"
                         class="btn-company-outline ms-3 d-none d-lg-block">
-                        Perusahaan/kampus
+                        Kampus/Perusahaan
                        </a>
                 @endauth
 

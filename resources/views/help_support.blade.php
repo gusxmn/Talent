@@ -61,21 +61,26 @@
             margin-bottom: 20px;
         }
 
+        /* PERUBAHAN: Tombol Dapatkan Bantuan dengan warna biru dan tanpa efek hover */
         .btn-glints-primary {
-            background-color: #fff;
-            color: #0d47a1;
+            background-color: #0d47a1;
+            color: #fff;
             border: 1px solid #0d47a1;
             font-weight: 600;
             padding: 8px 20px;
             border-radius: 4px;
             text-transform: uppercase;
-            transition: all 0.3s ease;
+            transition: none;
             font-size: 0.9rem;
             display: inline-block;
             text-decoration: none;
+            cursor: pointer;
         }
 
-        .btn-glints-primary:hover {
+        /* PERUBAHAN: Menghapus efek hover secara permanen */
+        .btn-glints-primary:hover,
+        .btn-glints-primary:active,
+        .btn-glints-primary:focus {
             background-color: #0d47a1;
             color: #fff;
             border-color: #0d47a1;

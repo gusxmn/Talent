@@ -1,5 +1,43 @@
 @extends('admin.layout') 
 
+<style>
+.btn-group {
+    display: flex;
+    gap: 5px;
+}
+.btn-group .btn {
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    width: 38px;
+    padding: 0;
+}
+.btn-group .btn i {
+    font-size: 16px;
+    line-height: 1;
+}
+
+/* === Penyeragaman ukuran logo di halaman INDEX === */
+.table-logo {
+    width: 90px; /* sebelumnya 70px */
+    height: 90px; /* sebelumnya 70px */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.table-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* ✅ menjaga proporsi logo tanpa merusak bentuk */
+}
+</style>
+
 @section('content')
 <div class="container-fluid">
     <div class="row">
@@ -19,7 +57,7 @@
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
                     <h6 class="m-0 font-weight-bold text-primary">Daftar Perusahaan</h6>
                     <a href="{{ route('admin.companies.create') }}" class="btn btn-primary btn-sm">
-                        <i class="fas"></i> Tambah Perusahaan
+                        <i class="fas fa-plus"></i> Tambah Perusahaan
                     </a>
                 </div>
                 <div class="card-body">
@@ -29,9 +67,9 @@
                                 <tr>
                                     <th>Logo</th>
                                     <th>Nama Perusahaan</th>
+                                    <th>Pendaftar</th>
                                     <th>Industri</th>
                                     <th>Email</th>
-                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -39,36 +77,38 @@
                                 @forelse ($companies as $company)
                                 <tr>
                                     <td class="text-center">
-                                        @if ($company->logo)
-                                            <img src="{{ Storage::url($company->logo) }}" alt="{{ $company->nama }}" style="height: 40px; width: auto; object-fit: contain;">
-                                        @else
-                                            <i class="fas fa-building fa-2x text-secondary"></i>
-                                        @endif
+                                        <div class="table-logo">
+                                            @if ($company->logo)
+                                                <img src="{{ Storage::url($company->logo) }}" alt="{{ $company->nama_perusahaan }}">
+                                            @else
+                                                <i class="fas fa-building fa-2x text-secondary"></i>
+                                            @endif
+                                        </div>
                                     </td>
                                     <td>
-                                        <strong>{{ $company->nama }}</strong><br>
-                                        <small class="text-muted">{{ $company->slug }}</small>
+                                        <strong>{{ $company->nama_perusahaan }}</strong><br>
+                                        <small class="text-muted">{{ $company->jumlah_karyawan }} karyawan</small>
+                                    </td>
+                                    <td>
+                                        <strong>{{ $company->nama_lengkap }}</strong><br>
+                                        <small class="text-muted">{{ $company->jabatan }}</small><br>
+                                        <small class="text-muted">{{ $company->no_hp }}</small>
                                     </td>
                                     <td>{{ $company->industri }}</td>
-                                    <td>{{ $company->email ?? '-' }}</td>
+                                    <td>{{ $company->email }}</td>
                                     <td>
-                                        @if($company->is_active)
-                                            <span class="badge badge-success">Aktif</span>
-                                        @else
-                                            <span class="badge badge-danger">Non-Aktif</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.companies.edit', $company->id) }}" class="btn btn-warning btn-sm" title="Edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <form action="{{ route('admin.companies.destroy', $company->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus perusahaan ini?')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" title="Hapus">
-                                                <i class="fas fa-trash"></i>
-                                            </button>
-                                        </form>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a href="{{ route('admin.companies.show', $company->id) }}" class="btn btn-info" title="Lihat Detail">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <form action="{{ route('admin.companies.destroy', $company->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus perusahaan ini?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger" title="Hapus">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                                 @empty
@@ -87,4 +127,5 @@
         </div>
     </div>
 </div>
+
 @endsection

@@ -16,6 +16,9 @@ use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\NotifController;
 use App\Http\Controllers\Admin\MagangController;
 
+//Company Controllers
+use App\Http\Controllers\Company\RegisterController;
+use App\Http\Controllers\Company\LoginController;
 
 // Public Controllers
 use App\Http\Controllers\JobController;
@@ -33,7 +36,7 @@ use App\Http\Controllers\UserNotifController;
 Route::get('/', fn() => view('home'))->name('home');
 Route::get('/daftar', fn() => view('daftar'))->name('register');
 Route::get('/masuk', fn() => view('login'))->name('login');
-Route::get('/perusahaan/kampus', fn() => view('perusahaan_kampus'))->name('perusahaan_kampus');
+Route::get('/kampus/perusahaan', fn() => view('kampus_perusahaan'))->name('kampus_perusahaan');
 Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
 
 // START: PERUBAHAN DI BAGIAN KONTAK (Sekarang hanya menggunakan 2 rute di satu URI)
@@ -118,8 +121,20 @@ Route::get('/tipe-pekerjaan', fn() => view('job_type'))->name('job.type');
 
 // Halaman perusahaan
 Route::get('/perusahaan', fn() => view('company'))->name('company');
-Route::get('/login-perusahaan', fn() => view('company_login'))->name('company.login');
-Route::get('/daftar-perusahaan', fn() => view('company_register'))->name('company.register');
+Route::get('/login-perusahaan', [App\Http\Controllers\Company\LoginController::class, 'showLoginForm'])->name('company.login');
+Route::post('/login-perusahaan', [App\Http\Controllers\Company\LoginController::class, 'login'])->name('company.login.submit');
+Route::post('/logout-perusahaan', [App\Http\Controllers\Company\LoginController::class, 'logout'])->name('company.logout');
+
+Route::get('/daftar-perusahaan', [App\Http\Controllers\Company\RegisterController::class, 'showStep1'])->name('company.register');
+Route::post('/proses-daftar-perusahaan/step1', [App\Http\Controllers\Company\RegisterController::class, 'processStep1'])->name('company.register.step1');
+Route::get('/proses-daftar-perusahaan', [App\Http\Controllers\Company\RegisterController::class, 'showStep2'])->name('company.register.process');
+Route::post('/proses-daftar-perusahaan/step2', [App\Http\Controllers\Company\RegisterController::class, 'processStep2'])->name('company.register.step2');
+Route::get('/lokasi-daftar-perusahaan', [App\Http\Controllers\Company\RegisterController::class, 'showStep3'])->name('company.register.location');
+Route::post('/lokasi-daftar-perusahaan/step3', [App\Http\Controllers\Company\RegisterController::class, 'processStep3'])->name('company.register.step3');
+Route::get('/cancel-registration', [App\Http\Controllers\Company\RegisterController::class, 'cancelRegistration'])->name('company.register.cancel');
+Route::get('/dashboard-perusahaan', fn() => view('company_dashboard'))->name('company.dashboard')->middleware('auth.company');
+
+
 
 // Halaman kampus
 Route::get('/kampus', fn() => view('campus'))->name('campus');
@@ -212,9 +227,11 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
     Route::resource('applicants', ApplicantController::class)->only(['index', 'show', 'destroy']);
     Route::put('applicants/{applicant}/status', [ApplicantController::class, 'updateStatus'])->name('applicants.update_status');
 
-    Route::get('companies', [CompanyController::class, 'index'])->name('admin.companies.index');
-    Route::resource('companies', CompanyController::class)->names('companies');
-    
+    Route::get('companies', [CompanyController::class, 'index'])->name('companies.index');
+    Route::get('companies/create', [CompanyController::class, 'create'])->name('companies.create');
+    Route::post('companies', [CompanyController::class, 'store'])->name('companies.store');
+    Route::get('companies/{company}', [CompanyController::class, 'show'])->name('companies.show'); // TAMBAHKAN SHOW
+    Route::delete('companies/{company}', [CompanyController::class, 'destroy'])->name('companies.destroy');
 
     // TAMBAHAN: Routes untuk Pemagang (Interns)
     Route::prefix('interns')->name('interns.')->group(function () {

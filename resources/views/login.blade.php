@@ -24,21 +24,30 @@
             margin-top: 20px;
         }
 
-        .title-glints {
+           /* .title-glints {
             font-size: 30px;
             font-weight: 700;
             line-height: 1.2;
             color: #2c2c2c;
             text-align: center;
             margin-bottom: 24px;
-        }
+        }*/
+            
+        .sub-title{
+            font-size: 28px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #2c2c2c;
+            text-align: center;
+            margin-bottom: 5px;
+        } 
 
         .social-buttons {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 5px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .social-buttons img {
@@ -58,7 +67,7 @@
             text-align: center;
             color: #8c8f95;
             font-size: 16px;
-            margin-bottom: 10px;
+            margin: 8px 0; /* Dikurangi margin atas dan bawah agar lebih dekat */
         }
 
         .divider::before,
@@ -95,7 +104,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 24px;
+            margin-top: 12px; /* Dikurangi dari 20px menjadi 12px untuk naik lebih tinggi */
             font-size: 16px;
             color: #6c757d;
         }
@@ -116,6 +125,7 @@
             font-size: 16px;
             color: #6c757d;
             text-align: center;
+            margin-top: 4px; /* Dikurangi dari 8px menjadi 4px untuk naik lebih tinggi */
         }
 
         .company-link a {
@@ -124,9 +134,18 @@
             font-weight: 500;
         }
 
+        /* Form control disesuaikan dengan halaman daftar */
         .form-control {
-            height: 48px;
+            height: 45px;
             font-size: 14px;
+            border: 1px solid #999;
+            border-radius: 2px;
+            box-shadow: none;
+        }
+
+        .form-control:focus {
+            border-color: #333;
+            box-shadow: none;
         }
 
         .password-container {
@@ -140,6 +159,23 @@
             transform: translateY(-50%);
             cursor: pointer;
             color: #6c757d;
+        }
+
+        /* Tombol Masuk disesuaikan dengan tombol Daftar */
+        .btn-masuk {
+            background-color: #e60000;
+            color: #fff;
+            font-weight: 600;
+            height: 45px;
+            border: none;
+            font-size: 15px;
+            width: 180px; /* Sama dengan lebar tombol Daftar */
+            margin: 10px auto 8px; /* Dikurangi margin atas dan bawah agar lebih dekat */
+            display: block;
+        }
+
+        .btn-masuk:hover {
+            background-color: #c70000;
         }
 
         .glints-toast {
@@ -208,24 +244,24 @@
     @include('partials.navbar')
 
     <div class="d-flex flex-column align-items-center pt-3">
-        <h2 class="title-glints">Selamat Datang Kembali!</h2>
-        <p class="text-center" style="margin-bottom: -2px;">Masuk ke akun Talenthub kamu</p>
+        <!-- <h2 class="title-glints">Selamat Datang Kembali!</h2> -->
+        <p class="sub-title">Masuk ke akun Talenthub kamu</p>
         <div class="login-container bg-white rounded shadow-sm">
             <form action="{{ route('login.process') }}" method="POST">
                 @csrf
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
+                     <!-- <label for="email" class="form-label">Email</label> -->
                     <input type="email" class="form-control" id="email" name="email" placeholder="Alamat Email" required>
                 </div>
                 <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
+                    <!-- <label for="password" class="form-label">Password</label> -->
                     <div class="password-container">
                         <input type="password" class="form-control" id="passwordInput" name="password" placeholder="Kata Sandi" required>
                         <i class="fa-regular fa-eye password-toggle"></i>
                     </div>
                 </div>
-                <div class="d-grid gap-2 mb-3">
-                    <button type="submit" class="btn btn-danger">Masuk</button>
+                <div class="d-grid gap-2 mb-2"> <!-- Dikurangi margin bottom dari mb-3 ke mb-2 -->
+                    <button type="submit" class="btn btn-masuk">Masuk</button>
                 </div>
             </form>
 
@@ -235,22 +271,22 @@
                <a href="{{ route('google.login') }}" title="Masuk dengan Google">
                     <img src="{{ asset('images/logo google.png') }}" alt="Google">
                 </a>
-                <a href="#">
+                 <!-- <a href="#">
                     <img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook-logo">
-                </a>
-                <a href="#">
+                </a> 
+                 <a href="#">
                     <img src="{{ asset('images/logo linkedin.png') }}" alt="linkedin" class="linkedin-logo">
-                </a>
+                </a>  -->
             </div>
-
-            <hr class="my-4">
+            
+            <hr class="my-3"> <!-- Dikurangi margin dari my-4 ke my-3 -->
 
             <div class="footer-line">
                 <span>Belum punya akun?</span>
                 <a href="{{ url('/daftar') }}">Daftar</a>
             </div>
 
-            <p class="company-link mt-3 mb-0">
+            <p class="company-link mb-0">
                 Untuk perusahaan, kunjungi <a href="/perusahaan">laman berikut.</a>
             </p>
         </div>

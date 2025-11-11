@@ -10,18 +10,23 @@ return new class extends Migration {
         Schema::create('companies', function (Blueprint $table) {
             $table->id();
 
-            // Identitas perusahaan
-            $table->string('nama'); // Nama perusahaan
-            $table->string('slug')->unique(); // URL-friendly identifier
-            $table->string('logo')->nullable(); // Path logo perusahaan
-            $table->string('industri')->nullable(); // Industri (misal: Teknologi, Finansial)
-            $table->string('website')->nullable();
-            $table->string('email')->nullable();
-            $table->string('telepon')->nullable();
+            // Data dari langkah 1 (Data Diri)
+            $table->string('nama_lengkap'); // Nama lengkap pendaftar
+            $table->string('no_hp'); // Nomor HP
+            $table->string('jabatan'); // Jabatan di perusahaan
+            $table->string('email')->unique(); // Email (sekaligus untuk login)
+            $table->string('password'); // Password
 
-            // Lokasi dan deskripsi
-            $table->text('alamat')->nullable();
-            $table->text('deskripsi')->nullable();
+            // Data dari langkah 2 (Profil Perusahaan)
+            $table->string('nama_perusahaan'); // Nama perusahaan
+            $table->string('jumlah_karyawan')->nullable(); // Jumlah karyawan
+            $table->string('industri')->nullable(); // Industri perusahaan
+            $table->string('logo')->nullable(); // Path logo perusahaan
+
+            // Data dari langkah 3 (Lokasi Perusahaan)
+            $table->string('provinsi')->nullable();
+            $table->string('kota')->nullable();
+            $table->text('alamat_lengkap')->nullable();
 
             // Status aktif/nonaktif
             $table->boolean('is_active')->default(true);
