@@ -1,10 +1,10 @@
 @extends('admin.layout')
 
 <style>
-/* === Penyeragaman ukuran logo perusahaan di halaman SHOW === */
+/* === Penyeragaman ukuran logo kampus di halaman SHOW === */
 .logo-container {
-    width: 180px; /* sebelumnya 150px */
-    height: 180px; /* sebelumnya 150px */
+    width: 180px; /* sama dengan company */
+    height: 180px; /* sama dengan company */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -28,40 +28,40 @@
             <div class="card shadow mb-4">
                 <div class="card-body">
                     <div class="row">
-                        <!-- Kolom Kiri - Data Perusahaan -->
+                        <!-- Kolom Kiri - Data Kampus -->
                         <div class="col-md-6">
-                            <h5 class="border-bottom pb-2 mb-3">Data Perusahaan</h5>
+                            <h5 class="border-bottom pb-2 mb-3">Data Kampus/Sekolah</h5>
                             
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Nama Perusahaan</label>
-                                <p>{{ $company->nama_perusahaan }}</p>
+                                <label class="form-label fw-bold">Nama Kampus/Sekolah</label>
+                                <p>{{ $campus->nama_kampus }}</p>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Industri</label>
-                                <p>{{ $company->industri }}</p>
+                                <label class="form-label fw-bold">Jenis Institusi</label>
+                                <p>{{ $campus->jenis_institusi }}</p>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Jumlah Karyawan</label>
-                                <p>{{ $company->jumlah_karyawan }}</p>
+                                <label class="form-label fw-bold">Jumlah Pegawai</label>
+                                <p>{{ $campus->jumlah_pegawai }}</p>
                             </div>
 
-                            <!-- 🔽 Tambahkan Tanggal Bergabung di bawah Jumlah Karyawan -->
+                            <!-- Tanggal Bergabung -->
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Tanggal Bergabung</label>
-                                <p>{{ $company->created_at->format('d F Y') }}</p>
+                                <p>{{ $campus->created_at->format('d F Y') }}</p>
                             </div>
 
                             <div class="mb-3">
-                                <label class="form-label fw-bold">Logo Perusahaan</label>
+                                <label class="form-label fw-bold">Logo Kampus/Sekolah</label>
                                 <div class="logo-container">
-                                    @if ($company->logo)
-                                        <img src="{{ Storage::url($company->logo) }}" 
-                                             alt="{{ $company->nama_perusahaan }}">
+                                    @if ($campus->logo_path)
+                                        <img src="{{ asset('storage/' . $campus->logo_path) }}" 
+                                             alt="{{ $campus->nama_kampus }}">
                                     @else
                                         <div class="text-muted text-center">
-                                            <i class="fas fa-building fa-2x"></i>
+                                            <i class="fas fa-school fa-2x"></i>
                                             <br>
                                             <small>Tidak ada logo</small>
                                         </div>
@@ -76,61 +76,58 @@
                             
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Nama Lengkap</label>
-                                <p>{{ $company->nama_lengkap }}</p>
+                                <p>{{ $campus->nama_lengkap }}</p>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Jabatan</label>
-                                <p>{{ $company->jabatan }}</p>
+                                <p>{{ $campus->jabatan }}</p>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Email</label>
-                                <p>{{ $company->email }}</p>
+                                <p>{{ $campus->email }}</p>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label fw-bold">No. HP</label>
-                                <p>{{ $company->no_hp }}</p>
+                                <p>{{ $campus->no_hp }}</p>
                             </div>
 
-                            <h5 class="border-bottom pb-2 mb-3 mt-4">Lokasi Perusahaan</h5>
+                            <h5 class="border-bottom pb-2 mb-3 mt-4">Lokasi Kampus/Sekolah</h5>
                             
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Provinsi</label>
-                                <p>{{ $company->provinsi }}</p>
+                                <p>{{ $campus->provinsi }}</p>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Kota</label>
-                                <p>{{ $company->kota }}</p>
+                                <p>{{ $campus->kota }}</p>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Kecamatan</label>
-                                <p>{{ $company->kecamatan }}</p>
+                                <p>{{ $campus->kecamatan }}</p>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Desa/Kelurahan</label>
-                                <p>{{ $company->desa_kelurahan }}</p>
+                                <p>{{ $campus->desa_kelurahan }}</p>
                             </div>
 
                             <div class="mb-3">
                                 <label class="form-label fw-bold">Alamat Lengkap</label>
-                                <p>{{ $company->alamat_lengkap }}</p>
+                                <p>{{ $campus->alamat_lengkap }}</p>
                             </div>
                         </div>
                     </div>
-
-                    <!-- 🔻 Hapus bagian Status Akun & Judul Status -->
-                    <!-- (bagian ini dihapus sepenuhnya sesuai permintaan) -->
 
                     <!-- Tombol Aksi -->
                     <div class="row mt-4">
                         <div class="col-12">
                             <div class="d-flex gap-2">
-                                <a href="{{ route('admin.companies.index') }}" class="btn btn-secondary">
+                                <a href="{{ route('admin.campus.index') }}" class="btn btn-secondary">
                                     <i class="fas fa-arrow-left me-1"></i> Kembali
                                 </a>
                             </div>

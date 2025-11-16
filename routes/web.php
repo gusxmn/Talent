@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\ApplicantController;
 use App\Http\Controllers\Admin\CalendarController; // <-- CONTROLLER BARU UNTUK KALENDER
 use App\Http\Controllers\Admin\ReportController; 
 use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\Admin\CampusController;
 use App\Http\Controllers\Admin\CandidateController; 
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\NotifController;
@@ -20,11 +21,16 @@ use App\Http\Controllers\Admin\MagangController;
 use App\Http\Controllers\Company\RegisterController;
 use App\Http\Controllers\Company\LoginController;
 
+// Campus Controllers
+use App\Http\Controllers\Campus\RegisterController as CampusRegisterController;
+use App\Http\Controllers\Campus\LoginController as CampusLoginController;
+
 // Public Controllers
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\contactController;
 use App\Http\Controllers\UserNotifController;
+
 
 
 
@@ -138,8 +144,23 @@ Route::get('/dashboard-perusahaan', fn() => view('company_dashboard'))->name('co
 
 // Halaman kampus
 Route::get('/kampus', fn() => view('campus'))->name('campus');
-Route::get('/login-kampus', fn() => view('campus_login'))->name('campus.login');
-Route::get('/daftar-kampus', fn() => view('campus_register'))->name('campus.register');
+Route::get('/login-kampus', [App\Http\Controllers\Campus\LoginController::class, 'showLoginForm'])->name('campus.login');
+Route::post('/login-kampus', [App\Http\Controllers\Campus\LoginController::class, 'login'])->name('campus.login.submit');
+
+// Logout POST tetap ada (tidak dihapus)
+Route::post('/logout-kampus', [App\Http\Controllers\Campus\LoginController::class, 'logout'])->name('campus.logout');
+
+Route::get('/daftar-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'showStep1'])->name('campus.register');
+Route::post('/proses-daftar-kampus/step1', [App\Http\Controllers\Campus\RegisterController::class, 'processStep1'])->name('campus.register.step1');
+Route::get('/proses-daftar-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'showStep2'])->name('campus.register.process');
+Route::post('/proses-daftar-kampus/step2', [App\Http\Controllers\Campus\RegisterController::class, 'processStep2'])->name('campus.register.step2');
+Route::get('/lokasi-daftar-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'showStep3'])->name('campus.register.location');
+Route::post('/lokasi-daftar-kampus/step3', [App\Http\Controllers\Campus\RegisterController::class, 'processStep3'])->name('campus.register.step3');
+Route::get('/cancel-registration-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'cancelRegistration'])->name('campus.register.cancel');
+
+Route::middleware('auth.campus')->group(function () {
+    Route::get('/dashboard-kampus', fn() => view('campus_dashboard'))->name('campus.dashboard');
+});
 
 
 // Halaman publik Job
@@ -227,27 +248,17 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
     Route::resource('applicants', ApplicantController::class)->only(['index', 'show', 'destroy']);
     Route::put('applicants/{applicant}/status', [ApplicantController::class, 'updateStatus'])->name('applicants.update_status');
 
+    //Halaman Manajemen Perusahaan
     Route::get('companies', [CompanyController::class, 'index'])->name('companies.index');
-    Route::get('companies/create', [CompanyController::class, 'create'])->name('companies.create');
     Route::post('companies', [CompanyController::class, 'store'])->name('companies.store');
     Route::get('companies/{company}', [CompanyController::class, 'show'])->name('companies.show'); // TAMBAHKAN SHOW
     Route::delete('companies/{company}', [CompanyController::class, 'destroy'])->name('companies.destroy');
 
+    //Halaman Manajemen Kampus/Sekolah
+    Route::resource('campus', CampusController::class)->only(['index', 'show', 'destroy']);
+
     // TAMBAHAN: Routes untuk Pemagang (Interns)
     Route::prefix('interns')->name('interns.')->group(function () {
-    });
-
-    // TAMBAHAN: Routes untuk Campus
-    Route::prefix('campuses')->name('campuses.')->group(function () {
-        Route::get('/', [CampusController::class, 'index'])->name('index');
-        // Route::get('/create', [CampusController::class, 'create'])->name('create');
-        // Route::post('/', [CampusController::class, 'store'])->name('store');
-        // Route::get('/{id}', [CampusController::class, 'show'])->name('show');
-        // Route::get('/{id}/edit', [CampusController::class, 'edit'])->name('edit');
-        // Route::put('/{id}', [CampusController::class, 'update'])->name('update');
-        // Route::delete('/{id}', [CampusController::class, 'destroy'])->name('destroy');
-        // Route::get('/export/excel', [CampusController::class, 'exportExcel'])->name('export.excel');
-        // Route::get('/{id}/students', [CampusController::class, 'getStudents'])->name('students');
     });
 
     // 4. Manajemen Jadwal/Kalender

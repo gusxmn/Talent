@@ -19,18 +19,6 @@ class CompanyController extends Controller
 
         return view('admin.companies.index', compact('companies'));
     }
-
-    /**
-     * Menampilkan form untuk membuat perusahaan baru (Create)
-     */
-    public function create()
-    {
-        return view('admin.companies.create');
-    }
-
-    /**
-     * Menyimpan data perusahaan baru ke database (Store)
-     */
     public function store(Request $request)
     {
         // 1. Validasi Data
@@ -45,6 +33,8 @@ class CompanyController extends Controller
             'industri' => 'required|string|max:255',
             'provinsi' => 'required|string|max:255',
             'kota' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
+            'desa_kelurahan' => 'required|string|max:255',
             'alamat_lengkap' => 'required|string',
             'is_active' => 'nullable|boolean',
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -80,39 +70,6 @@ class CompanyController extends Controller
         return view('admin.companies.show', compact('company'));
     }
 
-    /**
-     * Menampilkan form untuk mengedit perusahaan (Edit) - TIDAK DIPERLUKAN
-     */
-    public function edit(Company $company)
-    {
-        // Redirect ke index karena edit tidak diperlukan
-        return redirect()->route('admin.companies.index');
-    }
-
-    /**
-     * Memperbarui data perusahaan di database (Update) - TIDAK DIPERLUKAN
-     */
-    public function update(Request $request, Company $company)
-    {
-        // Redirect ke index karena update tidak diperlukan
-        return redirect()->route('admin.companies.index');
-    }
-
-    /**
-     * HAPUS: Method verify tidak diperlukan lagi
-     */
-    // public function verify(Company $company)
-    // {
-    //     $company->update(['is_verified' => true]);
-        
-    //     return redirect()
-    //         ->route('admin.companies.index')
-    //         ->with('success', 'Perusahaan berhasil diverifikasi!');
-    // }
-
-    /**
-     * Menghapus perusahaan dari database (Destroy)
-     */
     public function destroy(Company $company)
     {
         // Hapus logo dari storage

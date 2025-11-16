@@ -130,6 +130,8 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'provinsi' => 'required|string|max:255',
             'kota' => 'required|string|max:255',
+            'kecamatan' => 'required|string|max:255',
+            'desa_kelurahan' => 'required|string|max:255',
             'alamat_lengkap' => 'required|string|max:500',
         ]);
 
@@ -181,6 +183,8 @@ class RegisterController extends Controller
             $company->logo = $permanentLogoPath;
             $company->provinsi = $request->provinsi;
             $company->kota = $request->kota;
+            $company->kecamatan = $request->kecamatan; // Data baru
+            $company->desa_kelurahan = $request->desa_kelurahan; // Data baru
             $company->alamat_lengkap = $request->alamat_lengkap;
             $company->is_active = true;
             

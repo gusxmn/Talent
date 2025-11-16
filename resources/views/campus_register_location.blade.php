@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pasang Iklan Lowongan Kerja Gratis | Next Employer</title>
+    <title>Pasang Iklan Intership Gratis | Talenthub</title>
 
     <link rel="icon" type="image/png" href="{{ asset('1.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -70,7 +70,7 @@
             right: -50%;
             width: 100%;
             height: 4px;
-            background-color: #28a745;
+            background-color: #28a745; /* 🔥 Semua garis jadi hijau */
             z-index: 0;
             transition: background-color 0.3s ease;
         }
@@ -79,7 +79,7 @@
             width: 35px;
             height: 35px;
             border-radius: 50%;
-            background-color: #28a745;
+            background-color: #28a745; /* 🔥 Semua lingkaran jadi hijau */
             color: white;
             display: flex;
             justify-content: center;
@@ -92,12 +92,12 @@
         .progress-label {
             margin-top: 8px;
             font-size: 0.9rem;
-            color: #28a745;
+            color: #28a745; /* 🔥 Semua label jadi hijau */
             font-weight: 600;
         }
 
         /* FORM STYLING */
-        .company-profile-card {
+        .campus-profile-card {
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -128,7 +128,7 @@
         }
         
         .form-label {
-            display: none;
+            display: none; /* Sembunyikan label */
         }
         
         .required-star {
@@ -189,8 +189,8 @@
         }
         
         .btn-primary {
-            background-color: #0d47a1;
-            border-color: #0d47a1;
+            background-color: #00b14f;
+            border-color: #00b14f;
             border-radius: 6px;
             padding: 0.6rem 1.5rem;
             font-weight: 600;
@@ -201,16 +201,8 @@
         }
         
         .btn-primary:hover {
-            background-color: #0a3a8a;
-            border-color: #0a3a8a;
-        }
-        
-        .btn-secondary {
-            border-radius: 6px;
-            padding: 0.6rem 1.5rem;
-            font-weight: 600;
-            font-size: 0.95rem;
-            margin-right: 10px;
+            background-color: #009944;
+            border-color: #009944;
         }
         
         .form-footer::after {
@@ -244,12 +236,16 @@
             margin-top: 0.25rem;
         }
 
-        /* Error styling */
-        .alert-danger {
-            border-radius: 6px;
+        /* Placeholder styling untuk select */
+        .custom-select option:first-child {
+            color: #999;
+        }
+
+        .alert {
             margin-bottom: 1rem;
         }
 
+        /* Error styling */
         .is-invalid {
             border-color: #dc3545 !important;
         }
@@ -282,48 +278,26 @@
         </div>
         <div class="progress-step active">
             <div class="circle">2</div>
-            <div class="progress-label">Data Perusahaan</div>
+            <div class="progress-label">Data Kampus/Sekolah</div>
         </div>
         <div class="progress-step active">
             <div class="circle">3</div>
-            <div class="progress-label">Lokasi Perusahaan</div>
+            <div class="progress-label">Lokasi Kampus/Sekolah</div>
         </div>
     </div>
 
-    <!-- Form Lokasi Perusahaan -->
+    <!-- Form Lokasi Kampus -->
     <div class="container my-5">
-        <div class="company-profile-card">
+        <div class="campus-profile-card">
             <div class="card-header">
-                <h1 class="card-title">Lokasi Perusahaan</h1>
+                <h1 class="card-title">Lokasi Kampus/Sekolah</h1>
             </div>
             
             <div class="card-body">
-                <!-- Display Session Errors -->
-                @if(session('error'))
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <i class="fas fa-exclamation-triangle me-2"></i>
-                        {{ session('error') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
 
-                <!-- Display Validation Errors -->
-                @if($errors->any())
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <h6 class="alert-heading"><i class="fas fa-exclamation-triangle me-2"></i>Terjadi Kesalahan</h6>
-                        <ul class="mb-0">
-                            @foreach($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
-
-                <form id="locationForm" action="{{ route('company.register.step3') }}" method="POST">
+                <form id="locationForm" action="{{ route('campus.register.step3') }}" method="POST">
                     @csrf
-                    
-                    <!-- Form Lokasi Perusahaan -->
+                    <!-- Form Lokasi Kampus -->
                     <div class="location-row">
                         <div class="location-col">
                             <div class="form-group">
@@ -416,11 +390,11 @@
                     </div>
                     
                     <div class="form-footer">
-                        <a href="{{ route('company.register.cancel') }}" class="btn btn-secondary" onclick="return confirm('Batalkan pendaftaran? Data yang sudah diisi akan hilang.')">
+                        <a href="{{ route('campus.register.cancel') }}" class="btn btn-secondary" onclick="return confirm('Batalkan pendaftaran? Data yang sudah diisi akan hilang.')">
                             Batalkan
                         </a>
                         <button type="submit" class="btn btn-primary" id="submitButton">
-                            Buat Perusahaan
+                            Buat Kampus/Sekolah
                         </button>
                     </div>
                 </form>
@@ -729,12 +703,7 @@
                 desaKelurahanSelect.disabled = false;
 
                 if (kecamatanDesa[kecamatan]) {
-                    // Handle case where data might be nested array
-                    const desaList = Array.isArray(kecamatanDesa[kecamatan][0]) 
-                        ? kecamatanDesa[kecamatan][0] 
-                        : kecamatanDesa[kecamatan];
-                    
-                    desaList.forEach(desa => {
+                    kecamatanDesa[kecamatan].forEach(desa => {
                         const option = document.createElement('option');
                         option.value = desa;
                         option.textContent = desa;
@@ -820,6 +789,5 @@
             });
         });
     </script>
-
 </body>
 </html>

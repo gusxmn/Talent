@@ -52,6 +52,12 @@ return [
         'provider' => 'companies',
     ],
 
+       
+    'campus' => [
+        'driver' => 'session',
+        'provider' => 'campuses',
+    ],
+
     ],
 
     /*
@@ -81,6 +87,11 @@ return [
     'companies' => [
         'driver' => 'eloquent',
         'model' => App\Models\Company::class,
+    ],
+
+    'campuses' => [
+        'driver' => 'eloquent', 
+        'model' => App\Models\Campus::class,
     ],
     
     ],

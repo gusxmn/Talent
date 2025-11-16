@@ -24,6 +24,8 @@ class Company extends Authenticatable
         'logo',
         'provinsi',
         'kota',
+        'kecamatan', // Kolom baru
+        'desa_kelurahan', // Kolom baru
         'alamat_lengkap',
         'is_active',
         // HAPUS: 'is_verified',

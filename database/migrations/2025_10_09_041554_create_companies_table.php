@@ -26,6 +26,8 @@ return new class extends Migration {
             // Data dari langkah 3 (Lokasi Perusahaan)
             $table->string('provinsi')->nullable();
             $table->string('kota')->nullable();
+            $table->string('kecamatan')->nullable(); // Kolom baru
+            $table->string('desa_kelurahan')->nullable(); // Kolom baru
             $table->text('alamat_lengkap')->nullable();
 
             // Status aktif/nonaktif

@@ -465,7 +465,7 @@
                 <div class="mb-3 text-start">
                     <div class="password-container">
                         <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password baru" required>
-                        <i class="fa-regular fa-eye password-toggle"></i>
+                        <i class="fa-regular fa-eye password-toggle" data-target="password"></i>
                     </div>
                     @error('password')
                         <small class="text-danger">{{ $message }}</small>
@@ -474,7 +474,7 @@
                 <div class="mb-3 text-start">
                     <div class="password-container">
                         <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Konfirmasi password" required>
-                        <i class="fa-regular fa-eye password-toggle"></i>
+                        <i class="fa-regular fa-eye password-toggle" data-target="password_confirmation"></i>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-submit">Lanjutkan</button>
@@ -506,15 +506,20 @@
     @include('partials.footer')
 
     <script>
-        // Toggle password visibility
-        const passwordToggle = document.querySelector('.password-toggle');
-        const passwordInput = document.querySelector('#password');
-
-        passwordToggle.addEventListener('click', function () {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            this.classList.toggle('fa-eye');
-            this.classList.toggle('fa-eye-slash');
+        // Toggle password visibility untuk kedua kolom password
+        const passwordToggles = document.querySelectorAll('.password-toggle');
+        
+        passwordToggles.forEach(toggle => {
+            toggle.addEventListener('click', function () {
+                const targetId = this.getAttribute('data-target');
+                const passwordInput = document.getElementById(targetId);
+                
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                
+                this.classList.toggle('fa-eye');
+                this.classList.toggle('fa-eye-slash');
+            });
         });
 
         // Dropdown functionality

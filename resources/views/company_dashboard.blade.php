@@ -53,8 +53,7 @@
             <div class="d-flex align-items-center">
                 <i class="fas fa-check-circle fa-2x me-3"></i>
                 <div>
-                    <h5 class="mb-1">Login perusahaan berhasil</h5>
-                    <p class="mb-0">{{ session('login_success') }}</p>
+                    <h5 class="mb-1">{{ session('login_success') }}</h5>
                 </div>
             </div>
         </div>
@@ -81,10 +80,7 @@
         <div class="card-body text-center py-5">
             <i class="fas fa-building fa-3x text-primary mb-3"></i>
             <h3 class="card-title">Selamat Datang di Dashboard Perusahaan</h3>
-            <p class="card-text text-muted">
-                Anda telah berhasil terdaftar dan dapat mulai menggunakan semua fitur yang tersedia.
-            </p>
-            
+
             @auth('company')
             <div class="mt-4 p-3 bg-light rounded">
                 <h6>Informasi Perusahaan Anda:</h6>

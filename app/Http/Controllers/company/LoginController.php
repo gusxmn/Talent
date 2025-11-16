@@ -35,7 +35,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
             Log::info('Login perusahaan berhasil', ['user' => Auth::guard('company')->user()]); // 🔧 tambahan debug
             return redirect()->route('company.dashboard')
-                ->with('login_success', 'Selamat datang kembali di dashboard perusahaan!');
+                ->with('login_success', 'Login perusahaan berhasil');
         }
 
         Log::warning('Login perusahaan gagal', ['email' => $request->email]); // 🔧 tambahan debug
@@ -54,6 +54,8 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('company.login')->with('info', 'Anda telah keluar dari akun perusahaan.');
+        // DIUBAH: Redirect ke halaman login perusahaan bukan ke halaman utama
+        return redirect()->route('company.login')->with('info', 'Anda telah berhasil keluar dari akun perusahaan.');
     }
+    
 }

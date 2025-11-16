@@ -212,19 +212,18 @@
             </div>
         </div>
 
-        {{-- KPI Box Baru: Total Campus --}}
+       {{-- KPI Box Baru: Total Campus --}}
         <div class="col-md-2 mb-3">
             <div class="card kpi-card kpi-card-campus">
                 <div class="card-body">
-                    <h3>42</h3>
+                    <h3>{{ $totalCampusesCount }}</h3> {{-- UBAH DARI 42 MENJADI VARIABLE --}}
                     <p>Total Campus</p>
                 </div>
                 <div class="card-footer">
-                    <a href="{{ route('admin.campuses.index') }}">Lihat Detail</a>
+                    <a href="{{ route('admin.campus.index') }}">Lihat Detail</a> {{-- PERBAIKI ROUTE --}}
                 </div>
             </div>
         </div>
-    </div>
 
     {{-- Inline Charts di bawah KPI --}}
     <div class="row">

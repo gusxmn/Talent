@@ -162,6 +162,28 @@
             background-color: #00b14f;
         }
 
+        /* Error messages */
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        .invalid-feedback {
+            display: block;
+            width: 100%;
+            margin-top: 5px;
+            font-size: 0.875rem;
+            color: #dc3545;
+            text-align: left;
+        }
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+
         /* Social login - DISESUAIKAN SAMA */
         .social-login {
             margin-top: 18px; /* DISESUAIKAN SAMA */
@@ -284,19 +306,44 @@
         </div>
 
         <div class="register-right">
-            <h3>Pasang Iklan Intership<br>Sekarang!</h3>
+              <h3>Pasang Iklan Intership<br>Sekarang!</h3>
 
-            <form action="#" method="POST" style="width: 100%;">
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form action="{{ route('campus.login.submit') }}" method="POST" style="width: 100%;">
+                @csrf
                 <div class="mb-3 text-start">
-                    <!-- <label for="email" class="form-label">Alamat Email</label> -->
-                    <input type="email" class="form-control" id="email" placeholder="Masukkan email Anda" required>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="Masukkan email Anda" value="{{ old('email') }}" required>
+                    @error('email')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
                 <div class="mb-3 text-start">
-                    <!-- <label for="password" class="form-label">Password</label> -->
                     <div class="password-container">
-                        <input type="password" class="form-control" id="password" placeholder="Masukkan password anda" required>
+                        <input type="password" class="form-control @error('password') is-invalid @enderror" id="password" name="password" placeholder="Masukkan password anda" required>
                         <i class="fa-regular fa-eye password-toggle"></i>
                     </div>
+                    @error('password')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
                 <a href="#" class="forgot-password">Lupa password?</a>
                 <button type="submit" class="btn btn-submit">Masuk</button>
@@ -305,8 +352,6 @@
             <div class="social-login">
                 <span>Atau dengan</span>
                 <a href="#"><img src="{{ asset('images/googles.png') }}" alt="Google" class="google-icon"></a>
-                <!-- <a href="#"><img src="{{ asset('images/logo linkedin.png') }}" alt="LinkedIn" class="linkedin"></a>
-                <a href="#"><img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook"></a> -->
             </div>
 
             <div class="terms">
@@ -317,7 +362,7 @@
             </div>
 
             <div class="login-link">
-                Belum punya akun? <a href="kampus">Daftar di sini</a>
+                Belum punya akun? <a href="{{ route('campus.register') }}">Daftar di sini</a>
             </div>
         </div>
     </div>
