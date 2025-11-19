@@ -19,7 +19,7 @@ class RegisterController extends Controller
      */
     public function showStep1()
     {
-        return view('company_register');
+        return view('company.company_register');
     }
 
     /**
@@ -58,7 +58,7 @@ class RegisterController extends Controller
                 ->with('error', 'Silakan lengkapi data diri terlebih dahulu.');
         }
 
-        return view('company_register_process');
+        return view('company.company_register_process');
     }
 
     /**
@@ -115,7 +115,7 @@ class RegisterController extends Controller
                 ->with('error', 'Silakan lengkapi data perusahaan terlebih dahulu.');
         }
 
-        return view('company_register_location');
+        return view('company.company_register_location');
     }
 
     /**

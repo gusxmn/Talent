@@ -17,33 +17,33 @@
         }
 
         /* NAVBAR */
-    .navbar {
-        font-size: 1rem; /* disamakan */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        background: #fff;
-        border-bottom: 1px solid #dee2e6;
-        padding: 0.5rem 1rem; /* lebih mendekati ukuran bootstrap default */
-    }
-    .navbar-logo {
-        height: 38px; /* disamakan */
-        width: auto;
-    }
-    .btn-login {
-        border-radius: 6px;
-        padding: 0.35rem 1rem;
-        font-weight: 600;
-        font-size: 0.95rem;
-        color: #0d47a1 !important;
-        background-color: #fff;
-        border: 2px solid #0d47a1;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-    .btn-login:hover {
-        background-color: #0d47a1;
-        color: #fff !important;
-        border: 2px solid #0d47a1;
-    }
+        .navbar {
+            font-size: 1rem; /* disamakan */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            background: #fff;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0.5rem 1rem; /* lebih mendekati ukuran bootstrap default */
+        }
+        .navbar-logo {
+            height: 38px; /* disamakan */
+            width: auto;
+        }
+        .btn-login {
+            border-radius: 6px;
+            padding: 0.35rem 1rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #0d47a1 !important;
+            background-color: #fff;
+            border: 2px solid #0d47a1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            background-color: #0d47a1;
+            color: #fff !important;
+            border: 2px solid #0d47a1;
+        }
 
         /* REGISTER / LOGIN CONTAINER - DISESUAIKAN SAMA DENGAN HALAMAN PERUSAHAAN */
         .register-container {
@@ -258,7 +258,7 @@
             <a href="/" class="navbar-brand d-flex align-items-center py-2">
                 <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
             </a>
-            <a href="{{ url('/login-perusahaan') }}" class="btn-login">Masuk</a>
+            <a href="{{ route('company.login') }}" class="btn-login">Masuk</a>
         </div>
     </nav>
 
@@ -281,32 +281,14 @@
         <div class="register-right">
             <h3>Pasang Iklan Lowongan<br>Kerja Gratis!</h3>
 
-            @if(session('error'))
-                <div class="alert alert-danger w-100 text-start">
-                    <i class="fa-solid fa-circle-exclamation me-2"></i> {{ session('error') }}
-                </div>
-            @endif
-
-            @if($errors->any())
-                <div class="alert alert-danger w-100 text-start">
-                    <ul class="mb-0">
-                        @foreach($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
             <form action="{{ route('company.login.submit') }}" method="POST" style="width: 100%;">
                 @csrf
 
                 <div class="mb-3 text-start">
-                    <!-- <label for="email" class="form-label">Alamat Email</label> -->
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email Anda" required>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Masukkan email Anda" value="{{ old('email') }}" required>
                 </div>
 
                 <div class="mb-3 text-start">
-                    <!-- <label for="password" class="form-label">Password</label> -->
                     <div class="password-container">
                         <input type="password" class="form-control" id="password" name="password" placeholder="Masukkan password anda" required>
                         <i class="fa-regular fa-eye password-toggle"></i>
@@ -320,8 +302,6 @@
             <div class="social-login">
                 <span>Atau dengan</span>
                 <a href="#"><img src="{{ asset('images/googles.png') }}" alt="Google" class="google-icon"></a>
-                <!-- <a href="#"><img src="{{ asset('images/logo linkedin.png') }}" alt="LinkedIn" class="linkedin"></a>
-                <a href="#"><img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook"></a> -->
             </div>
 
             <div class="terms">
@@ -332,7 +312,7 @@
             </div>
 
             <div class="login-link">
-                Belum punya akun? <a href="perusahaan">Daftar di sini</a>
+                Belum punya akun? <a href="{{ route('company.register') }}">Daftar di sini</a>
             </div>
         </div>
     </div>
@@ -353,6 +333,17 @@
             passwordInput.setAttribute('type', type);
             this.classList.toggle('fa-eye');
             this.classList.toggle('fa-eye-slash');
+        });
+
+        // Auto-hide alerts after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(function(alert) {
+                    const bsAlert = new bootstrap.Alert(alert);
+                    bsAlert.close();
+                });
+            }, 5000);
         });
     </script>
 </body>

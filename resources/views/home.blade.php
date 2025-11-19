@@ -228,56 +228,62 @@
                     </div>
                 </div>
 
-                <div class="col-md-7 trusted-companies">
+                    <div class="col-md-7 trusted-companies">
                     <h2 class="fs-4 fw-bold mb-4 text-dark-gray">Perusahaan terpercaya, merekrut</h2>
                     <div class="logo-container">
-                        <div class="logo-wrapper">
-                            <div class="logo-card">
-                                <img src="{{ asset('images/bukalapak.png') }}" alt="Bukalapak" class="logo">
+                        @php
+                            // Ambil 8 perusahaan aktif pertama dari database
+                            $trustedCompanies = App\Models\Company::aktif()->take(8)->get();
+                        @endphp
+
+                        @if($trustedCompanies->count() > 0)
+                            @foreach($trustedCompanies as $company)
+                                <div class="logo-wrapper">
+                                    <div class="logo-card">
+                                        @if($company->logo)
+                                            <img src="{{ asset('storage/' . $company->logo) }}" 
+                                                alt="{{ $company->nama_perusahaan }}" 
+                                                class="logo"
+                                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                            <div class="default-logo" style="display: none;">
+                                                {{ substr($company->nama_perusahaan, 0, 2) }}
+                                            </div>
+                                        @else
+                                            <div class="default-logo">
+                                                {{ substr($company->nama_perusahaan, 0, 2) }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            {{-- Fallback jika tidak ada perusahaan di database --}}
+                            <div class="logo-wrapper">
+                                <div class="logo-card">
+                                    <div class="default-logo">CO</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="logo-wrapper">
-                            <div class="logo-card">
-                                <img src="{{ asset('images/shopee.png') }}" alt="Shopee" class="logo">
+                            <div class="logo-wrapper">
+                                <div class="logo-card">
+                                    <div class="default-logo">MP</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="logo-wrapper">
-                            <div class="logo-card">
-                                <img src="{{ asset('images/gojek.png') }}" alt="Gojek" class="logo">
+                            <div class="logo-wrapper">
+                                <div class="logo-card">
+                                    <div class="default-logo">AN</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="logo-wrapper">
-                            <div class="logo-card">
-                                <img src="{{ asset('images/tokopedia.png') }}" alt="Tokopedia" class="logo">
+                            <div class="logo-wrapper">
+                                <div class="logo-card">
+                                    <div class="default-logo">Y</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="logo-wrapper">
-                            <div class="logo-card">
-                                <img src="{{ asset('images/telkom.png') }}" alt="Telkom Indonesia" class="logo">
-                            </div>
-                        </div>
-                        <div class="logo-wrapper">
-                            <div class="logo-card">
-                                <img src="{{ asset('images/jnt.png') }}" alt="J&T Express" class="logo">
-                            </div>
-                        </div>
-                        <div class="logo-wrapper">
-                            <div class="logo-card">
-                                <img src="{{ asset('images/traveloka.png') }}" alt="Traveloka" class="logo">
-                            </div>
-                        </div>
-                        <div class="logo-wrapper">
-                            <div class="logo-card">
-                                <img src="{{ asset('images/xendit.png') }}" alt="Xendit" class="logo">
-                            </div>
-                        </div>
+                        @endif
                     </div>
                     <div class="text-start mt-3">
-                        <a href="explore-perusahaan" class="text-decoration-none see-more-offset">Lihat Lainnya.....</a>
+                    <a href="explore-perusahaan" class="text-decoration-none see-more-offset">Lihat Lainnya.....</a>
                     </div>
                 </div>
-            </div>
-        </div>
     </section>
 
     <section class="py-5 text-center glints-section">
@@ -349,5 +355,16 @@
             </div>
         </div>
     </section>
+
+        
+     <!-- INTEGRASI WHATSAPP YANG BERFUNGSI -->
+    <div class="whatsapp-float">
+        <a href="https://wa.me/6282115179879?text=Halo%2C%20saat%20ini%20saya%20sedang%20mengakses%20website%20Inotal%20dan%20saya%20butuh%20bantuan" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="whatsapp-link">
+            <img src="{{ asset('images/whatsapp.png') }}" alt="Chat via WhatsApp" class="whatsapp-logo">
+        </a>
+    </div>
 
 @endsection

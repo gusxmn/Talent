@@ -172,6 +172,15 @@
             margin-bottom: 20px;
             font-size: 0.9rem;
         }
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
         .invalid-feedback {
             display: block;
             width: 100%;

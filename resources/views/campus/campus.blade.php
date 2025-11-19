@@ -263,10 +263,11 @@
                 Daftar dengan Google
             </div>
 
-            <a href="http://127.0.0.1:8000/daftar-kampus" class="register-btn">
+            <a href="{{ route('campus.register') }}" class="register-btn">
                 <img src="{{ asset('images/gmail.png') }}" alt="Email">
                 Daftar dengan Email
             </a>
+            
 
             <div class="social-login">
                 <!-- <span>Atau dengan</span>
@@ -282,7 +283,7 @@
             </div>
 
             <div class="login-link">
-                Sudah punya akun? <a href="{{ url('/login-kampus') }}">Login di sini</a>
+                Sudah punya akun? <a href="{{ route('campus.login') }}">Login di sini</a>
             </div>
         </div>
     </div>
@@ -293,6 +294,8 @@
     </div>
 
     @include('partials.footer')
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

@@ -12,12 +12,11 @@
     <style>
         /* Section Header Explore */
         html, body {
-    width: 100%;
-    overflow-x: hidden; /* ❌ Hilangkan scroll horizontal */
-    margin: 0;
-    padding: 0;
-}
-
+            width: 100%;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
 
         .explore-wrapper {
             padding: 0 1rem;
@@ -101,7 +100,7 @@
             position: relative;
         }
 
-        /* Explore Companies Section - PENYESUAIAN CARD DAN CAROUSEL */
+        /* Explore Companies Section */
         .companies-section {
             padding: 2rem 0; 
         }
@@ -143,6 +142,7 @@
             justify-content: flex-start;
             min-height: 230px;
             align-items: center;
+            width: 100%; /* Pastikan card selalu mengambil lebar penuh dari col */
         }
 
         .companies-card.highlighted {
@@ -256,7 +256,7 @@
 
         /* Styling untuk bagian baru "Dapatkan gambaran yang jelas sebelum melamar" */
         .pre-apply-section {
-            padding: 1rem 1rem; /* MENGURANGI padding-top untuk menaikkan section */
+            padding: 1rem 1rem;
             text-align: center;
             background-color: #fff; 
         }
@@ -288,7 +288,7 @@
             margin: 0;
         }
 
-  .community-section {
+        .community-section {
             background-color: #fff;
             padding: 1rem 1rem;
             font-family: Arial, sans-serif;
@@ -309,7 +309,7 @@
 
         /* Tambahkan jarak antar section */
         .top-companies {
-            margin-top: 5rem; /* jarak lebih besar dari sebelumnya */
+            margin-top: 5rem;
         }
 
         .top-companies h5 {
@@ -321,20 +321,65 @@
         .top-companies .company-list {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.2rem; /* jarak antar perusahaan */
+            gap: 1.2rem;
         }
 
         .top-companies a {
             color: #0d47a1;
-            text-decoration: underline; /* underline permanen */
+            text-decoration: underline;
             font-size: 0.95rem;
             margin: 0;
         }
 
         .top-companies a:hover {
-            text-decoration: underline; /* biar underline tetap ada saat hover */
+            text-decoration: underline;
         }
 
+        /* Default logo jika tidak ada */
+        .default-logo {
+            width: 60px;
+            height: 60px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        /* Style untuk memastikan row selalu memiliki 5 kolom */
+        .fixed-columns-row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .fixed-column {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+        
+        @media (max-width: 768px) {
+            .fixed-column {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .fixed-column {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+        }
+
+        /* Style untuk placeholder kolom kosong */
+        .empty-column {
+            visibility: hidden;
+            height: 0;
+            padding: 0;
+            margin: 0;
+        }
     </style>
 </head>
 <body>
@@ -375,200 +420,88 @@
 
         <div id="companiesCarousel" class="carousel slide" data-bs-interval="false">
             <div class="carousel-inner">
+                @php
+                    // Ambil data perusahaan aktif dari database
+                    $companies = App\Models\Company::aktif()->get();
+                    
+                    // Bagi data menjadi chunk/chunks untuk carousel (5 perusahaan per slide)
+                    $companyChunks = $companies->chunk(5);
+                    
+                    // Jika tidak ada data perusahaan, tampilkan pesan
+                    $hasCompanies = $companyChunks->count() > 0;
+                @endphp
 
-                <div class="carousel-item active">
-                    <div class="row g-3">
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/bukalapak.png') }}" alt="Bukalapak">
-                                </div>
-                                <h5>Bukalapak</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.3 • 150 Ulasan</p>
-                                <button class="btn btn-jobs">30 Pekerjaan</button>
+                @if($hasCompanies)
+                    @foreach($companyChunks as $index => $chunk)
+                        <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                            <div class="row g-3 fixed-columns-row">
+                                @foreach($chunk as $company)
+                                    <div class="col-6 col-md fixed-column">
+                                        <div class="companies-card">
+                                            <div class="logo-container">
+                                                @if($company->logo)
+                                                    <img src="{{ asset('storage/' . $company->logo) }}" alt="{{ $company->nama_perusahaan }}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                                    <div class="default-logo" style="display: none;">
+                                                        {{ substr($company->nama_perusahaan, 0, 2) }}
+                                                    </div>
+                                                @else
+                                                    <div class="default-logo">
+                                                        {{ substr($company->nama_perusahaan, 0, 2) }}
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <h5>{{ $company->nama_perusahaan }}</h5>
+                                            <p class="rating">
+                                                <i class="bi bi-star-fill"></i> 
+                                                {{-- Rating sementara - bisa diambil dari relasi reviews jika ada --}}
+                                                4.{{ rand(0,5) }} • {{ rand(50, 300) }} Ulasan
+                                            </p>
+                                            <button class="btn btn-jobs">
+                                                {{-- Jumlah pekerjaan sementara - bisa diambil dari relasi jobListings jika ada --}}
+                                                {{ rand(10, 100) }} Pekerjaan
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endforeach
+                                
+                                {{-- Tambahkan kolom kosong untuk mengisi sisa slot --}}
+                                @for($i = $chunk->count(); $i < 5; $i++)
+                                    <div class="col-6 col-md fixed-column empty-column">
+                                        <div class="companies-card"></div>
+                                    </div>
+                                @endfor
                             </div>
                         </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/shopee.png') }}" alt="Shopee">
-                                </div>
-                                <h5>Shopee</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.4 • 200 Ulasan</p>
-                                <button class="btn btn-jobs">45 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/gojek.png') }}" alt="Gojek">
-                                </div>
-                                <h5>Gojek</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.4 • 293 Ulasan</p>
-                                <button class="btn btn-jobs">50 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/tokopedia.png') }}" alt="Tokopedia">
-                                </div>
-                                <h5>Tokopedia</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.2 • 180 Ulasan</p>
-                                <button class="btn btn-jobs">40 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/telkom.png') }}" alt="Telkom">
-                                </div>
-                                <h5>Telkom</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.1 • 210 Ulasan</p>
-                                <button class="btn btn-jobs">60 Pekerjaan</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="carousel-item">
-                    <div class="row g-3">
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/jnt.png') }}" alt="J&T">
-                                </div>
-                                <h5>J&T</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.0 • 100 Ulasan</p>
-                                <button class="btn btn-jobs">20 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/traveloka.png') }}" alt="Traveloka">
-                                </div>
-                                <h5>Traveloka</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.5 • 170 Ulasan</p>
-                                <button class="btn btn-jobs">35 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/xendit.png') }}" alt="Xendit">
-                                </div>
-                                <h5>Xendit</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.3 • 120 Ulasan</p>
-                                <button class="btn btn-jobs">25 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/pertamina.png') }}" alt="Pertamina">
-                                </div>
-                                <h5>Pertamina</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.4 • 250 Ulasan</p>
-                                <button class="btn btn-jobs">70 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/kimia.png') }}" alt="Kimia Farma">
-                                </div>
-                                <h5>Kimia Farma</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.2 • 90 Ulasan</p>
-                                <button class="btn btn-jobs">15 Pekerjaan</button>
+                    @endforeach
+                @else
+                    {{-- Jika tidak ada perusahaan di database --}}
+                    <div class="carousel-item active">
+                        <div class="row g-3">
+                            <div class="col-12 text-center py-5">
+                                <p class="text-muted">Belum ada perusahaan yang terdaftar.</p>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="carousel-item">
-                    <div class="row g-3">
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/garuda.png') }}" alt="Garuda">
-                                </div>
-                                <h5>Garuda</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.3 • 140 Ulasan</p>
-                                <button class="btn btn-jobs">28 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/djarum.png') }}" alt="Djarum">
-                                </div>
-                                <h5>Djarum</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.1 • 110 Ulasan</p>
-                                <button class="btn btn-jobs">18 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/bca.png') }}" alt="BCA">
-                                </div>
-                                <h5>BCA</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.5 • 300 Ulasan</p>
-                                <button class="btn btn-jobs">55 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/asabri.png') }}" alt="Asabri">
-                                </div>
-                                <h5>Asabri</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.0 • 60 Ulasan</p>
-                                <button class="btn btn-jobs">10 Pekerjaan</button>
-                            </div>
-                        </div>
-
-                        <div class="col-6 col-md">
-                            <div class="companies-card">
-                                <div class="logo-container">
-                                    <img src="{{ asset('images/adhimix.png') }}" alt="Adhimix">
-                                </div>
-                                <h5>Adhimix</h5>
-                                <p class="rating"><i class="bi bi-star-fill"></i> 4.2 • 80 Ulasan</p>
-                                <button class="btn btn-jobs">12 Pekerjaan</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                @endif
             </div>
 
-            <button class="carousel-control-prev disabled" id="prevButton" type="button" data-bs-target="#companiesCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" id="nextButton" type="button" data-bs-target="#companiesCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
+            @if($hasCompanies && $companyChunks->count() > 1)
+                <button class="carousel-control-prev disabled" id="prevButton" type="button" data-bs-target="#companiesCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" id="nextButton" type="button" data-bs-target="#companiesCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
 
-            <div class="carousel-indicators mt-3">
-                <button type="button" data-bs-target="#companiesCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
-                <button type="button" data-bs-target="#companiesCarousel" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#companiesCarousel" data-bs-slide-to="2"></button>
-            </div>
+                <div class="carousel-indicators mt-3">
+                    @for($i = 0; $i < $companyChunks->count(); $i++)
+                        <button type="button" data-bs-target="#companiesCarousel" data-bs-slide-to="{{ $i }}" 
+                                class="{{ $i === 0 ? 'active' : '' }}" aria-current="{{ $i === 0 ? 'true' : 'false' }}"></button>
+                    @endfor
+                </div>
+            @endif
         </div>
     </div>
     
@@ -601,7 +534,7 @@
         </div>
     </div>
 
-     <!-- Bagian baru sesuai gambar -->
+    <!-- Bagian baru sesuai gambar -->
     <div class="community-section container">
         <a href="#">Lihat pedoman komunitas <i class="bi bi-arrow-right"></i></a>
         <a href="#">Informasi untuk perusahaan <i class="bi bi-arrow-right"></i></a>
@@ -609,12 +542,20 @@
         <div class="top-companies">
             <h5>Perusahaan teratas</h5>
             <div class="company-list">
-                <a href="#">Bukalapak</a>
-                <a href="#">Traveloka</a>
-                <a href="#">kimia Farma</a>
-                <a href="#">Gojek</a>
-                <a href="#">Shopee</a>
-                <a href="#">Lihat semua <i class="bi bi-chevron-down"></i></a>
+                @php
+                    // Ambil 5 perusahaan teratas untuk ditampilkan
+                    $topCompanies = App\Models\Company::aktif()->take(5)->get();
+                @endphp
+                
+                @foreach($topCompanies as $company)
+                    <a href="#">{{ $company->nama_perusahaan }}</a>
+                @endforeach
+                
+                @if($topCompanies->count() > 0)
+                    <a href="#">Lihat semua <i class="bi bi-chevron-down"></i></a>
+                @else
+                    <a href="#" class="text-muted">Belum ada perusahaan</a>
+                @endif
             </div>
         </div>
     </div>
@@ -634,26 +575,29 @@
             const carouselItems = carousel.querySelectorAll('.carousel-item');
             const totalItems = carouselItems.length;
 
-            function updateCarouselControls() {
-                const activeItem = carousel.querySelector('.carousel-item.active');
-                const activeIndex = Array.from(carouselItems).indexOf(activeItem);
+            // Hanya jalankan jika ada lebih dari 1 item
+            if (totalItems > 1) {
+                function updateCarouselControls() {
+                    const activeItem = carousel.querySelector('.carousel-item.active');
+                    const activeIndex = Array.from(carouselItems).indexOf(activeItem);
 
-                if (activeIndex === 0) {
-                    prevButton.classList.add('disabled');
-                    nextButton.classList.remove('disabled');
-                } 
-                else if (activeIndex === totalItems - 1) {
-                    prevButton.classList.remove('disabled');
-                    nextButton.classList.add('disabled');
-                } 
-                else {
-                    prevButton.classList.remove('disabled');
-                    nextButton.classList.remove('disabled');
+                    if (activeIndex === 0) {
+                        prevButton.classList.add('disabled');
+                        nextButton.classList.remove('disabled');
+                    } 
+                    else if (activeIndex === totalItems - 1) {
+                        prevButton.classList.remove('disabled');
+                        nextButton.classList.add('disabled');
+                    } 
+                    else {
+                        prevButton.classList.remove('disabled');
+                        nextButton.classList.remove('disabled');
+                    }
                 }
-            }
 
-            carousel.addEventListener('slid.bs.carousel', updateCarouselControls);
-            updateCarouselControls(); 
+                carousel.addEventListener('slid.bs.carousel', updateCarouselControls);
+                updateCarouselControls();
+            }
         });
     </script>
 </body>

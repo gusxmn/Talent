@@ -204,6 +204,22 @@
             background-color: #009944;
             border-color: #009944;
         }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            border-radius: 6px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            width: auto;
+            margin-top: 0;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
         
         .form-footer::after {
             content: "";
@@ -266,7 +282,9 @@
             <a href="/" class="navbar-brand d-flex align-items-center py-2">
                 <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
             </a>
-            <a href="{{ url('/') }}" class="btn-login">Keluar</a>
+            <a href="{{ route('campus.register.cancel') }}" class="btn-login" onclick="return confirm('Batalkan pendaftaran? Data yang sudah diisi akan hilang.')">
+                Keluar
+            </a>
         </div>
     </nav>
 
@@ -390,12 +408,15 @@
                     </div>
                     
                     <div class="form-footer">
-                        <a href="{{ route('campus.register.cancel') }}" class="btn btn-secondary" onclick="return confirm('Batalkan pendaftaran? Data yang sudah diisi akan hilang.')">
-                            Batalkan
+
+                        <a href="{{ route('campus.register.process') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Sebelumnya
                         </a>
+
                         <button type="submit" class="btn btn-primary" id="submitButton">
                             Buat Kampus/Sekolah
                         </button>
+                        
                     </div>
                 </form>
             </div>

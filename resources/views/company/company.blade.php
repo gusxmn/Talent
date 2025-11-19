@@ -17,33 +17,33 @@
         }
 
         /* NAVBAR */
-    .navbar {
-        font-size: 1rem; /* disamakan */
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        background: #fff;
-        border-bottom: 1px solid #dee2e6;
-        padding: 0.5rem 1rem; /* lebih mendekati ukuran bootstrap default */
-    }
-    .navbar-logo {
-        height: 38px; /* disamakan */
-        width: auto;
-    }
-    .btn-login {
-        border-radius: 6px;
-        padding: 0.35rem 1rem;
-        font-weight: 600;
-        font-size: 0.95rem;
-        color: #0d47a1 !important;
-        background-color: #fff;
-        border: 2px solid #0d47a1;
-        text-decoration: none;
-        transition: all 0.3s ease;
-    }
-    .btn-login:hover {
-        background-color: #0d47a1;
-        color: #fff !important;
-        border: 2px solid #0d47a1;
-    }
+        .navbar {
+            font-size: 1rem; /* disamakan */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            background: #fff;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0.5rem 1rem; /* lebih mendekati ukuran bootstrap default */
+        }
+        .navbar-logo {
+            height: 38px; /* disamakan */
+            width: auto;
+        }
+        .btn-login {
+            border-radius: 6px;
+            padding: 0.35rem 1rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #0d47a1 !important;
+            background-color: #fff;
+            border: 2px solid #0d47a1;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-login:hover {
+            background-color: #0d47a1;
+            color: #fff !important;
+            border: 2px solid #0d47a1;
+        }
 
         /* REGISTER CONTAINER - DIKECILKAN SEDIKIT */
         .register-container {
@@ -232,13 +232,13 @@
 <body>
 
     <nav class="navbar">
-    <div class="container-fluid d-flex justify-content-between align-items-center mx-lg-5">
-        <a href="/" class="navbar-brand d-flex align-items-center py-2">
-            <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
-        </a>
-        <a href="{{ url('/login-perusahaan') }}" class="btn-login">Masuk</a>
-    </div>
-</nav>
+        <div class="container-fluid d-flex justify-content-between align-items-center mx-lg-5">
+            <a href="/" class="navbar-brand d-flex align-items-center py-2">
+                <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
+            </a>
+            <a href="{{ route('company.login') }}" class="btn-login">Masuk</a>
+        </div>
+    </nav>
 
     <div class="register-container">
         <div class="register-left">
@@ -264,7 +264,7 @@
                 Daftar dengan Google
             </div>
 
-            <a href="http://127.0.0.1:8000/daftar-perusahaan" class="register-btn">
+            <a href="{{ route('company.register') }}" class="register-btn">
                 <img src="{{ asset('images/gmail.png') }}" alt="Email">
                 Daftar dengan Email
             </a>
@@ -283,7 +283,7 @@
             </div>
 
             <div class="login-link">
-                Sudah punya akun? <a href="{{ url('/login-perusahaan') }}">Login di sini</a>
+                Sudah punya akun? <a href="{{ route('company.login') }}">Login di sini</a>
             </div>
         </div>
     </div>
@@ -294,6 +294,25 @@
     </div>
 
     @include('partials.footer')
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Tambahkan event listener untuk tombol Google (jika diperlukan)
+        document.addEventListener('DOMContentLoaded', function() {
+            const googleBtn = document.querySelector('.register-btn:first-child');
+            const emailBtn = document.querySelector('.register-btn[href]');
+            
+            // Contoh: Tambahkan loading state untuk tombol Google
+            googleBtn.addEventListener('click', function(e) {
+                // Jika ingin mengimplementasikan Google OAuth di masa depan
+                // e.preventDefault();
+                // window.location.href = '/auth/google';
+            });
+            
+            // Email button sudah memiliki href yang benar ke route company.register
+        });
+    </script>
 
 </body>
 </html>

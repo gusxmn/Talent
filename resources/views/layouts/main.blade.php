@@ -140,31 +140,47 @@
             border-color: #b8daff;
         }
 
-        /* Perusahaan terpercaya */
-        .trusted-companies .logo-container {
+                /* Style tambahan untuk perusahaan terpercaya dari database */
+        .trusted-companies .default-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #0d47a1, #1976d2);
+            border-radius: 8px;
             display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            row-gap: 0.2rem;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-transform: uppercase;
+            margin: 0 auto;
         }
+
+        .trusted-companies .logo-card img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* PERBAIKAN: Layout grid untuk 4 logo per baris */
+        .trusted-companies .logo-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            row-gap: 1rem;
+        }
+
         .trusted-companies .logo-wrapper {
-            flex-basis: 22%;
-            max-width: 22%;
             text-align: center;
             display: flex;
             align-items: center;
             justify-content: center;
             height: 75px;
         }
-        .trusted-companies .logo {
-            max-width: 90%;
-            max-height: 70px;
-            width: auto;
-            height: auto;
-            opacity: 0.8;
-        }
-        .trusted-companies .logo:hover { opacity: 1; }
-        .logo-card {
+
+        .trusted-companies .logo-card {
             background-color: transparent;
             border: 1px solid transparent;
             border-radius: 8px;
@@ -178,13 +194,63 @@
             transition: all 0.3s ease-in-out;
             box-shadow: none;
         }
-        .logo-card:hover {
+
+        .trusted-companies .logo-card:hover {
             transform: translateY(-5px);
             background-color: rgba(255, 255, 255, 0.4);
             border-color: rgba(224, 224, 224, 0.4);
             box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
         }
-        .see-more-offset { margin-left: 20px; }
+
+        .trusted-companies .logo {
+            max-width: 90%;
+            max-height: 70px;
+            width: auto;
+            height: auto;
+            opacity: 0.8;
+        }
+
+        .trusted-companies .logo:hover { 
+            opacity: 1; 
+        }
+
+        /* Responsive design untuk perusahaan terpercaya */
+        @media (max-width: 768px) {
+            .trusted-companies .logo-container {
+                grid-template-columns: repeat(3, 1fr); /* 3 logo per baris di tablet */
+            }
+            
+            .trusted-companies .logo-wrapper {
+                height: 65px;
+            }
+            
+            .trusted-companies .default-logo {
+                width: 50px;
+                height: 50px;
+                font-size: 12px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .trusted-companies .logo-container {
+                grid-template-columns: repeat(2, 1fr); /* 2 logo per baris di mobile */
+            }
+            
+            .trusted-companies .logo-wrapper {
+                height: 60px;
+            }
+            
+            .trusted-companies .default-logo {
+                width: 45px;
+                height: 45px;
+                font-size: 11px;
+            }
+        }
+
+        .see-more-offset { 
+            margin-left: 20px; 
+        }
+
 
         /* Glints Section */
         .glints-section { background-color: #fff; }
@@ -275,6 +341,57 @@
         .search-box .btn.dropdown-toggle:focus { box-shadow: none; }
         .dropdown-toggle .bi-chevron-down { transition: transform 0.3s ease-in-out; }
         .dropdown-toggle[aria-expanded="true"] .bi-chevron-down { transform: rotate(180deg); }
+
+                /* WhatsApp Floating Button - Functional */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 80px; /* Dinaikkan dari 25px menjadi 80px */
+            right: 25px;
+            z-index: 1000;
+        }
+
+        .whatsapp-link {
+            display: block;
+            text-decoration: none;
+            transition: transform 0.2s ease;
+        }
+
+        .whatsapp-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .whatsapp-link:hover {
+            transform: scale(1.05);
+        }
+
+        /* Responsive WhatsApp */
+        @media (max-width: 768px) {
+            .whatsapp-float {
+                bottom: 70px; /* Dinaikkan dari 20px menjadi 70px */
+                right: 20px;
+            }
+            
+            .whatsapp-logo {
+                width: 55px;
+                height: 55px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .whatsapp-float {
+                bottom: 60px; /* Dinaikkan dari 15px menjadi 60px */
+                right: 15px;
+            }
+            
+            .whatsapp-logo {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
     </style>
 </head>
 

@@ -151,8 +151,12 @@
             <div class="welcome-text">
                 Halo <strong>{{ $userName }}</strong>,
             </div>
-            
-            <p>Selamat! Pendaftaran <strong>{{ $campusName }}</strong> di InotalHub telah berhasil diproses. Akun kampus/sekolah Anda sekarang aktif dan siap digunakan.</p>
+
+            <p>
+                Selamat! Pendaftaran <strong>{{ $campusName }}</strong> di InotalHub telah berhasil diproses.
+                Akun <strong>{{ $jenisInstitusi }}</strong> Anda sekarang aktif dan siap digunakan.
+            </p>
+
             
             <div class="info-box">
                 <div class="info-item">

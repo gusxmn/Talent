@@ -14,7 +14,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('company_login');
+        return view('company.company_login');
     }
 
     /**
@@ -57,5 +57,4 @@ class LoginController extends Controller
         // DIUBAH: Redirect ke halaman login perusahaan bukan ke halaman utama
         return redirect()->route('company.login')->with('info', 'Anda telah berhasil keluar dari akun perusahaan.');
     }
-    
 }

@@ -9,10 +9,10 @@ use App\Http\Controllers\Admin\LokasiController;
 use App\Http\Controllers\Admin\JobListingController;
 use App\Http\Controllers\Admin\ApplicantController;
 use App\Http\Controllers\Admin\CalendarController; // <-- CONTROLLER BARU UNTUK KALENDER
-use App\Http\Controllers\Admin\ReportController; 
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\CampusController;
-use App\Http\Controllers\Admin\CandidateController; 
+use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\NotifController;
 use App\Http\Controllers\Admin\MagangController;
@@ -78,7 +78,7 @@ Route::get('/sumber-daya-karir/jelajahi-gaji', function () {
 Route::middleware(['auth'])->group(function () {
     // Rute utama halaman pengaturan akun (Detail Login)
     Route::get('/pengaturan/detail', [AccountSettingsController::class, 'index'])->name('account.settings');
-    
+
     // RUTE BARU: Halaman Kontak Saya
     Route::get('/pengaturan/kontak', [AccountSettingsController::class, 'contactIndex'])->name('account.contact');
 
@@ -87,7 +87,7 @@ Route::middleware(['auth'])->group(function () {
 
     // 👇 RUTE BARU: Halaman Preferensi Notifikasi
     Route::get('/pengaturan/notifikasi', [AccountSettingsController::class, 'notificationIndex'])->name('account.notifications');
-    
+
     // 👇 RUTE BARU: Halaman Bantuan & Dukungan (Tambahan Sesuai Permintaan)
     Route::get('/pengaturan/bantuan-dukungan', [AccountSettingsController::class, 'helpSupportIndex'])->name('account.help.support');
 
@@ -96,7 +96,7 @@ Route::middleware(['auth'])->group(function () {
 
     // Rute POST untuk perbarui email
     Route::post('/pengaturan/update-email', [AccountSettingsController::class, 'updateEmail'])->name('account.update.email');
-    
+
     // RUTE BARU: Rute POST untuk perbarui WhatsApp
     Route::post('/pengaturan/update-whatsapp', [AccountSettingsController::class, 'updateWhatsapp'])->name('account.update.whatsapp');
 
@@ -125,41 +125,60 @@ Route::post('/notifications/read/{id}', [UserNotifController::class, 'markAsRead
 // Halaman tipe pekerjaan
 Route::get('/tipe-pekerjaan', fn() => view('job_type'))->name('job.type');
 
-// Halaman perusahaan
-Route::get('/perusahaan', fn() => view('company'))->name('company');
-Route::get('/login-perusahaan', [App\Http\Controllers\Company\LoginController::class, 'showLoginForm'])->name('company.login');
-Route::post('/login-perusahaan', [App\Http\Controllers\Company\LoginController::class, 'login'])->name('company.login.submit');
-Route::post('/logout-perusahaan', [App\Http\Controllers\Company\LoginController::class, 'logout'])->name('company.logout');
 
-Route::get('/daftar-perusahaan', [App\Http\Controllers\Company\RegisterController::class, 'showStep1'])->name('company.register');
-Route::post('/proses-daftar-perusahaan/step1', [App\Http\Controllers\Company\RegisterController::class, 'processStep1'])->name('company.register.step1');
-Route::get('/proses-daftar-perusahaan', [App\Http\Controllers\Company\RegisterController::class, 'showStep2'])->name('company.register.process');
-Route::post('/proses-daftar-perusahaan/step2', [App\Http\Controllers\Company\RegisterController::class, 'processStep2'])->name('company.register.step2');
-Route::get('/lokasi-daftar-perusahaan', [App\Http\Controllers\Company\RegisterController::class, 'showStep3'])->name('company.register.location');
-Route::post('/lokasi-daftar-perusahaan/step3', [App\Http\Controllers\Company\RegisterController::class, 'processStep3'])->name('company.register.step3');
-Route::get('/cancel-registration', [App\Http\Controllers\Company\RegisterController::class, 'cancelRegistration'])->name('company.register.cancel');
-Route::get('/dashboard-perusahaan', fn() => view('company_dashboard'))->name('company.dashboard')->middleware('auth.company');
+// Group untuk route perusahaan
+Route::prefix('perusahaan')->group(function () {
+    // Halaman utama perusahaan
+    Route::get('/', fn() => view('company.company'))->name('company');
+
+    // Auth routes
+    Route::get('/login', [App\Http\Controllers\Company\LoginController::class, 'showLoginForm'])->name('company.login');
+    Route::post('/login', [App\Http\Controllers\Company\LoginController::class, 'login'])->name('company.login.submit');
+    Route::post('/logout', [App\Http\Controllers\Company\LoginController::class, 'logout'])->name('company.logout');
+
+    // Registration routes
+    Route::get('/daftar', [App\Http\Controllers\Company\RegisterController::class, 'showStep1'])->name('company.register');
+    Route::post('/daftar/step1', [App\Http\Controllers\Company\RegisterController::class, 'processStep1'])->name('company.register.step1');
+    Route::get('/daftar/proses', [App\Http\Controllers\Company\RegisterController::class, 'showStep2'])->name('company.register.process');
+    Route::post('/daftar/proses/step2', [App\Http\Controllers\Company\RegisterController::class, 'processStep2'])->name('company.register.step2');
+    Route::get('/daftar/lokasi', [App\Http\Controllers\Company\RegisterController::class, 'showStep3'])->name('company.register.location');
+    Route::post('/daftar/lokasi/step3', [App\Http\Controllers\Company\RegisterController::class, 'processStep3'])->name('company.register.step3');
+    Route::get('/daftar/batal', [App\Http\Controllers\Company\RegisterController::class, 'cancelRegistration'])->name('company.register.cancel');
+
+    // Dashboard
+    Route::get('/dashboard', fn() => view('company.company_dashboard'))->name('company.dashboard')->middleware('auth.company');
+});
 
 
 
-// Halaman kampus
-Route::get('/kampus', fn() => view('campus'))->name('campus');
-Route::get('/login-kampus', [App\Http\Controllers\Campus\LoginController::class, 'showLoginForm'])->name('campus.login');
-Route::post('/login-kampus', [App\Http\Controllers\Campus\LoginController::class, 'login'])->name('campus.login.submit');
+// Group untuk routes kampus
+Route::name('campus.')->group(function () {
+    // Halaman utama kampus
+    Route::get('/kampus', fn() => view('campus.campus'))->name('home');
 
-// Logout POST tetap ada (tidak dihapus)
-Route::post('/logout-kampus', [App\Http\Controllers\Campus\LoginController::class, 'logout'])->name('campus.logout');
+    // Authentication routes
+    Route::get('/login-kampus', [App\Http\Controllers\Campus\LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('/login-kampus', [App\Http\Controllers\Campus\LoginController::class, 'login'])->name('login.submit');
+    Route::post('/logout-kampus', [App\Http\Controllers\Campus\LoginController::class, 'logout'])->name('logout');
 
-Route::get('/daftar-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'showStep1'])->name('campus.register');
-Route::post('/proses-daftar-kampus/step1', [App\Http\Controllers\Campus\RegisterController::class, 'processStep1'])->name('campus.register.step1');
-Route::get('/proses-daftar-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'showStep2'])->name('campus.register.process');
-Route::post('/proses-daftar-kampus/step2', [App\Http\Controllers\Campus\RegisterController::class, 'processStep2'])->name('campus.register.step2');
-Route::get('/lokasi-daftar-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'showStep3'])->name('campus.register.location');
-Route::post('/lokasi-daftar-kampus/step3', [App\Http\Controllers\Campus\RegisterController::class, 'processStep3'])->name('campus.register.step3');
-Route::get('/cancel-registration-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'cancelRegistration'])->name('campus.register.cancel');
+    // Registration routes
+    Route::get('/daftar-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'showStep1'])->name('register');
+    Route::post('/proses-daftar-kampus/step1', [App\Http\Controllers\Campus\RegisterController::class, 'processStep1'])->name('register.step1');
+    Route::get('/proses-daftar-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'showStep2'])->name('register.process');
+    Route::post('/proses-daftar-kampus/step2', [App\Http\Controllers\Campus\RegisterController::class, 'processStep2'])->name('register.step2');
+    Route::get('/lokasi-daftar-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'showStep3'])->name('register.location');
+    Route::post('/lokasi-daftar-kampus/step3', [App\Http\Controllers\Campus\RegisterController::class, 'processStep3'])->name('register.step3');
+    Route::get('/cancel-registration-kampus', [App\Http\Controllers\Campus\RegisterController::class, 'cancelRegistration'])->name('register.cancel');
 
-Route::middleware('auth.campus')->group(function () {
-    Route::get('/dashboard-kampus', fn() => view('campus_dashboard'))->name('campus.dashboard');
+    Route::get('/mou-kampus', fn() => view('campus.mou'));
+    Route::get('/pengajuan-proposal-kampus', fn() => view('campus.proposal'));
+    Route::get('/pengajuan-magang-kampus', fn() => view('campus.intership'));
+    Route::get('/lowongan-pekerjaan-kampus', fn() => view('campus.job'));
+
+    // Protected routes (harus login)
+    Route::middleware('auth.campus')->group(function () {
+        Route::get('/dashboard-kampus', fn() => view('campus.campus_dashboard'))->name('dashboard');
+    });
 });
 
 
@@ -174,8 +193,8 @@ Route::get('/jobs/{job}/apply', [JobController::class, 'apply'])->name('jobs.app
 |--------------------------------------------------------------------------
 */
 Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process'); 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout'); 
+Route::post('/register', [AuthController::class, 'registerProcess'])->name('register.process');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 // ✅ TAMBAHAN RUTE GOOGLE LOGIN
 Route::get('auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('google.login');
@@ -225,7 +244,7 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
 
     // Job Listings Routes - HAPUS DUPLIKAT
     Route::resource('job_listings', JobListingController::class);
-    
+
     // Tambahan routes untuk JobListing
     Route::patch('/job-listings/{job_listing}/publish', [JobListingController::class, 'publish'])
         ->name('job_listings.publish');
@@ -248,13 +267,13 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
     Route::resource('applicants', ApplicantController::class)->only(['index', 'show', 'destroy']);
     Route::put('applicants/{applicant}/status', [ApplicantController::class, 'updateStatus'])->name('applicants.update_status');
 
-    //Halaman Manajemen Perusahaan
+    // Halaman Manajemen Perusahaan (Admin)
     Route::get('companies', [CompanyController::class, 'index'])->name('companies.index');
     Route::post('companies', [CompanyController::class, 'store'])->name('companies.store');
-    Route::get('companies/{company}', [CompanyController::class, 'show'])->name('companies.show'); // TAMBAHKAN SHOW
+    Route::get('companies/{company}', [CompanyController::class, 'show'])->name('companies.show');
     Route::delete('companies/{company}', [CompanyController::class, 'destroy'])->name('companies.destroy');
 
-    //Halaman Manajemen Kampus/Sekolah
+    // Halaman Manajemen Kampus/Sekolah (Admin)
     Route::resource('campus', CampusController::class)->only(['index', 'show', 'destroy']);
 
     // TAMBAHAN: Routes untuk Pemagang (Interns)
@@ -263,21 +282,21 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
 
     // 4. Manajemen Jadwal/Kalender
     Route::prefix('calendar')->name('calendar.')->group(function () {
-        Route::get('/', fn() => view('admin.calendar.index'))->name('index'); 
+        Route::get('/', fn() => view('admin.calendar.index'))->name('index');
         Route::get('/events', [CalendarController::class, 'fetchEvents'])->name('index.events');
         Route::post('/store', [CalendarController::class, 'store'])->name('store');
         Route::patch('/update', [CalendarController::class, 'update'])->name('update');
         Route::post('/delete', [CalendarController::class, 'destroy'])->name('delete');
     });
-    
+
     // 5. Laporan & Analitik
     Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
 
-    
+
     // Contact messages admin management
     Route::resource('contact-messages', AdminContactController::class)->only(['index','show','destroy']);
     Route::post('contact-messages/{id}/restore', [AdminContactController::class, 'restore'])->name('contact-messages.restore');
-    
+
 
 
     /*
@@ -301,7 +320,7 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
 */
 Route::prefix('wawancara')->name('wawancara.')->middleware(['auth', 'wawancara'])->group(function () {
     Route::prefix('jadwal')->name('jadwal.')->group(function () {
-        Route::get('/', fn() => view('admin.calendar.index'))->name('index'); 
+        Route::get('/', fn() => view('admin.calendar.index'))->name('index');
         Route::get('/events', [CalendarController::class, 'fetchEvents'])->name('index.events');
     });
 });

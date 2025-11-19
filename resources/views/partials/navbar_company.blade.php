@@ -26,6 +26,7 @@
         background-color: #0d47a1;
         color: #fff !important;
         border: 2px solid #0d47a1;
+        
     }
    
 </style>

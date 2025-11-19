@@ -16,7 +16,7 @@ class RegisterController extends Controller
     // Step 1 - Data Diri
     public function showStep1()
     {
-        return view('campus_register');
+        return view('campus.campus_register');
     }
 
     public function processStep1(Request $request)
@@ -67,7 +67,7 @@ class RegisterController extends Controller
                 ->with('error', 'Silakan lengkapi data diri terlebih dahulu.');
         }
 
-        return view('campus_register_process');
+        return view('campus.campus_register_process');
     }
 
     public function processStep2(Request $request)
@@ -135,7 +135,7 @@ class RegisterController extends Controller
                 ->with('error', 'Silakan lengkapi data kampus terlebih dahulu.');
         }
 
-        return view('campus_register_location');
+        return view('campus.campus_register_location');
     }
 
     public function processStep3(Request $request)
@@ -264,6 +264,7 @@ class RegisterController extends Controller
                 'email' => $campus->email,
                 'registrationDate' => $registrationDate,
                 'loginUrl' => $loginUrl,
+                'jenisInstitusi' => $campus->jenis_institusi, // ← tambahan penting
             ], function($message) use ($campus) {
                 $message->to($campus->email)
                         ->subject('Pendaftaran Kampus/Sekolah Berhasil - InotalHub')

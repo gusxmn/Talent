@@ -14,7 +14,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
-        return view('campus_login');
+        return view('campus.campus_login');
     }
 
     /**
@@ -68,5 +68,4 @@ class LoginController extends Controller
         // DIUBAH: Redirect ke halaman login kampus, bukan ke halaman utama
         return redirect()->route('campus.login')->with('info', 'Anda telah berhasil keluar dari akun kampus.');
     }
-
 }

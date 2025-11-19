@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pasang Iklan Lowongan Kerja Gratis | Next Employer</title>
+    <title>Pasang Iklan Intership Gratis | Talenthub</title>
 
     <link rel="icon" type="image/png" href="{{ asset('1.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -113,7 +113,7 @@
         }
 
         /* FORM STYLING */
-        .company-profile-card {
+        .campus-profile-card {
             background-color: #fff;
             border-radius: 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -266,8 +266,8 @@
         }
         
         .btn-primary {
-            background-color: #0d47a1;
-            border-color: #0d47a1;
+            background-color: #00b14f;
+            border-color: #00b14f;
             border-radius: 6px;
             padding: 0.6rem 1.5rem;
             font-weight: 600;
@@ -278,8 +278,24 @@
         }
         
         .btn-primary:hover {
-            background-color: #0a3a8a;
-            border-color: #0a3a8a;
+            background-color: #009944;
+            border-color: #009944;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            border-radius: 6px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 600;
+            font-size: 0.95rem;
+            width: auto;
+            margin-top: 0;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
         }
         
         .form-footer::after {
@@ -291,6 +307,38 @@
         .placeholder-option {
             color: #999;
         }
+
+        .alert {
+            margin-bottom: 1rem;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+            padding: 10px 15px;
+            border-radius: 4px;
+        }
+
+        .is-invalid {
+            border-color: #dc3545 !important;
+        }
+
+        .invalid-feedback {
+            display: block;
+            width: 100%;
+            margin-top: 0.25rem;
+            font-size: 0.875em;
+            color: #dc3545;
+        }
     </style>
 </head>
 <body>
@@ -300,7 +348,9 @@
             <a href="/" class="navbar-brand d-flex align-items-center py-2">
                 <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
             </a>
-            <a href="{{ url('/') }}" class="btn-login">Keluar</a>
+            <a href="{{ route('campus.register.cancel') }}" class="btn-login" onclick="return confirm('Batalkan pendaftaran? Data yang sudah diisi akan hilang.')">
+                Keluar
+            </a>
         </div>
     </nav>
 
@@ -312,69 +362,77 @@
         </div>
         <div class="progress-step active">
             <div class="circle">2</div>
-            <div class="progress-label">Data Perusahaan</div>
+            <div class="progress-label">Data Kampus/Sekolah</div>
         </div>
         <div class="progress-step">
             <div class="circle">3</div>
-            <div class="progress-label">Lokasi Perusahaan</div>
+            <div class="progress-label">Lokasi Kampus/Sekolah</div>
         </div>
     </div>
 
-    <!-- Form Profil Perusahaan -->
+    <!-- Form Profil Kampus -->
     <div class="container my-5">
-        <div class="company-profile-card">
+        <div class="campus-profile-card">
             <div class="card-header">
-                <h1 class="card-title">Profil Perusahaan</h1>
+                <h1 class="card-title">Profil Kampus/Sekolah</h1>
             </div>
             
             <div class="card-body">
 
-                   <form id="companyForm" action="{{ route('company.register.step2') }}" method="POST" enctype="multipart/form-data">
+                <form id="campusForm" action="{{ route('campus.register.step2') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="form-group">
-                        <input type="text" id="namaPerusahaan" name="nama_perusahaan" class="form-control" placeholder="Masukkan nama perusahaan anda" value="{{ old('nama_perusahaan') }}" required>
-                        @error('nama_perusahaan')
-                            <small class="text-danger">{{ $message }}</small>
+                        <input type="text" id="namaKampus" name="nama_kampus" class="form-control @error('nama_kampus') is-invalid @enderror" placeholder="Masukkan nama kampus/sekolah anda" value="{{ old('nama_kampus') }}" required>
+                        @error('nama_kampus')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
                     
                     <div class="form-group">
-                        <div class="custom-select-wrapper" id="jumlahKaryawanWrapper">
-                            <select class="custom-select" id="jumlahKaryawan" name="jumlah_karyawan" required>
-                                <option value="" selected disabled class="placeholder-option">Pilih jumlah karyawan</option>
-                                <option value="1-10" {{ old('jumlah_karyawan') == '1-10' ? 'selected' : '' }}>1 - 10 karyawan</option>
-                                <option value="11-50" {{ old('jumlah_karyawan') == '11-50' ? 'selected' : '' }}>11 - 50 karyawan</option>
-                                <option value="51-200" {{ old('jumlah_karyawan') == '51-200' ? 'selected' : '' }}>51 - 200 karyawan</option>
-                                <option value="201-500" {{ old('jumlah_karyawan') == '201-500' ? 'selected' : '' }}>201 - 500 karyawan</option>
-                                <option value="501-1000" {{ old('jumlah_karyawan') == '501-1000' ? 'selected' : '' }}>501 - 1000 karyawan</option>
-                                <option value="1000+" {{ old('jumlah_karyawan') == '1000+' ? 'selected' : '' }}>1000+ karyawan</option>
+                        <div class="custom-select-wrapper" id="jumlahMahasiswaWrapper">
+                            <select class="custom-select @error('jumlah_pegawai') is-invalid @enderror" id="jumlahMahasiswa" name="jumlah_pegawai" required>
+                                <option value="" selected disabled class="placeholder-option">Pilih jumlah pegawai</option>
+                                <option value="1-100" {{ old('jumlah_pegawai') == '1-100' ? 'selected' : '' }}>1 - 100 pegawai</option>
+                                <option value="101-500" {{ old('jumlah_pegawai') == '101-500' ? 'selected' : '' }}>101 - 500 pegawai</option>
+                                <option value="501-1000" {{ old('jumlah_pegawai') == '501-1000' ? 'selected' : '' }}>501 - 1000 pegawai</option>
+                                <option value="1001-5000" {{ old('jumlah_pegawai') == '1001-5000' ? 'selected' : '' }}>1001 - 5000 pegawai</option>
+                                <option value="5001-10000" {{ old('jumlah_pegawai') == '5001-10000' ? 'selected' : '' }}>5001 - 10000 pegawai</option>
+                                <option value="10000+" {{ old('jumlah_pegawai') == '10000+' ? 'selected' : '' }}>10000+ pegawai</option>
                             </select>
                             <div class="custom-arrow">
                                 <i class="fas fa-chevron-down"></i>
                             </div>
                         </div>
-                        @error('jumlah_karyawan')
-                            <small class="text-danger">{{ $message }}</small>
+                        @error('jumlah_pegawai')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
                     
                     <div class="form-group">
-                        <div class="custom-select-wrapper" id="industriWrapper">
-                            <select class="custom-select" id="industri" name="industri" required>
-                                <option value="" selected disabled class="placeholder-option">Pilih jenis industri</option>
-                                <option value="Teknologi Informasi" {{ old('industri') == 'Teknologi Informasi' ? 'selected' : '' }}>Teknologi Informasi</option>
-                                <option value="Keuangan" {{ old('industri') == 'Keuangan' ? 'selected' : '' }}>Keuangan</option>
-                                <option value="Kesehatan" {{ old('industri') == 'Kesehatan' ? 'selected' : '' }}>Kesehatan</option>
-                                <option value="Pendidikan" {{ old('industri') == 'Pendidikan' ? 'selected' : '' }}>Pendidikan</option>
-                                <option value="Manufaktur" {{ old('industri') == 'Manufaktur' ? 'selected' : '' }}>Manufaktur</option>
-                                <option value="Perdagangan" {{ old('industri') == 'Perdagangan' ? 'selected' : '' }}>Perdagangan</option>
+                        <div class="custom-select-wrapper" id="jenisInstitusiWrapper">
+                            <select class="custom-select @error('jenis_institusi') is-invalid @enderror" id="jenisInstitusi" name="jenis_institusi" required>
+                                <option value="" selected disabled class="placeholder-option">Pilih jenis institusi</option>
+                                <option value="Universitas" {{ old('jenis_institusi') == 'Universitas' ? 'selected' : '' }}>Universitas</option>
+                                <option value="Institut" {{ old('jenis_institusi') == 'Institut' ? 'selected' : '' }}>Institut</option>
+                                <option value="Sekolah Tinggi" {{ old('jenis_institusi') == 'Sekolah Tinggi' ? 'selected' : '' }}>Sekolah Tinggi</option>
+                                <option value="Politeknik" {{ old('jenis_institusi') == 'Politeknik' ? 'selected' : '' }}>Politeknik</option>
+                                <option value="SMA/SMK" {{ old('jenis_institusi') == 'SMA/SMK' ? 'selected' : '' }}>SMA/SMK</option>
+                                <option value="SMP" {{ old('jenis_institusi') == 'SMP' ? 'selected' : '' }}>SMP</option>
+                                <option value="SD" {{ old('jenis_institusi') == 'SD' ? 'selected' : '' }}>SD</option>
+                                <option value="Lainnya" {{ old('jenis_institusi') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                             </select>
                             <div class="custom-arrow">
                                 <i class="fas fa-chevron-down"></i>
                             </div>
                         </div>
-                        @error('industri')
-                            <small class="text-danger">{{ $message }}</small>
+                        @error('jenis_institusi')
+                            <div class="invalid-feedback">
+                                {{ $message }}
+                            </div>
                         @enderror
                     </div>
                     
@@ -383,32 +441,39 @@
                             <i class="fas fa-plus"></i>
                             <div class="logo-text">Unggah</div>
                             <img id="logoPreview" class="logo-preview" alt="Preview Logo">
-                            <input type="file" id="logoInput" name="logo" class="file-input" accept="image/*" required>
+                            <input type="file" id="logoInput" name="logo" class="file-input @error('logo') is-invalid @enderror" accept="image/*" required>
                         </div>
-                        <div class="logo-label">Logo Perusahaan</div>
+                        <div class="logo-label">Logo Kampus/Sekolah</div>
                     </div>
                     @error('logo')
-                        <small class="text-danger">{{ $message }}</small>
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
                     @enderror
                     
                     <hr>
                     
                     <div class="form-footer">
-                        <a href="{{ route('company.register.cancel') }}" class="btn btn-secondary" onclick="return confirm('Batalkan pendaftaran?')">
-                                Batalkan
+
+                            <!-- Tombol Sebelumnya -->
+                        <a href="{{ route('campus.register') }}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Sebelumnya
                         </a>
-                        <button type="submit" class="btn btn-primary">Selanjutnya</button>
+                        
+                        <!-- Tombol Selanjutnya -->
+                        <button type="submit" class="btn btn-primary">
+                            Selanjutnya <i class="fas fa-arrow-right ms-2"></i>
+                        </button>
+                        
                     </div>
-
                 </form>
-
             </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
-     <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             const logoUploadArea = document.getElementById('logoUploadArea');
             const logoInput = document.getElementById('logoInput');
@@ -443,21 +508,20 @@
                 });
             });
 
-            // Validasi form
-            const form = document.getElementById('companyForm');
+            // === VALIDASI CLIENT SIDE ===
+            const form = document.getElementById('campusForm');
             form.addEventListener('submit', function(event) {
-                const nama = document.getElementById('namaPerusahaan').value.trim();
-                const karyawan = document.getElementById('jumlahKaryawan').value;
-                const industri = document.getElementById('industri').value;
+                const nama = document.getElementById('namaKampus').value.trim();
+                const mahasiswa = document.getElementById('jumlahMahasiswa').value;
+                const institusi = document.getElementById('jenisInstitusi').value;
                 const logo = logoInput.files.length > 0;
 
-                if (!nama || !karyawan || !industri || !logo) {
+                if (!nama || !mahasiswa || !institusi || !logo) {
                     event.preventDefault();
-                    alert('Harap isi semua kolom dan unggah logo perusahaan terlebih dahulu sebelum melanjutkan.');
+                    alert('Harap isi semua kolom dan unggah logo kampus/sekolah terlebih dahulu sebelum melanjutkan.');
                 }
             });
         });
     </script>
-
 </body>
 </html>

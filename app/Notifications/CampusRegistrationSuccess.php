@@ -56,6 +56,7 @@ class CampusRegistrationSuccess extends Notification implements ShouldQueue
                 'email' => $this->email,
                 'registrationDate' => $this->registrationDate,
                 'loginUrl' => $loginUrl,
+                'jenisInstitusi' => $notifiable->jenis_institusi, // ← tambahan penting
             ]);
     }
 
