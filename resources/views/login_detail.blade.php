@@ -115,37 +115,42 @@
             padding-right: 40px;
         }
 
+        /* PERUBAHAN: Tombol Ganti Kata Sandi - Warna biru, tulisan putih, tanpa hover */
         .btn-ganti-sandi {
-            background-color: #a7a6a6ff;
-            color: #fff;
+            background-color: #0d47a1; /* Diubah menjadi biru */
+            color: #fff; /* Diubah menjadi putih */
             font-weight: 600;
             border: none;
             padding: 8px 20px;
             border-radius: 4px;
-            transition: background-color 0.3s ease;
+            transition: none; /* Hapus efek transisi */
             font-size: 0.9rem;
         }
 
+        /* PERUBAHAN: Hapus efek hover pada tombol Ganti Kata Sandi */
         .btn-ganti-sandi:hover {
-            background-color: #ccc;
+            background-color: #0d47a1; /* Tetap sama dengan warna normal */
+            color: #fff; /* Tetap sama dengan warna normal */
         }
 
+        /* PERUBAHAN: Tombol Perbarui Email - Warna biru, tulisan putih, tanpa hover */
         .btn-perbarui-email {
-            background-color: #fff;
-            color: #0d47a1;
-            border: 1px solid #0d47a1;
+            background-color: #0d47a1; /* Diubah menjadi biru */
+            color: #fff; /* Diubah menjadi putih */
+            border: 1px solid #0d47a1; /* Border biru */
             font-weight: 600;
             padding: 8px 20px;
             border-radius: 4px;
-            transition: all 0.3s ease;
+            transition: none; /* Hapus efek transisi */
             font-size: 0.9rem;
             white-space: nowrap;
         }
 
+        /* PERUBAHAN: Hapus efek hover pada tombol Perbarui Email */
         .btn-perbarui-email:hover {
-            background-color: #0d47a1;
-            color: #fff;
-            border-color: #0d47a1;
+            background-color: #0d47a1; /* Tetap sama dengan warna normal */
+            color: #fff; /* Tetap sama dengan warna normal */
+            border-color: #0d47a1; /* Tetap sama dengan warna normal */
         }
 
         .email-verified-text {

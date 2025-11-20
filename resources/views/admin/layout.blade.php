@@ -700,6 +700,13 @@
                 <i class="fas fa-building"></i> <span>Perusahaan</span>
               </a>
             </li>
+
+             <li class="nav-item">
+              <a class="nav-link {{ request()->routeIs('admin.campus.index') ? 'active' : '' }}" href="{{ route('admin.campus.index') }}">
+                <i class="fa-solid fa-school"></i> <span>Kampus</span>
+              </a>
+            </li>
+
           @endif
         @endauth
 

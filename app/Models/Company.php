@@ -2,38 +2,44 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Str;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Company extends Model
+class Company extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
+    
+    protected $guard = 'company';
     protected $fillable = [
-        'nama',
-        'slug',
-        'logo',
-        'industri',
-        'website',
+        'nama_lengkap',
+        'no_hp',
+        'jabatan',
         'email',
-        'telepon',
-        'alamat',
-        'deskripsi',
+        'password',
+        'nama_perusahaan',
+        'jumlah_karyawan',
+        'industri',
+        'logo',
+        'provinsi',
+        'kota',
+        'kecamatan', // Kolom baru
+        'desa_kelurahan', // Kolom baru
+        'alamat_lengkap',
         'is_active',
+        // HAPUS: 'is_verified',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        // HAPUS: 'is_verified' => 'boolean',
     ];
-
-    // Auto-slug saat membuat
-    protected static function booted()
-    {
-        static::creating(function ($company) {
-            $company->slug = Str::slug($company->nama);
-        });
-    }
 
     // Scope aktif
     public function scopeAktif($query)
@@ -41,7 +47,13 @@ class Company extends Model
         return $query->where('is_active', true);
     }
 
-    // Relasi ke JobListing
+    // HAPUS: Scope terverifikasi
+    // public function scopeTerverifikasi($query)
+    // {
+    //     return $query->where('is_verified', true);
+    // }
+
+    // Relasi ke JobListing (opsional)
     public function jobListings()
     {
         return $this->hasMany(JobListing::class);

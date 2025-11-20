@@ -15,7 +15,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
 
         body {
-            /* Latar belakang halaman diubah menjadi putih total */
             background-color: #fff;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 0;
@@ -33,17 +32,13 @@
             justify-content: center;
             align-items: flex-start;
             position: relative;
-            
-            /* Padding atas dipertahankan (40px) agar dekat dengan navbar */
-            padding: 40px 20px 50px; 
+            padding: 40px 20px 50px;
         }
 
-        /* Elemen wave dan card telah dihilangkan */
         .wave-background {
             display: none;
         }
 
-        /* Konten utama sekarang hanya berfungsi sebagai wrapper yang terpusat */
         .main-content {
             position: relative;
             z-index: 1;
@@ -56,63 +51,51 @@
 
         /* Styling untuk judul utama */
         .title-glints {
-            font-family: 'Playfair Display', serif;
-            font-size: 56px;
+            /* FONT DIUBAH agar sama dengan deskripsi */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            font-size: 30px;
             font-weight: 700;
             text-align: center;
-            margin: 0 0 20px;
-            line-height: 1.1;
-
-            /* Diatur sebagai parent untuk garis ::after */
+            margin: 0;
+            line-height: 1.2;
             display: inline-block;
             position: relative;
-            padding-bottom: 25px;
-            /* Memberi ruang di bawah judul */
+            padding-bottom: 8px;
         }
 
-        /* Membuat garis bawah (underline) kustom */
+        /* Garis bawah (underline) */
         .title-glints::after {
             content: '';
             display: block;
-            /* Lebar 100% dari teks judul */
             width: 100%;
             height: 2px;
-            /* Ketebalan garis */
             background-color: #333;
-            /* Warna garis */
             position: absolute;
             bottom: 0;
-            /* Menempatkan garis di bawah teks */
             left: 0;
         }
 
-        /* Styling untuk teks deskripsi */
+        /* Teks deskripsi */
         .description-text {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             font-size: 16px;
             line-height: 1.6;
             color: #555;
-            /* Disesuaikan margin agar berjarak dengan garis baru */
+            /* Jarak dikurangi agar lebih dekat dengan judul */
+            margin-top: 10px;
             margin-bottom: 40px;
-            margin-top: 20px;
         }
 
-        /* Container untuk tombol */
         .btn-container {
             display: flex;
-            justify-content: center; /* Memastikan tombol dan gambar ada di tengah */
+            justify-content: center;
             align-items: flex-start;
-            
-            /* Jarak antar tombol dipertahankan (120px) */
-            gap: 120px; 
-            
-            max-width: none; 
+            gap: 120px;
             width: 100%;
             margin: 0 auto;
         }
 
-        /* **STYLING GAMBAR/ILUSTRASI** */
         .registration-img {
-            /* **PENYESUAIAN 1: Ukuran gambar dikecilkan (110px -> 95px)** */
             width: 95px;
             height: 95px;
             object-fit: contain;
@@ -120,7 +103,6 @@
             display: block;
         }
 
-        /* Container untuk setiap pilihan (Kampus/Perusahaan) */
         .choice-item {
             display: flex;
             flex-direction: column;
@@ -130,11 +112,8 @@
         }
 
         .btn-choose {
-            /* **PENYESUAIAN 2: Lebar tombol dikecilkan (260px -> 240px)** */
-            width: 240px; 
-            /* **PENYESUAIAN 3: Tinggi tombol dikecilkan (65px -> 55px)** */
+            width: 240px;
             height: 55px;
-            /* **PENYESUAIAN 4: Ukuran font dikecilkan (18px -> 17px)** */
             font-size: 17px;
             font-weight: 600;
             border-radius: 30px;
@@ -142,11 +121,9 @@
             transition: all 0.3s ease;
         }
 
-        /* Tombol DAFTAR PERUSAHAAN -> BIRU SOLID */
         .btn-company {
             background-color: #0d47a1;
             color: #fff;
-            border: none;
         }
 
         .btn-company:hover {
@@ -154,11 +131,9 @@
             color: #fff;
         }
 
-        /* Tombol DAFTAR KAMPUS -> HIJAU SOLID */
         .btn-campus {
             background-color: #00b14f;
             color: #fff;
-            border: none;
         }
 
         .btn-campus:hover {
@@ -174,7 +149,6 @@
     @include('partials.navbar')
 
     <div class="main-container">
-        {{-- Elemen Background Wave telah disembunyikan di CSS --}}
         <div class="wave-background"></div>
 
         <div class="main-content">
@@ -186,20 +160,15 @@
                 Pilih Daftar Perusahaan jika Anda ingin memasang lowongan pekerjaan, atau pilih Daftar Kampus jika Anda ingin memasang lowongan pemagangan/intership.
             </p>
 
-            {{-- Struktur Flexbox untuk mengatur jarak --}}
             <div class="btn-container">
                 <div class="choice-item">
-                    {{-- GAMBAR KAMPUS DITAMBAHKAN --}}
                     <img src="/images/kampus.png" alt="Ilustrasi Kampus" class="registration-img">
-                    {{-- Tombol Daftar Kampus: HIJAU SOLID --}}
                     <a href="/kampus" class="btn btn-choose btn-campus d-flex align-items-center justify-content-center">
                         Daftar Kampus
                     </a>
                 </div>
                 <div class="choice-item">
-                    {{-- GAMBAR PERUSAHAAN DITAMBAHKAN --}}
                     <img src="/images/perusahaan.png" alt="Ilustrasi Perusahaan" class="registration-img">
-                    {{-- Tombol Daftar Perusahaan: BIRU SOLID --}}
                     <a href="/perusahaan" class="btn btn-choose btn-company d-flex align-items-center justify-content-center">
                         Daftar Perusahaan
                     </a>

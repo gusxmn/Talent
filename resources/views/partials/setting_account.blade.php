@@ -66,23 +66,21 @@
         margin-bottom: 0;
     }
 
-    .btn-kelola-profil {
-        background-color: #0d47a1;
-        color: #fff;
-        font-weight: 600;
-        padding: 8px 15px;
-        border-radius: 4px;
+    /* PERUBAHAN: Mengubah styling Kelola Profil menjadi menu navigasi */
+    .kelola-profil-menu {
+        color: #6c757d;
         text-decoration: none;
         display: block;
-        width: 100%;
+        padding: 8px 0;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: color 0.2s ease;
         margin-top: 20px;
-        transition: background-color 0.3s ease;
-        font-size: 0.9rem;
+        text-align: center;
     }
 
-    .btn-kelola-profil:hover {
-        background-color: #003380;
-        color: #fff;
+    .kelola-profil-menu:hover {
+        color: #0d47a1;
     }
 
     /* Mengatur warna menu navigasi menjadi abu-abu */
@@ -146,7 +144,6 @@
 
 <h1 class="mb-4 d-lg-none" style="font-size: 1.8rem; font-weight: 600;">Pengaturan Akun</h1>
 
-
 <div class="row">
     <div class="col-lg-4 col-md-5">
         <div class="profile-card">
@@ -181,7 +178,9 @@
                     </div>
                     <h4>{{ $name }}</h4>
                     <p>{{ $location }}</p>
-                    <a href="{{ url('/profil') }}" class="btn-kelola-profil">
+                    
+                    <!-- PERUBAHAN: Mengubah Kelola Profil menjadi menu navigasi dengan posisi tetap -->
+                    <a href="{{ url('/profil') }}" class="kelola-profil-menu">
                         KELOLA PROFIL <i class="fas fa-arrow-right ms-2"></i>
                     </a>
                 </div>

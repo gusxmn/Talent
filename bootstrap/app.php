@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         'admin' => \App\Http\Middleware\AdminMiddleware::class,
         'superadmin' => \App\Http\Middleware\SuperAdminMiddleware::class, // ✅ tambahkan ini
         'wawancara' => \App\Http\Middleware\WawancaraMiddleware::class,
+        'auth.company' => \App\Http\Middleware\RedirectIfNotCompany::class,
+        'auth.campus' => \App\Http\Middleware\RedirectIfNotCampus::class,
+
     ]);
 })
     ->withExceptions(function (Exceptions $exceptions): void {

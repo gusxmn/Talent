@@ -131,21 +131,27 @@
             border-color: #0d47a1;
         }
 
+        /* PERUBAHAN: Tombol Simpan Perubahan dengan warna biru dan tanpa efek hover */
         .btn-simpan-perubahan {
-            background-color: transparent;
-            color: #0d47a1;
+            background-color: #0d47a1;
+            color: #fff;
             border: 1px solid #0d47a1;
             font-weight: 600;
             padding: 8px 20px;
             border-radius: 4px;
-            transition: all 0.3s ease;
+            transition: none;
             font-size: 0.9rem;
             text-transform: uppercase;
+            cursor: pointer;
         }
 
-        .btn-simpan-perubahan:hover {
+        /* PERUBAHAN: Menghapus efek hover secara permanen */
+        .btn-simpan-perubahan:hover,
+        .btn-simpan-perubahan:active,
+        .btn-simpan-perubahan:focus {
             background-color: #0d47a1;
             color: #fff;
+            border: 1px solid #0d47a1;
         }
 
         .btn-tersimpan {
@@ -155,15 +161,19 @@
             font-weight: 600;
             padding: 8px 20px;
             border-radius: 4px;
-            transition: all 0.3s ease;
+            transition: none;
             font-size: 0.9rem;
             text-transform: uppercase;
             cursor: default;
         }
 
-        .btn-tersimpan:hover {
+        /* PERUBAHAN: Menghapus efek hover untuk tombol tersimpan */
+        .btn-tersimpan:hover,
+        .btn-tersimpan:active,
+        .btn-tersimpan:focus {
             background-color: #28a745;
             color: #fff;
+            border: 1px solid #28a745;
         }
 
         .save-button-container {

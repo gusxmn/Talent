@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pasang Iklan Lowongan Kerja Gratis | Next Employer</title>
+    <title>Talenthub</title>
 
-    <link rel="icon" type="image/png" href="{{ asset('1.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"/>
@@ -45,11 +44,11 @@
         border: 2px solid #0d47a1;
     }
 
-        /* REGISTER CONTAINER */
+        /* REGISTER CONTAINER - DISESUAIKAN SAMA DENGAN HALAMAN PERUSAHAAN */
         .register-container {
-            max-width: 700px;
-            min-height: 490px;
-            margin: 40px auto 60px auto;
+            max-width: 650px; /* DISESUAIKAN SAMA */
+            min-height: 450px; /* DISESUAIKAN SAMA */
+            margin: 35px auto 50px auto; /* DISESUAIKAN SAMA */
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -57,17 +56,17 @@
             overflow: hidden;
         }
 
-        /* Kiri */
+        /* Kiri - DISESUAIKAN SAMA */
         .register-left {
-            background: #e9f6fd;
-            padding: 30px 20px;
-            max-width: 220px;
+            background: #c0eed5ff;
+            padding: 28px 18px; /* DISESUAIKAN SAMA */
+            max-width: 200px; /* DISESUAIKAN SAMA */
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: flex-start;
             text-align: left;
-            gap: 25px;
+            gap: 22px; /* DISESUAIKAN SAMA */
             flex-shrink: 0;
         }
         .register-left .feature {
@@ -77,26 +76,26 @@
             margin-bottom: 0;
         }
         .register-left .feature img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 10px;
+            width: 45px; /* DISESUAIKAN SAMA */
+            height: 45px; /* DISESUAIKAN SAMA */
+            margin-bottom: 9px; /* DISESUAIKAN SAMA */
             flex-shrink: 0;
         }
         .register-left .feature img.people-img {
-            width: 65px;
-            height: 65px;
+            width: 60px; /* DISESUAIKAN SAMA */
+            height: 60px; /* DISESUAIKAN SAMA */
         }
         .register-left .feature h6 {
             margin: 0;
             font-weight: 600;
-            font-size: 14px;
-            line-height: 1.4;
+            font-size: 13.5px; /* DISESUAIKAN SAMA */
+            line-height: 1.35; /* DISESUAIKAN SAMA */
             color: #333;
         }
 
-        /* Kanan */
+        /* Kanan - DISESUAIKAN SAMA */
         .register-right {
-            padding: 45px 50px;
+            padding: 40px 45px; /* DISESUAIKAN SAMA */
             flex: 1;
             text-align: center;
             display: flex;
@@ -106,9 +105,9 @@
         }
         .register-right h3 {
             font-weight: bold;
-            margin-bottom: 25px;
-            font-size: 30px;
-            line-height: 1.4;
+            margin-bottom: 22px; /* DISESUAIKAN SAMA */
+            font-size: 23px; /* DISESUAIKAN SAMA */
+            line-height: 1.35; /* DISESUAIKAN SAMA */
         }
         .register-btn {
             display: flex;
@@ -116,11 +115,11 @@
             justify-content: center;
             border: 1px solid #ddd;
             border-radius: 25px;
-            padding: 12px 20px;
-            margin: 8px 0;
+            padding: 11px 19px; /* DISESUAIKAN SAMA */
+            margin: 7px 0; /* DISESUAIKAN SAMA */
             cursor: pointer;
             font-weight: 500;
-            font-size: 1rem;
+            font-size: 0.98rem; /* DISESUAIKAN SAMA */
             background: #fff;
             width: 100%;
             transition: 0.3s;
@@ -131,35 +130,35 @@
             background: #f8f9fa;
         }
         .register-btn img {
-            width: 24px;
-            height: 24px;
-            margin-right: 12px;
+            width: 23px; /* DISESUAIKAN SAMA */
+            height: 23px; /* DISESUAIKAN SAMA */
+            margin-right: 11px; /* DISESUAIKAN SAMA */
         }
 
-        /* Social login */
+        /* Social login - DISESUAIKAN SAMA */
         .social-login {
-            margin-top: 20px;
-            margin-bottom: 15px;
+            margin-top: 18px; /* DISESUAIKAN SAMA */
+            margin-bottom: 14px; /* DISESUAIKAN SAMA */
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 11px; /* DISESUAIKAN SAMA */
             justify-content: center;
             width: 100%;
         }
         .social-login span {
             color: #666;
             font-weight: 500;
-            font-size: 0.85rem;
+            font-size: 0.83rem; /* DISESUAIKAN SAMA */
         }
         .social-login a img {
-            width: 40px;
-            height: 40px;
+            width: 38px; /* DISESUAIKAN SAMA */
+            height: 38px; /* DISESUAIKAN SAMA */
             border-radius: 50%;
             border: 1px solid #ccc;
             background: #fff;
             transition: 0.3s;
             object-fit: contain;
-            padding: 5px;
+            padding: 4.5px; /* DISESUAIKAN SAMA */
         }
         .social-login a img.linkedin,
         .social-login a img.facebook {
@@ -169,12 +168,12 @@
             background: #f5f5f5;
         }
 
-        /* Terms */
+        /* Terms - DISESUAIKAN SAMA */
         .terms {
-            margin-top: 10px;
-            font-size: 0.85rem;
+            margin-top: 9px; /* DISESUAIKAN SAMA */
+            font-size: 0.83rem; /* DISESUAIKAN SAMA */
             color: #6c757d;
-            line-height: 1.5;
+            line-height: 1.45; /* DISESUAIKAN SAMA */
             max-width: 90%;
         }
         .terms a {
@@ -186,14 +185,14 @@
             text-decoration: underline;
         }
 
-        /* Login link */
+        /* Login link - DISESUAIKAN SAMA */
         .login-link {
-            margin-top: 15px;
-            font-size: 1 rem;
+            margin-top: 14px; /* DISESUAIKAN SAMA */
+            font-size: 0.98rem; /* DISESUAIKAN SAMA */
             color: #6c757d;
         }
         .login-link a {
-            color: #4393fc;
+            color: #00b14f;
             font-weight: 600;
             text-decoration: none;
         }
@@ -201,7 +200,7 @@
             text-decoration: underline;
         }
 
-        /* QR Code Floating */
+        /* QR Code Floating - DISESUAIKAN SAMA */
         .qr-code-float {
             position: fixed;
             right: 20px;
@@ -210,19 +209,19 @@
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 15px;
+            padding: 14px; /* DISESUAIKAN SAMA */
             text-align: center;
             z-index: 1000;
-            width: 150px;
+            width: 140px; /* DISESUAIKAN SAMA */
         }
         .qr-code-float img {
-            width: 100px;
+            width: 95px; /* DISESUAIKAN SAMA */
             height: auto;
-            margin-bottom: 10px;
+            margin-bottom: 9px; /* DISESUAIKAN SAMA */
         }
         .qr-code-float p {
-            font-size: 14px;
-            line-height: 1.4;
+            font-size: 13.5px; /* DISESUAIKAN SAMA */
+            line-height: 1.35; /* DISESUAIKAN SAMA */
             color: #333;
             font-weight: 500;
             margin: 0;
@@ -236,43 +235,44 @@
         <a href="/" class="navbar-brand d-flex align-items-center py-2">
             <img src="{{ asset('images/logo_inotal.png') }}" alt="Talenthub Logo" class="navbar-logo">
         </a>
-        <a href="{{ url('/login-perusahaan') }}" class="btn-login">Masuk</a>
+        <a href="{{ url('/login-kampus') }}" class="btn-login">Masuk</a>
     </div>
 </nav>
 
     <div class="register-container">
         <div class="register-left">
             <div class="feature">
-                <img src="{{ asset('images/people.png') }}" alt="People" class="people-img">
+                <img src="{{ asset('images/people_green.png') }}" alt="People" class="people-img">
                 <h6>Akses 9 Juta+<br>Talenta</h6>
             </div>
             <div class="feature">
-                <img src="{{ asset('images/chat.png') }}" alt="Chat">
+                <img src="{{ asset('images/chat_green.png') }}" alt="Chat">
                 <h6>Chat dan Rekrut<br>Talenta Langsung</h6>
             </div>
             <div class="feature">
-                <img src="{{ asset('images/ai.png') }}" alt="AI">
+                <img src="{{ asset('images/ai_green.png') }}" alt="AI">
                 <h6>Rekrutmen Cepat<br>dengan Bantuan AI</h6>
             </div>
         </div>
 
         <div class="register-right">
-            <h3>Pasang Iklan Lowongan<br>Kerja Gratis!</h3>
+            <h3>Pasang Iklan Intership<br>Sekarang!</h3>
 
             <div class="register-btn">
                 <img src="{{ asset('images/googles.png') }}" alt="Google">
                 Daftar dengan Google
             </div>
 
-            <a href="http://127.0.0.1:8000/daftar-perusahaan" class="register-btn">
+            <a href="{{ route('campus.register') }}" class="register-btn">
                 <img src="{{ asset('images/gmail.png') }}" alt="Email">
                 Daftar dengan Email
             </a>
+            
 
             <div class="social-login">
-                <span>Atau dengan</span>
+                <!-- <span>Atau dengan</span>
                 <a href="#"><img src="{{ asset('images/logo linkedin.png') }}" alt="LinkedIn" class="linkedin"></a>
-                <a href="#"><img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook"></a>
+                <a href="#"><img src="{{ asset('images/logo facebook.png') }}" alt="Facebook" class="facebook"></a> -->
             </div>
 
             <div class="terms">
@@ -283,7 +283,7 @@
             </div>
 
             <div class="login-link">
-                Sudah punya akun? <a href="{{ url('/login-perusahaan') }}">Login di sini</a>
+                Sudah punya akun? <a href="{{ route('campus.login') }}">Login di sini</a>
             </div>
         </div>
     </div>
@@ -294,6 +294,8 @@
     </div>
 
     @include('partials.footer')
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
