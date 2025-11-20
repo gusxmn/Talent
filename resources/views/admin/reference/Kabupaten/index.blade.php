@@ -284,7 +284,59 @@
         margin: 0 !important;
         justify-content: flex-end;
         gap: 2px;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
+    }
+
+    /* CUSTOM PAGINATION STYLING */
+    .pagination-custom {
+        display: flex !important;
+        gap: 3px !important;
+        list-style: none;
+    }
+
+    .pagination-custom .page-item {
+        display: inline-block;
+    }
+
+    .pagination-custom .page-link {
+        font-size: 11px !important;
+        padding: 5px 8px !important;
+        min-width: 28px;
+        height: 28px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        color: #0d6efd;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .pagination-custom .page-item.active .page-link {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        color: white !important;
+        font-weight: 600;
+    }
+
+    .pagination-custom .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    .pagination-custom .page-link:hover:not(.disabled) {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+        color: #0a58ca;
+    }
+
+    .pagination-custom .page-link i {
+        font-size: 10px;
     }
     
     .table-pagination .page-link {
@@ -477,16 +529,28 @@
     {{-- FORM KONTROL DENGAN FIXED LAYOUT --}}
     <form method="GET" action="{{ route('admin.reference.kabupaten.index') }}" class="mb-4" id="filterForm">
         <div class="row g-3 align-items-end">
-            {{-- KOLOM PENCARIAN - TANPA LABEL --}}
-            <div class="col-md-9">
+            {{-- KOLOM PENCARIAN --}}
+            <div class="col-md-6">
                 <div class="input-group">
                     <input type="text" name="search" id="search" class="form-control"
-                           placeholder="Cari berdasarkan nama kabupaten/kota atau kode..."
+                           placeholder="Cari nama kabupaten/kota atau kode..."
                            value="{{ request('search') }}">
                     <button type="submit" class="btn btn-search">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
+            </div>
+            
+            {{-- FILTER PROVINSI --}}
+            <div class="col-md-3">
+                <select name="province_id" id="province_id" class="form-select" onchange="document.getElementById('filterForm').submit();">
+                    <option value="">-- Semua Provinsi --</option>
+                    @foreach($provinces as $province)
+                        <option value="{{ $province->id }}" {{ request('province_id') == $province->id ? 'selected' : '' }}>
+                            {{ $province->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
             
             {{-- TOMBOL TAMBAH --}}
@@ -497,12 +561,7 @@
             </div>
         </div>
 
-        {{-- INPUT HIDDEN UNTUK MENJAGA PARAMETER PENCARIAN --}}
-        @if(request('search'))
-            <input type="hidden" name="search" value="{{ request('search') }}">
-        @endif
-        
-        {{-- INPUT HIDDEN UNTUK PER PAGE --}}
+        {{-- INPUT HIDDEN UNTUK MENJAGA PARAMETER --}}
         <input type="hidden" name="per_page" id="per_page" value="{{ request('per_page', 10) }}">
     </form>
 
@@ -532,24 +591,26 @@
             <div class="tbl-content">
                 <table class="table table-hover"> 
                     <tbody>
-                        @forelse($kabupatens as $index => $kabupaten)
+                        @forelse($regencies as $index => $regency)
                             <tr class="align-middle"> 
-                                <td class="col-no">{{ $index + 1 }}</td>
-                                <td class="col-kode">{{ $kabupaten->kode_kabupaten ?? '-' }}</td>
-                                <td class="col-nama">{{ $kabupaten->nama_kabupaten }}</td>
+                                <td class="col-no">{{ $regencies->firstItem() + $index }}</td>
+                                <td class="col-kode">{{ $regency->id }}</td>
+                                <td class="col-nama">{{ $regency->name }}</td>
                                 <td class="col-status">
-                                    <span class="badge {{ $kabupaten->status ? 'bg-success' : 'bg-danger' }}">
-                                        {{ $kabupaten->status ? 'Aktif' : 'Nonaktif' }}
-                                    </span>
+                                    <span class="badge bg-success">Aktif</span>
                                 </td>
                                 <td class="col-actions">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="{{ route('admin.reference.kabupaten.edit', $kabupaten->id) }}" title="Edit"
+                                        <a href="{{ route('admin.reference.kabupaten.edit', $regency->id) }}" title="Edit"
                                            class="btn btn-warning btn-sm btn-action">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-danger btn-sm btn-action btn-delete"
-                                                data-delete-url="{{ route('admin.reference.kabupaten.destroy', $kabupaten->id) }}"
+                                                data-delete-url="{{ route('admin.reference.kabupaten.destroy', $regency->id) }}"
+                                                data-item-name="{{ $regency->name }}"
+                                                data-item-id="{{ $regency->id }}"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal"
                                                 title="Hapus">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -567,7 +628,7 @@
         </div>
         
         {{-- FOOTER - NEMPEL LANGSUNG KE BODY --}}
-        @if(count($kabupatens) > 0)
+        @if(count($regencies) > 0)
         <div class="table-responsive">
             <table class="table" style="table-layout: fixed;"> 
                 <tfoot>
@@ -576,7 +637,7 @@
                             <div class="footer-controls">
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="text-muted footer-info">
-                                        Total: <strong>{{ $kabupatens->total() }}</strong> data kabupaten
+                                        Total: <strong>{{ $regencies->total() }}</strong> data kabupaten
                                     </div>
                                     <div class="pagination-filter-footer">
                                         <select name="per_page_footer" id="per_page_footer" class="form-select" onchange="changePage(this.value)">
@@ -589,10 +650,10 @@
                                     </div>
                                 </div>
                                 
-                                {{-- PAGINATION DI KANAN BAWAH - SUDAH DIPERBAIKI --}}
-                                @if($kabupatens->hasPages())
+                                {{-- PAGINATION DI KANAN BAWAH - PRESERVE SEARCH & FILTER --}}
+                                @if($regencies->hasPages())
                                 <div class="table-pagination">
-                                    {{ $kabupatens->links('pagination::bootstrap-4') }}
+                                    {{ $regencies->appends(request()->query())->links('vendor.pagination.custom') }}
                                 </div>
                                 @endif
                             </div>
@@ -605,19 +666,53 @@
     </div>
 </div>
 
+{{-- DELETE MODAL --}}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-danger text-white border-0">
+                <h5 class="modal-title" id="deleteModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Penghapusan
+                </h5>
+            </div>
+            <div class="modal-body p-4">
+                <p class="mb-3">Apakah Anda yakin ingin menghapus <strong>kabupaten/kota berikut</strong>?</p>
+                <div class="alert alert-light border border-danger" style="border-radius: 8px;">
+                    <p class="mb-0 text-danger fw-bold" id="deleteItemName" style="font-size: 1.1rem;"></p>
+                    <small class="text-muted">ID: <span id="deleteItemId"></span></small>
+                </div>
+                <div class="alert alert-warning alert-sm mb-0" style="font-size: 0.95rem;">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Catatan:</strong> Tindakan ini tidak dapat dibatalkan. Pastikan Anda benar-benar ingin menghapus data ini.
+                </div>
+            </div>
+            <div class="modal-footer border-0 bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Batal
+                </button>
+                <form id="deleteForm" method="POST" style="display: inline;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>Hapus
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
-    // Delete button handler dengan data attribute
+    // Delete button handler dengan modal
     document.querySelectorAll('.btn-delete').forEach(button => {
         button.addEventListener('click', function() {
-            if (confirm('Apakah Anda yakin ingin menghapus kabupaten ini?')) {
-                const url = this.getAttribute('data-delete-url');
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = url;
-                form.innerHTML = `@csrf @method('DELETE')`;
-                document.body.appendChild(form);
-                form.submit();
-            }
+            const itemName = this.getAttribute('data-item-name');
+            const itemId = this.getAttribute('data-item-id');
+            const deleteUrl = this.getAttribute('data-delete-url');
+            
+            document.getElementById('deleteItemName').textContent = itemName;
+            document.getElementById('deleteItemId').textContent = itemId;
+            document.getElementById('deleteForm').action = deleteUrl;
         });
     });
 

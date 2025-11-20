@@ -8,10 +8,10 @@ use App\Models\Province;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class KabupatenController extends Controller
+class RegencyController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of regencies from API data
      */
     public function index()
     {
@@ -21,10 +21,8 @@ class KabupatenController extends Controller
 
         $regencies = Regency::with('province')
             ->when($search, function($query) use ($search) {
-                $query->where(function($q) use ($search) {
-                    $q->whereRaw('name ILIKE ?', ["%{$search}%"])
-                      ->orWhereRaw('id ILIKE ?', ["%{$search}%"]);
-                });
+                $query->where('name', 'like', "%{$search}%")
+                      ->orWhere('id', 'like', "%{$search}%");
             })
             ->when($provinceId, function($query) use ($provinceId) {
                 $query->where('province_id', $provinceId);
@@ -38,7 +36,7 @@ class KabupatenController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new regency
      */
     public function create()
     {
@@ -47,7 +45,7 @@ class KabupatenController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created regency
      */
     public function store(Request $request)
     {
@@ -80,7 +78,7 @@ class KabupatenController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified regency
      */
     public function edit(string $id)
     {
@@ -91,7 +89,7 @@ class KabupatenController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified regency
      */
     public function update(Request $request, string $id)
     {
@@ -124,7 +122,7 @@ class KabupatenController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified regency
      */
     public function destroy(string $id)
     {
@@ -132,6 +130,12 @@ class KabupatenController extends Controller
 
         try {
             DB::beginTransaction();
+
+            // Check if regency has districts
+            if ($regency->districts()->exists()) {
+                return redirect()->back()
+                    ->with('error', 'Tidak dapat menghapus kabupaten karena masih memiliki data kecamatan.');
+            }
 
             $regency->delete();
 
@@ -148,14 +152,14 @@ class KabupatenController extends Controller
     }
 
     /**
-     * Get kabupaten by provinsi for API
+     * Get all regencies for API
      */
     public function getKabupaten()
     {
         try {
             $regencies = Regency::with('province')
                 ->orderBy('name')
-                ->get(['id', 'name', 'province_id']);
+                ->get(['id', 'province_id', 'name']);
 
             return response()->json([
                 'success' => true,
@@ -170,14 +174,14 @@ class KabupatenController extends Controller
     }
 
     /**
-     * Get kabupaten by provinsi for API
+     * Get regencies by province for API
      */
     public function getByProvinsi($provinceId)
     {
         try {
             $regencies = Regency::where('province_id', $provinceId)
                 ->orderBy('name')
-                ->get(['id', 'name', 'province_id']);
+                ->get(['id', 'province_id', 'name']);
 
             return response()->json([
                 'success' => true,

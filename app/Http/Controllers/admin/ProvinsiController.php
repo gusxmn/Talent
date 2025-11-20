@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Provinsi;
+use App\Models\Province;
 use Illuminate\Http\Request;
 
 class ProvinsiController extends Controller
@@ -13,23 +13,22 @@ class ProvinsiController extends Controller
      */
     public function index(Request $request)
     {
-        // Query dari database
-        $query = Provinsi::query();
-
-        // Filter data berdasarkan pencarian
-        if ($request->has('search') && !empty($request->search)) {
-            $search = $request->search;
-            $query->where('name', 'like', "%$search%")
-                  ->orWhere('id', 'like', "%$search%");
-        }
-
-        // Pagination
+        $search = $request->get('search');
         $perPage = $request->get('per_page', 10);
-        $provinsis = $query->paginate($perPage);
+
+        $provinces = Province::query()
+            ->when($search, function($query) use ($search) {
+                $query->where(function($q) use ($search) {
+                    $q->whereRaw('name ILIKE ?', ["%{$search}%"])
+                      ->orWhereRaw('id ILIKE ?', ["%{$search}%"]);
+                });
+            })
+            ->orderBy('id')
+            ->paginate($perPage);
 
         return view('admin.reference.provinsi.index', [
             'title' => 'Manajemen Provinsi',
-            'provinsis' => $provinsis
+            'provinces' => $provinces
         ]);
     }
 
@@ -48,13 +47,13 @@ class ProvinsiController extends Controller
      */
     public function store(Request $request)
     {
-        // Validasi
         $request->validate([
-            'name' => 'required|string|max:100|unique:provinces,name',
+            'id' => 'required|string|max:10|unique:provinces,id',
+            'name' => 'required|string|max:100',
         ]);
 
-        // Simpan data
-        Provinsi::create([
+        Province::create([
+            'id' => $request->id,
             'name' => $request->name,
         ]);
 
@@ -63,28 +62,15 @@ class ProvinsiController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        $provinsi = Provinsi::findOrFail($id);
-
-        return view('admin.reference.provinsi.show', [
-            'title' => 'Detail Provinsi',
-            'provinsi' => $provinsi
-        ]);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        $provinsi = Provinsi::findOrFail($id);
+        $province = Province::findOrFail($id);
 
         return view('admin.reference.provinsi.edit', [
             'title' => 'Edit Provinsi',
-            'provinsi' => $provinsi
+            'province' => $province
         ]);
     }
 
@@ -93,14 +79,13 @@ class ProvinsiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        // Validasi
+        $province = Province::findOrFail($id);
+
         $request->validate([
-            'name' => 'required|string|max:100|unique:provinces,name,' . $id,
+            'name' => 'required|string|max:100',
         ]);
 
-        // Update data
-        $provinsi = Provinsi::findOrFail($id);
-        $provinsi->update([
+        $province->update([
             'name' => $request->name,
         ]);
 
@@ -113,11 +98,18 @@ class ProvinsiController extends Controller
      */
     public function destroy(string $id)
     {
-        // Hapus data
-        $provinsi = Provinsi::findOrFail($id);
-        $provinsi->delete();
+        $province = Province::findOrFail($id);
+        
+        // Check if province has regencies
+        if ($province->regencies()->exists()) {
+            return redirect()->back()
+                ->with('error', 'Tidak dapat menghapus provinsi karena masih memiliki data kabupaten/kota');
+        }
+
+        $province->delete();
 
         return redirect()->route('admin.reference.provinsi.index')
             ->with('success', 'Provinsi berhasil dihapus');
     }
 }
+

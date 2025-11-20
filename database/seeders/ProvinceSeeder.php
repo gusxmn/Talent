@@ -24,14 +24,15 @@ class ProvinceSeeder extends Seeder
             ['id' => '18', 'name' => 'LAMPUNG'],
             ['id' => '19', 'name' => 'KEPULAUAN BANGKA BELITUNG'],
             ['id' => '21', 'name' => 'KEPULAUAN RIAU'],
-            ['id' => '31', 'name' => 'JAWA BARAT'],
-            ['id' => '32', 'name' => 'JAWA TENGAH'],
-            ['id' => '33', 'name' => 'JAWA TIMUR'],
-            ['id' => '34', 'name' => 'DAERAH ISTIMEWA YOGYAKARTA'],
-            ['id' => '35', 'name' => 'BANTEN'],
-            ['id' => '36', 'name' => 'BALI'],
-            ['id' => '51', 'name' => 'NUSA TENGGARA BARAT'],
-            ['id' => '52', 'name' => 'NUSA TENGGARA TIMUR'],
+            ['id' => '31', 'name' => 'DKI JAKARTA'],
+            ['id' => '32', 'name' => 'JAWA BARAT'],
+            ['id' => '33', 'name' => 'JAWA TENGAH'],
+            ['id' => '34', 'name' => 'DI YOGYAKARTA'],
+            ['id' => '35', 'name' => 'JAWA TIMUR'],
+            ['id' => '36', 'name' => 'BANTEN'],
+            ['id' => '51', 'name' => 'BALI'],
+            ['id' => '52', 'name' => 'NUSA TENGGARA BARAT'],
+            ['id' => '53', 'name' => 'NUSA TENGGARA TIMUR'],
             ['id' => '61', 'name' => 'KALIMANTAN BARAT'],
             ['id' => '62', 'name' => 'KALIMANTAN TENGAH'],
             ['id' => '63', 'name' => 'KALIMANTAN SELATAN'],
@@ -46,12 +47,9 @@ class ProvinceSeeder extends Seeder
             ['id' => '81', 'name' => 'MALUKU'],
             ['id' => '82', 'name' => 'MALUKU UTARA'],
             ['id' => '91', 'name' => 'PAPUA BARAT'],
-            ['id' => '92', 'name' => 'PAPUA'],
-            ['id' => '93', 'name' => 'PAPUA TENGAH'],
-            ['id' => '94', 'name' => 'PAPUA PEGUNUNGAN'],
-            ['id' => '95', 'name' => 'PAPUA SELATAN'],
+            ['id' => '94', 'name' => 'PAPUA'],
         ];
 
-        DB::table('provinces')->insert($provinces);
+        DB::table('provinces')->upsert($provinces, ['id']);
     }
 }

@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="card-body p-4">
-                    <form action="{{ route('admin.reference.provinsi.update', $provinsi->id) }}" method="POST">
+                    <form action="{{ route('admin.reference.provinsi.update', $province->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         
@@ -51,7 +51,7 @@
                                 <label for="name" class="form-label fw-bold">Nama Provinsi <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror" 
                                        id="name" name="name" 
-                                       value="{{ old('name', $provinsi->name) }}" required>
+                                       value="{{ old('name', $province->name) }}" required>
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

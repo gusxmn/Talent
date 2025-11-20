@@ -315,7 +315,7 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
         Route::post('/', [KabupatenController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [KabupatenController::class, 'edit'])->name('edit');
         Route::put('/{id}', [KabupatenController::class, 'update'])->name('update');
-        Route::delete('/{id}', [KabupatenController::class, 'destroy'])->name('delete');
+        Route::delete('/{id}', [KabupatenController::class, 'destroy'])->name('destroy');
 
         Route::get('/api/list', [KabupatenController::class, 'getKabupaten'])->name('api.list');
         Route::get('/api/provinsi/{provinsiId}', [KabupatenController::class, 'getByProvinsi'])->name('api.by-provinsi');
@@ -328,7 +328,7 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
         Route::post('/', [KecamatanController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [KecamatanController::class, 'edit'])->name('edit');
         Route::put('/{id}', [KecamatanController::class, 'update'])->name('update');
-        Route::delete('/{id}', [KecamatanController::class, 'destroy'])->name('delete');
+        Route::delete('/{id}', [KecamatanController::class, 'destroy'])->name('destroy');
 
         Route::get('/api/list', [KecamatanController::class, 'getKecamatan'])->name('api.list');
         Route::get('/api/kabupaten/{kabupatenId}', [KecamatanController::class, 'getByKabupaten'])->name('api.by-kabupaten');
@@ -341,7 +341,7 @@ Route::get('/api/magang/villages/{districtId}', [MagangController::class, 'getVi
         Route::post('/', [DesaController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [DesaController::class, 'edit'])->name('edit');
         Route::put('/{id}', [DesaController::class, 'update'])->name('update');
-        Route::delete('/{id}', [DesaController::class, 'destroy'])->name('delete');
+        Route::delete('/{id}', [DesaController::class, 'destroy'])->name('destroy');
 
         Route::get('/api/list', [DesaController::class, 'getDesa'])->name('api.list');
         Route::get('/api/kecamatan/{kecamatanId}', [DesaController::class, 'getByKecamatan'])->name('api.by-kecamatan');

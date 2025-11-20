@@ -535,11 +535,11 @@
     {{-- FORM KONTROL DENGAN FIXED LAYOUT --}}
     <form method="GET" action="{{ route('admin.reference.provinsi.index') }}" class="mb-4" id="filterForm">
         <div class="row g-3 align-items-end">
-            {{-- KOLOM PENCARIAN - TANPA LABEL --}}
+            {{-- KOLOM PENCARIAN --}}
             <div class="col-md-9">
                 <div class="input-group">
                     <input type="text" name="search" id="search" class="form-control"
-                           placeholder="Cari berdasarkan kode, provinsi, atau nama pengisi..."
+                           placeholder="Cari berdasarkan kode atau nama provinsi..."
                            value="{{ request('search') }}">
                     <button type="submit" class="btn btn-search">
                         <i class="fas fa-search"></i>
@@ -555,11 +555,6 @@
             </div>
         </div>
 
-        {{-- INPUT HIDDEN UNTUK MENJAGA PARAMETER PENCARIAN --}}
-        @if(request('search'))
-            <input type="hidden" name="search" value="{{ request('search') }}">
-        @endif
-        
         {{-- INPUT HIDDEN UNTUK PER PAGE --}}
         <input type="hidden" name="per_page" id="per_page" value="{{ request('per_page', 10) }}">
     </form>
@@ -590,24 +585,26 @@
             <div class="tbl-content">
                 <table class="table table-hover"> 
                     <tbody>
-                        @forelse($provinsis as $index => $provinsi)
+                        @forelse($provinces as $index => $province)
                             <tr class="align-middle"> 
-                                <td class="col-no">{{ $index + 1 }}</td>
-                                <td class="col-kode">{{ $provinsi->kode_provinsi ?? '-' }}</td>
-                                <td class="col-nama">{{ $provinsi->nama_provinsi ?? $provinsi->name }}</td>
+                                <td class="col-no">{{ $provinces->firstItem() + $index }}</td>
+                                <td class="col-kode">{{ $province->id }}</td>
+                                <td class="col-nama">{{ $province->name }}</td>
                                 <td class="col-status">
-                                    <span class="badge {{ $provinsi->status ? 'bg-success' : 'bg-danger' }}">
-                                        {{ $provinsi->status ? 'Aktif' : 'Nonaktif' }}
-                                    </span>
+                                    <span class="badge bg-success">Aktif</span>
                                 </td>
                                 <td class="col-actions">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="{{ route('admin.reference.provinsi.edit', $provinsi->id) }}" title="Edit"
+                                        <a href="{{ route('admin.reference.provinsi.edit', $province->id) }}" title="Edit"
                                            class="btn btn-warning btn-sm btn-action">
                                             <i class="fas fa-edit"></i>
                                         </a>
-                                        <button type="button" class="btn btn-danger btn-sm btn-action"
-                                                data-bs-toggle="modal" data-bs-target="#modal_{{ md5($provinsi->id) }}"
+                                        <button type="button" class="btn btn-danger btn-sm btn-action btn-delete"
+                                                data-delete-url="{{ route('admin.reference.provinsi.destroy', $province->id) }}"
+                                                data-item-name="{{ $province->name }}"
+                                                data-item-id="{{ $province->id }}"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal"
                                                 title="Hapus">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -625,7 +622,7 @@
         </div>
         
         {{-- FOOTER - NEMPEL LANGSUNG KE BODY --}}
-        @if(count($provinsis) > 0)
+        @if(count($provinces) > 0)
         <div class="table-responsive">
             <table class="table" style="table-layout: fixed;"> 
                 <tfoot>
@@ -634,10 +631,10 @@
                             <div class="footer-controls">
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="text-muted footer-info">
-                                        Total: <strong>{{ count($provinsis) }}</strong> data provinsi
+                                        Total: <strong>{{ $provinces->total() }}</strong> data provinsi
                                     </div>
                                     <div class="pagination-filter-footer">
-                                        <select name="per_page_footer" id="per_page_footer" class="form-select">
+                                        <select name="per_page_footer" id="per_page_footer" class="form-select" onchange="changePage(this.value)">
                                             <option value="5" {{ request('per_page', 10) == 5 ? 'selected' : '' }}>5 Data</option>
                                             <option value="10" {{ request('per_page', 10) == 10 ? 'selected' : '' }}>10 Data</option>
                                             <option value="20" {{ request('per_page', 10) == 20 ? 'selected' : '' }}>20 Data</option>
@@ -647,59 +644,10 @@
                                     </div>
                                 </div>
                                 
-                                {{-- PAGINATION DI KANAN BAWAH - SUDAH DIPERBAIKI --}}
-                                @if($provinsis->hasPages())
+                                {{-- PAGINATION DI KANAN BAWAH - PRESERVE SEARCH & FILTER --}}
+                                @if($provinces->hasPages())
                                 <div class="table-pagination">
-                                    <ul class="pagination pagination-compact pagination-icon-only mb-0">
-                                        {{-- Previous Page Link --}}
-                                        @if ($provinsis->onFirstPage())
-                                            <li class="page-item disabled">
-                                                <span class="page-link">
-                                                    <i class="fas fa-chevron-left fa-xs"></i>
-                                                </span>
-                                            </li>
-                                        @else
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $provinsis->previousPageUrl() }}" rel="prev">
-                                                    <i class="fas fa-chevron-left fa-xs"></i>
-                                                </a>
-                                            </li>
-                                        @endif
-
-                                        {{-- Pagination Elements - Sederhana --}}
-                                        @php
-                                            $current = $provinsis->currentPage();
-                                            $last = $provinsis->lastPage();
-                                        @endphp
-
-                                        {{-- Tampilkan maksimal 5 halaman --}}
-                                        @for ($i = max(1, $current - 2); $i <= min($last, $current + 2); $i++)
-                                            @if ($i == $current)
-                                                <li class="page-item active">
-                                                    <span class="page-link">{{ $i }}</span>
-                                                </li>
-                                            @else
-                                                <li class="page-item">
-                                                    <a class="page-link" href="{{ $provinsis->url($i) }}">{{ $i }}</a>
-                                                </li>
-                                            @endif
-                                        @endfor
-
-                                        {{-- Next Page Link --}}
-                                        @if ($provinsis->hasMorePages())
-                                            <li class="page-item">
-                                                <a class="page-link" href="{{ $provinsis->nextPageUrl() }}" rel="next">
-                                                    <i class="fas fa-chevron-right fa-xs"></i>
-                                                </a>
-                                            </li>
-                                        @else
-                                            <li class="page-item disabled">
-                                                <span class="page-link">
-                                                    <i class="fas fa-chevron-right fa-xs"></i>
-                                                </span>
-                                            </li>
-                                        @endif
-                                    </ul>
+                                    {{ $provinces->appends(request()->query())->links('vendor.pagination.custom') }}
                                 </div>
                                 @endif
                             </div>
@@ -712,110 +660,75 @@
     </div>
 </div>
 
-{{-- MODALS SECTION - OUTSIDE TABLE CONTAINER --}}
-@forelse($provinsis as $provinsi)
-    @php
-        $modalId = 'modal_' . md5($provinsi->id);
-        $formId = 'form_' . md5($provinsi->id);
-    @endphp
-    <div class="modal fade" id="{{ $modalId }}" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg">
-                <form method="POST" id="{{ $formId }}" action="{{ route('admin.reference.provinsi.destroy', $provinsi->id) }}">
+{{-- DELETE MODAL --}}
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-danger text-white border-0">
+                <h5 class="modal-title" id="deleteModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Konfirmasi Penghapusan
+                </h5>
+            </div>
+            <div class="modal-body p-4">
+                <p class="mb-3">Apakah Anda yakin ingin menghapus <strong>provinsi berikut</strong>?</p>
+                <div class="alert alert-light border border-danger" style="border-radius: 8px;">
+                    <p class="mb-0 text-danger fw-bold" id="deleteItemName" style="font-size: 1.1rem;"></p>
+                    <small class="text-muted">ID: <span id="deleteItemId"></span></small>
+                </div>
+                <div class="alert alert-warning alert-sm mb-0" style="font-size: 0.95rem;">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Catatan:</strong> Tindakan ini tidak dapat dibatalkan. Pastikan Anda benar-benar ingin menghapus data ini.
+                </div>
+            </div>
+            <div class="modal-footer border-0 bg-light">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>Batal
+                </button>
+                <form id="deleteForm" method="POST" style="display: inline;">
                     @csrf
                     @method('DELETE')
-                    
-                    <div class="modal-header bg-danger text-white py-3">
-                        <h5 class="modal-title fw-bold">⚠️ Konfirmasi Penghapusan</h5>
-                    </div>
-                    <div class="modal-body py-4">
-                        <div class="text-center mb-3">
-                            <i class="fas fa-exclamation-triangle text-danger" style="font-size: 48px; opacity: 0.8;"></i>
-                        </div>
-                        <p class="text-center mb-2 fs-6">Anda akan menghapus provinsi:</p>
-                        <div class="alert alert-danger alert-light text-center py-2 mb-3" style="border-left: 4px solid #dc3545;">
-                            <h5 class="mb-0 text-dark fw-bold">{{ $provinsi->name }}</h5>
-                        </div>
-                        <p class="text-center text-muted small mb-0">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Tindakan ini tidak dapat dibatalkan dan data akan hilang selamanya.
-                        </p>
-                    </div>
-                    <div class="modal-footer py-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-2"></i> Batal
-                        </button>
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fas fa-trash me-2"></i> Ya, Hapus
-                        </button>
-                    </div>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>Hapus
+                    </button>
                 </form>
             </div>
         </div>
     </div>
-@empty
-@endforelse
+</div>
 
 {{-- JAVASCRIPT UNTUK FILTER DAN DELETE --}}
 <script>
-    // FUNGSI UNTUK FILTER PAGINATION DI FOOTER
-    function handlePaginationFooterChange() {
-        const perPageValue = document.getElementById('per_page_footer').value;
-        document.getElementById('per_page').value = perPageValue;
-        document.getElementById('filterForm').submit();
+    // Delete button handler dengan modal
+    document.querySelectorAll('.btn-delete').forEach(button => {
+        button.addEventListener('click', function() {
+            const itemName = this.getAttribute('data-item-name');
+            const itemId = this.getAttribute('data-item-id');
+            const deleteUrl = this.getAttribute('data-delete-url');
+            
+            document.getElementById('deleteItemName').textContent = itemName;
+            document.getElementById('deleteItemId').textContent = itemId;
+            document.getElementById('deleteForm').action = deleteUrl;
+        });
+    });
+
+    function changePage(value) {
+        const form = document.getElementById('filterForm');
+        document.getElementById('per_page').value = value;
+        form.submit();
     }
 
-    // Event listener saat halaman dimuat
-    document.addEventListener('DOMContentLoaded', function() {
-        // Event listener untuk filter pagination di footer
-        const perPageFooterSelect = document.getElementById('per_page_footer');
-        if (perPageFooterSelect) {
-            perPageFooterSelect.addEventListener('change', handlePaginationFooterChange);
-        }
-        
-        // Sync nilai dropdown di footer
-        const perPageValue = "{{ request('per_page', 10) }}";
-        if (perPageFooterSelect) {
-            perPageFooterSelect.value = perPageValue;
-        }
-        
-        // Toast notification
-        const toastEl = document.getElementById('successToast');
-        if (toastEl && typeof bootstrap !== 'undefined') {
-            const toast = new bootstrap.Toast(toastEl, {
-                delay: 4000,
-                animation: true
-            });
-            toast.show();
-            
-            // Countdown timer
-            let countdown = 4;
-            const timerEl = document.getElementById('toastTimer');
-            if (timerEl) {
-                const timerInterval = setInterval(function() {
-                    countdown--;
-                    if (countdown > 0) {
-                        timerEl.textContent = countdown + 's';
-                    } else {
-                        timerEl.textContent = '';
-                        clearInterval(timerInterval);
-                    }
-                }, 1000);
+    // Toast timer
+    const successToast = document.getElementById('successToast');
+    if (successToast) {
+        let seconds = 4;
+        const timer = setInterval(() => {
+            seconds--;
+            document.getElementById('toastTimer').textContent = seconds + 's';
+            if (seconds <= 0) {
+                clearInterval(timer);
+                successToast.style.display = 'none';
             }
-        }
-    });
+        }, 1000);
+    }
 </script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    $(window).on("load resize", function() {
-        var $tblContent = $('.tbl-content');
-        var $tblHeader = $('.tbl-header');
-        
-        var scrollWidth = $tblContent.width() - $tblContent[0].clientWidth;
-        $tblHeader.css({'padding-right': scrollWidth});
-    }).resize();
-</script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 @endsection

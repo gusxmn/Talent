@@ -47,57 +47,61 @@
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="provinsi_id" class="form-label fw-bold">Provinsi <span class="text-danger">*</span></label>
-                                <select class="form-select @error('provinsi_id') is-invalid @enderror" id="provinsi_id" name="provinsi_id">
+                                <label for="province_id" class="form-label fw-bold">Provinsi <span class="text-danger">*</span></label>
+                                <select class="form-select @error('province_id') is-invalid @enderror" id="province_id" name="province_id" required>
                                     <option value="">Pilih Provinsi</option>
-                                    @foreach($provinsis as $provinsi)
-                                        <option value="{{ $provinsi->id }}" {{ old('provinsi_id') == $provinsi->id ? 'selected' : '' }}>
-                                            {{ $provinsi->nama_provinsi }}
+                                    @foreach($provinces as $province)
+                                        <option value="{{ $province->id }}" {{ old('province_id') == $province->id ? 'selected' : '' }}>
+                                            {{ $province->name }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('provinsi_id')
+                                @error('province_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             
                             <div class="col-md-6 mb-3">
-                                <label for="kode_kabupaten" class="form-label fw-bold">Kode Kabupaten <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('kode_kabupaten') is-invalid @enderror" 
-                                       id="kode_kabupaten" name="kode_kabupaten" 
-                                       value="{{ old('kode_kabupaten') }}" 
-                                       placeholder="Contoh: 3171, 3273">
-                                @error('kode_kabupaten')
+                                <label for="id" class="form-label fw-bold">Kode Kabupaten <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('id') is-invalid @enderror" 
+                                       id="id" name="id" 
+                                       value="{{ old('id') }}" 
+                                       placeholder="Contoh: 1107, 3201" required>
+                                @error('id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                         
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="nama_kabupaten" class="form-label fw-bold">Nama Kabupaten/Kota <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('nama_kabupaten') is-invalid @enderror" 
-                                       id="nama_kabupaten" name="nama_kabupaten" 
-                                       value="{{ old('nama_kabupaten') }}" 
-                                       placeholder="Contoh: Jakarta Selatan, Bandung">
-                                @error('nama_kabupaten')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <label for="jenis" class="form-label fw-bold">Jenis <span class="text-danger">*</span></label>
-                                <select class="form-select @error('jenis') is-invalid @enderror" id="jenis" name="jenis">
-                                    <option value="">Pilih Jenis</option>
-                                    <option value="Kabupaten" {{ old('jenis') == 'Kabupaten' ? 'selected' : '' }}>Kabupaten</option>
-                                    <option value="Kota" {{ old('jenis') == 'Kota' ? 'selected' : '' }}>Kota</option>
-                                </select>
-                                @error('jenis')
+                            <div class="col-md-12 mb-3">
+                                <label for="name" class="form-label fw-bold">Nama Kabupaten/Kota <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                       id="name" name="name" 
+                                       value="{{ old('name') }}" 
+                                       placeholder="Contoh: Kabupaten Aceh Jaya, Kota Bandung" required>
+                                @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                         
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{{ route('admin.reference.kabupaten.index') }}" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-times me-1"></i> Batal
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Simpan
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@endsection
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label for="status" class="form-label fw-bold">Status <span class="text-danger">*</span></label>

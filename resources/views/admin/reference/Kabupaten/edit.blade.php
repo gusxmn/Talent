@@ -42,82 +42,45 @@
                     </div>
                 </div>
                 <div class="card-body p-4">
-                    <form action="{{ route('admin.reference.kabupaten.update', $kabupaten->id) }}" method="POST">
+                    <form action="{{ route('admin.reference.kabupaten.update', $regency->id) }}" method="POST">
                         @csrf
                         @method('PUT')
                         
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="provinsi_id" class="form-label fw-bold">Provinsi <span class="text-danger">*</span></label>
-                                <select class="form-select @error('provinsi_id') is-invalid @enderror" id="provinsi_id" name="provinsi_id">
+                                <label for="province_id" class="form-label fw-bold">Provinsi <span class="text-danger">*</span></label>
+                                <select class="form-select @error('province_id') is-invalid @enderror" id="province_id" name="province_id" required>
                                     <option value="">Pilih Provinsi</option>
-                                    @foreach($provinsis as $provinsi)
-                                        <option value="{{ $provinsi->id }}" {{ old('provinsi_id', $kabupaten->provinsi_id) == $provinsi->id ? 'selected' : '' }}>
-                                            {{ $provinsi->nama_provinsi }}
+                                    @foreach($provinces as $province)
+                                        <option value="{{ $province->id }}" {{ old('province_id', $regency->province_id) == $province->id ? 'selected' : '' }}>
+                                            {{ $province->name }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('provinsi_id')
+                                @error('province_id')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                             
                             <div class="col-md-6 mb-3">
-                                <label for="kode_kabupaten" class="form-label fw-bold">Kode Kabupaten <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('kode_kabupaten') is-invalid @enderror" 
-                                       id="kode_kabupaten" name="kode_kabupaten" 
-                                       value="{{ old('kode_kabupaten', $kabupaten->kode_kabupaten) }}">
-                                @error('kode_kabupaten')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <label for="id" class="form-label fw-bold">Kode Kabupaten <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" 
+                                       id="id" name="id" 
+                                       value="{{ $regency->id }}" disabled>
+                                <small class="text-muted">ID tidak dapat diubah</small>
                             </div>
                         </div>
                         
                         <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="nama_kabupaten" class="form-label fw-bold">Nama Kabupaten/Kota <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('nama_kabupaten') is-invalid @enderror" 
-                                       id="nama_kabupaten" name="nama_kabupaten" 
-                                       value="{{ old('nama_kabupaten', $kabupaten->nama_kabupaten) }}">
-                                @error('nama_kabupaten')
+                            <div class="col-md-12 mb-3">
+                                <label for="name" class="form-label fw-bold">Nama Kabupaten/Kota <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror" 
+                                       id="name" name="name" 
+                                       value="{{ old('name', $regency->name) }}" required>
+                                @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
-                            <div class="col-md-6 mb-3">
-                                <label for="jenis" class="form-label fw-bold">Jenis <span class="text-danger">*</span></label>
-                                <select class="form-select @error('jenis') is-invalid @enderror" id="jenis" name="jenis">
-                                    <option value="">Pilih Jenis</option>
-                                    <option value="Kabupaten" {{ old('jenis', $kabupaten->jenis) == 'Kabupaten' ? 'selected' : '' }}>Kabupaten</option>
-                                    <option value="Kota" {{ old('jenis', $kabupaten->jenis) == 'Kota' ? 'selected' : '' }}>Kota</option>
-                                </select>
-                                @error('jenis')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="status" class="form-label fw-bold">Status <span class="text-danger">*</span></label>
-                                <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
-                                    <option value="">Pilih Status</option>
-                                    <option value="1" {{ old('status', $kabupaten->status) == '1' ? 'selected' : '' }}>Aktif</option>
-                                    <option value="0" {{ old('status', $kabupaten->status) == '0' ? 'selected' : '' }}>Nonaktif</option>
-                                </select>
-                                @error('status')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="deskripsi" class="form-label fw-bold">Deskripsi</label>
-                            <textarea class="form-control @error('deskripsi') is-invalid @enderror" 
-                                      id="deskripsi" name="deskripsi" rows="3">{{ old('deskripsi', $kabupaten->deskripsi) }}</textarea>
-                            @error('deskripsi')
-                                <div class="invalid-feedback">{{ $message }}</div>
-                            @enderror
                         </div>
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
