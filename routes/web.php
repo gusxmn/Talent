@@ -15,6 +15,9 @@ use App\Http\Controllers\Admin\CandidateController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
 use App\Http\Controllers\Admin\NotifController;
 use App\Http\Controllers\Admin\MagangController;
+use App\Http\Controllers\intersipController;
+
+
 
 
 // Public Controllers
@@ -22,6 +25,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\AccountSettingsController;
 use App\Http\Controllers\contactController;
 use App\Http\Controllers\UserNotifController;
+use App\Http\Controllers\ProfileController;
 
 
 
@@ -35,6 +39,12 @@ Route::get('/daftar', fn() => view('daftar'))->name('register');
 Route::get('/masuk', fn() => view('login'))->name('login');
 Route::get('/perusahaan/kampus', fn() => view('perusahaan_kampus'))->name('perusahaan_kampus');
 Route::get('/minat-pekerjaan', fn() => view('job_interest'))->name('job.interest');
+
+Route::get('/magang', [IntersipController::class, 'index'])->name('magang.index');
+Route::get('/magang/{id}', [IntersipController::class, 'show'])->name('magang.show');
+
+
+
 
 // START: PERUBAHAN DI BAGIAN KONTAK (Sekarang hanya menggunakan 2 rute di satu URI)
 // KEDUA ROUTE INI SUDAH BENAR DAN MENGARAH KE ContactController
@@ -67,7 +77,18 @@ Route::get('/sumber-daya-karir/jelajahi-gaji', function () {
 
 // Halaman pengaturan akun dan fungsionalitasnya
 Route::middleware(['auth'])->group(function () {
-    // Rute utama halaman pengaturan akun (Detail Login)
+    // Tampilkan profil
+    Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+
+    // Form edit profil
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+
+    // Update profil
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+
+
+
+    
     Route::get('/pengaturan/detail', [AccountSettingsController::class, 'index'])->name('account.settings');
     
     // RUTE BARU: Halaman Kontak Saya
@@ -110,6 +131,15 @@ Route::middleware(['auth'])->group(function () {
         // Tandai notifikasi sebagai sudah dibaca (untuk satu notifikasi)
 Route::post('/notifications/read/{id}', [UserNotifController::class, 'markAsRead'])
     ->name('notifications.markRead');
+    // ❌ RUTE DELETE SATU NOTIFIKASI (DELETE /notifications/{id})
+    Route::delete('/notifications/delete/{id}', [UserNotifController::class, 'delete'])->name('notifications.delete');
+    
+    // ❌ RUTE DELETE SEMUA NOTIFIKASI (DELETE /notifications/delete-all)
+    Route::delete('/notifications/delete-all', [UserNotifController::class, 'deleteAll'])->name('notifications.deleteAll');
+    Route::get('/notifications/{id}', [UserNotifController::class, 'show'])->name('notifications.show');
+    Route::get('/notifications', [UserNotifController::class, 'myNotifications'])->name('notifications.index');
+    Route::patch('/notifications/{id}/mark-unread', [UserNotifController::class, 'markUnread'])->name('notifications.mark-unread');
+
 
 });
 

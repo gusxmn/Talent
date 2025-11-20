@@ -24,7 +24,15 @@ class User extends Authenticatable
         'lokasi',
         'whatsapp', 
         'google_id', 
-        'avatar',    
+        'avatar',
+        'gender',
+        'upload_cv',
+        'upload_ijazah',
+        'link_github',
+        'link_portofolio',
+        'skills',
+        'tentang_anda',
+        'asal_sekolah',
     ];
 
     /**
@@ -64,4 +72,7 @@ class User extends Authenticatable
     {
         return $query->where('role', $role);
     }
+    
+   
+    
 }

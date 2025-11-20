@@ -50,7 +50,9 @@
                     <li><a href="explore-perusahaan" class="footer-link">Explore Perusahaan</a></li>
                     <li><a href="open-intership" class="footer-link">Open Intership</a></li>
                     <li><a href="tentang-perusahaan" class="footer-link">Tentang Perusahaan</a></li>
-                    <li><a href="kontak" class="footer-link">Kontak</a></li>
+                    
+                    <li><a href="/kontak" class="footer-link">Kontak</a></li>
+
                 </ul>
             </div>
             <div class="col-md-4">

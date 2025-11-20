@@ -19,6 +19,7 @@ class MagangController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
+        $per_page = $request->input('per_page', 10); // TAMBAHKAN INI
 
         $magang = Magang::with(['province', 'regency', 'district', 'village'])
             ->when($search, function ($query) use ($search) {
@@ -27,7 +28,7 @@ class MagangController extends Controller
                       ->orWhere('posisi', 'like', "%$search%");
             })
             ->latest()
-            ->paginate(10);
+            ->paginate($per_page); // GUNAKAN VARIABLE PER_PAGE
 
         return view('admin.magang.index', compact('magang', 'search'));
     }

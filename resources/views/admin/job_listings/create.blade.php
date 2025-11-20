@@ -6,7 +6,7 @@
 {{-- 1. Area Judul Form (Area Hijau) --}}
 {{-- Menggunakan warna latar hijau (#28a745) dan padding --}}
 <div class="judul-form-area text-white p-3" style="background-color: #28a745;">
-    <h4 class="mb-0 fw-bold">Tambah Lowongan Baru</h4>
+    <label class="form-label mb-0 fw-bold">Tambah Lowongan Baru</label>
 </div>
 {{-- Akhir Area Judul Form --}}
 
@@ -34,11 +34,11 @@
             <div class="row">
                 {{-- Judul dan Perusahaan (Dibuat berdampingan) --}}
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Judul Lowongan</label>
+                    <label style="font-weight: normal;">Judul Lowongan</label>
                     <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Nama Perusahaan</label>
+                    <label class="font-weight: normal;">Nama Perusahaan</label>
                     <input type="text" name="company" class="form-control" value="{{ old('company') }}" required>
                 </div>
             </div>
@@ -46,18 +46,18 @@
             {{-- Logo dan Deadline (Dibuat berdampingan) --}}
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Logo Perusahaan</label>
+                    <label class="font-weight: normal;">Logo Perusahaan</label>
                     <input type="file" name="company_logo" class="form-control" accept="image/*">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Deadline</label>
+                    <label class="font-weight: normal;">Deadline</label>
                     <input type="date" name="deadline" class="form-control" value="{{ old('deadline') }}">
                 </div>
             </div>
             
             {{-- Lokasi (Dropdown Bertingkat) --}}
             <div class="mb-3 p-3 border rounded" style="background-color: #e0e0e0;">
-                <label class="form-label fw-bold">Lokasi Kerja <span class="text-danger">*</span></label>
+                <label class="font-weight: normal;">Lokasi Kerja <span class="text-danger">*</span></label>
                 
                 {{-- Display selected location --}}
                 <div class="alert alert-info py-2 mb-3" id="location-display" style="display: none;">
@@ -67,47 +67,47 @@
 
                 <div class="row g-2">
                     <div class="col-md-3">
-                        <label class="form-label small">Provinsi</label>
+                        <label class="font-weight: normal;">Provinsi</label>
                         <select id="provinsi" class="form-select form-select-sm" required>
                             <option value="">-- Pilih Provinsi --</option>
                             @foreach ($provinces as $province)
                                 <option value="{{ $province->id }}" 
-                                    {{ old('province_id') == $province->id ? 'selected' : '' }}>
+                                    {{ old('provinsi_id') == $province->id ? 'selected' : '' }}>
                                     {{ $province->name }}
                                 </option>
                             @endforeach
                         </select>
-                        <div class="form-text small">Pilih provinsi terlebih dahulu</div>
+                        {{-- <div class="form-text small">Pilih provinsi terlebih dahulu</div> --}}
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label small">Kabupaten/Kota</label>
+                        <label class="font-weight: normal;">Kabupaten/Kota</label>
                         <select id="kabupaten" class="form-select form-select-sm" disabled required>
                             <option value="">-- Pilih Kabupaten --</option>
-                            @if(old('regency_id') && old('province_id'))
+                            @if(old('kabupaten_id') && old('provinsi_id'))
                                 {{-- Option akan diisi via JavaScript --}}
                             @endif
                         </select>
-                        <div class="form-text small">Pilih kabupaten/kota</div>
+                        {{-- <div class="form-text small">Pilih kabupaten/kota</div> --}}
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label small">Kecamatan</label>
+                        <label class="font-weight: normal;">Kecamatan</label>
                         <select id="kecamatan" class="form-select form-select-sm" disabled required>
                             <option value="">-- Pilih Kecamatan --</option>
-                            @if(old('district_id') && old('regency_id'))
+                            @if(old('kecamatan_id') && old('kabupaten_id'))
                                 {{-- Option akan diisi via JavaScript --}}
                             @endif
                         </select>
-                        <div class="form-text small">Pilih kecamatan</div>
+                        {{-- <div class="form-text small">Pilih kecamatan</div> --}}
                     </div>
                     <div class="col-md-3">
-                        <label class="form-label small">Desa/Kelurahan</label>
+                        <label class="font-weight: normal;">Desa/Kelurahan</label>
                         <select id="desa" class="form-select form-select-sm" disabled>
                             <option value="">-- Pilih Desa --</option>
-                            @if(old('village_id') && old('district_id'))
+                            @if(old('desa_id') && old('kecamatan_id'))
                                 {{-- Option akan diisi via JavaScript --}}
                             @endif
                         </select>
-                        <div class="form-text small">Pilih desa/kelurahan (opsional)</div>
+                        {{-- <div class="form-text small">Pilih desa/kelurahan (opsional)</div> --}}
                     </div>
                 </div>
                 
@@ -120,21 +120,21 @@
                 </div>
 
                 {{-- Hidden fields untuk menyimpan ID wilayah --}}
-                <input type="hidden" name="province_id" id="province_id" value="{{ old('province_id') }}">
-                <input type="hidden" name="regency_id" id="regency_id" value="{{ old('regency_id') }}">
-                <input type="hidden" name="district_id" id="district_id" value="{{ old('district_id') }}">
-                <input type="hidden" name="village_id" id="village_id" value="{{ old('village_id') }}">
+                <input type="hidden" name="provinsi_id" id="province_id" value="{{ old('provinsi_id') }}">
+                <input type="hidden" name="kabupaten_id" id="regency_id" value="{{ old('kabupaten_id') }}">
+                <input type="hidden" name="kecamatan_id" id="district_id" value="{{ old('kecamatan_id') }}">
+                <input type="hidden" name="desa_id" id="village_id" value="{{ old('desa_id') }}">
                 <input type="hidden" name="location" id="location" value="{{ old('location') }}">
             </div>
 
             {{-- Gaji --}}
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Gaji Minimum</label>
+                    <label class="font-weight: normal;">Gaji Minimum</label>
                     <input type="number" name="salary_min" class="form-control" value="{{ old('salary_min') }}">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Gaji Maksimum</label>
+                    <label class="font-weight: normal;">Gaji Maksimum</label>
                     <input type="number" name="salary_max" class="form-control" value="{{ old('salary_max') }}">
                 </div>
             </div>
@@ -142,7 +142,7 @@
             <div class="row">
                 {{-- Type --}}
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Tipe (Type)</label>
+                    <label class="font-weight: normal;">Tipe </label>
                     <select name="type" class="form-select" required>
                         <option value="">-- Pilih Tipe --</option>
                         <option value="full-time" {{ old('type') == 'full-time' ? 'selected' : '' }}>Full-Time</option>
@@ -153,7 +153,7 @@
                 </div>
                 {{-- Jenis Pekerjaan --}}
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Jenis Pekerjaan</label>
+                    <label class="font-weight: normal;">Jenis Pekerjaan</label>
                     <select name="job_type" class="form-select" required>
                         <option value="">-- Pilih Jenis --</option>
                         <option value="penuh_waktu" {{ old('job_type') == 'penuh_waktu' ? 'selected' : '' }}>Penuh Waktu</option>
@@ -166,7 +166,7 @@
                 </div>
                 {{-- Kebijakan Kerja --}}
                 <div class="col-md-4 mb-3">
-                    <label class="form-label">Kebijakan Kerja</label>
+                    <label class="font-weight: normal;">Kebijakan Kerja</label>
                     <select name="work_policy" class="form-select" required>
                         <option value="">-- Pilih Kebijakan --</option>
                         <option value="kerja_di_kantor" {{ old('work_policy') == 'kerja_di_kantor' ? 'selected' : '' }}>Kerja di Kantor</option>
@@ -179,7 +179,7 @@
             <div class="row">
                 {{-- Level Pengalaman --}}
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Level Pengalaman</label>
+                    <label class="font-weight: normal;">Level Pengalaman</label>
                     <select name="experience_level" class="form-select" required>
                         <option value="">-- Pilih Level --</option>
                         <option value="tidak_berpengalaman" {{ old('experience_level') == 'tidak_berpengalaman' ? 'selected' : '' }}>Tidak Berpengalaman</option>
@@ -193,7 +193,7 @@
                 </div>
                 {{-- Pendidikan Minimal --}}
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Pendidikan Minimal</label>
+                    <label class="font-weight: normal;">Pendidikan Minimal</label>
                     <select name="education_level" class="form-select" required>
                         <option value="">-- Pilih Pendidikan --</option>
                         <option value="s3" {{ old('education_level') == 's3' ? 'selected' : '' }}>S3</option>
@@ -209,31 +209,31 @@
 
             {{-- Deskripsi --}}
             <div class="mb-3">
-                <label class="form-label">Deskripsi Pekerjaan</label>
+                <label class="font-weight: normal;">Deskripsi Pekerjaan</label>
                 <textarea name="description" class="form-control" rows="5">{{ old('description') }}</textarea>
             </div>
             
             {{-- Persyaratan --}}
             <div class="mb-3">
-                <label class="form-label">Persyaratan</label>
+                <label class="font-weight: normal;">Persyaratan</label>
                 <textarea name="requirements" class="form-control" rows="3">{{ old('requirements') }}</textarea>
             </div>
 
             {{-- Keahlian --}}
             <div class="mb-3">
-                <label class="form-label">Keahlian yang Dibutuhkan</label>
+                <label class="font-weight: normal;">Keahlian yang Dibutuhkan</label>
                 <textarea name="skills" class="form-control" rows="3">{{ old('skills') }}</textarea>
             </div>
 
             {{-- Kualifikasi --}}
             <div class="mb-3">
-                <label class="form-label">Kualifikasi Tambahan</label>
+                <label class="font-weight: normal;">Kualifikasi Tambahan</label>
                 <textarea name="qualifications" class="form-control" rows="3">{{ old('qualifications') }}</textarea>
             </div>
 
             {{-- Status --}}
             <div class="mb-5">
-                <label for="is_public" class="form-label">Status</label>
+                <label for="is_public" class="font-weight: normal;">Status</label>
                 @php
                     $statusValue = old('is_public', '0'); 
                 @endphp
@@ -252,7 +252,7 @@
                 <a href="{{ route('admin.job_listings.index') }}" class="btn text-white me-3" style="background-color: #343a40; border-radius: 20px; min-width: 100px;">
                     Batal
                 </a>
-                <button type="submit" class="btn text-white" style="background-color: #343a40; border-radius: 20px; min-width: 100px;">
+                <button type="submit" class="btn text-white" style="background-color: #2724e4; border-radius: 20px; min-width: 100px;">
                     Simpan
                 </button>
             </div>

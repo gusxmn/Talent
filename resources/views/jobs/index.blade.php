@@ -74,7 +74,7 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             transition: 0.3s;
-            border-left: 4px solid #e6007e;
+            border-left: 4px solid #e7e3ee;
         }
         .job-card:hover { transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
         .job-title { font-size: 1.2rem; font-weight: bold; color: #333; }
@@ -133,7 +133,7 @@
             margin-bottom: 10px; 
             padding: 5px 0;
         }
-        .filter-title:hover { color: #e6007e; }
+        .filter-title:hover { color: #3200e6; }
         .filter-options label { font-weight: normal; font-size: 0.9rem; }
         .filter-options .form-check { margin-bottom: 8px; }
         .priority-btn { 
@@ -158,7 +158,7 @@
             margin-bottom: 20px; 
             color: #333;
             padding-bottom: 10px;
-            border-bottom: 2px solid #e6007e;
+            border-bottom: 2px solid #131313;
         }
         
         /* Badge styles */
@@ -192,16 +192,43 @@
                 </div>
 
                 <div class="col-12 col-md-3">
-                    <label class="search-label">Klasifikasi</label>
+                    <label class="search-label">Kategori</label>
                     <div class="dropdown w-100">
-                        <button class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownKlasifikasi">
-                            <span id="klasifikasiText">Semua klasifikasi</span>
-                            <i class="bi bi-chevron-down"></i>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-scrollable w-100" aria-labelledby="dropdownKlasifikasi">
-                            
-                        </ul>
-                    </div>
+    <button class="btn dropdown-toggle w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownKlasifikasi">
+        <span id="klasifikasiText">Semua kategori</span>
+        <i class="bi bi-chevron-down"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-scrollable w-100" aria-labelledby="dropdownKlasifikasi">
+       
+        
+        {{-- Kategori Baru Ditambahkan di Sini --}}
+<li><a class="dropdown-item" href="#" data-value="sales">Sales</a></li>
+<li><a class="dropdown-item" href="#" data-value="it">IT</a></li>
+<li><a class="dropdown-item" href="#" data-value="otomotif">Otomotif</a></li>
+<li><a class="dropdown-item" href="#" data-value="lainnya">Lainnya</a></li>
+<li><a class="dropdown-item" href="#" data-value="administrasi">Administrasi</a></li>
+<li><a class="dropdown-item" href="#" data-value="akuntansi-keuangan">Akuntansi & Keuangan</a></li>
+<li><a class="dropdown-item" href="#" data-value="manajemen">Manajemen</a></li>
+<li><a class="dropdown-item" href="#" data-value="desain-kreatif">Desain & Kreatif</a></li>
+<li><a class="dropdown-item" href="#" data-value="pemasaran">Pemasaran</a></li>
+<li><a class="dropdown-item" href="#" data-value="pendidikan">Pendidikan</a></li>
+<li><a class="dropdown-item" href="#" data-value="kesehatan">Kesehatan</a></li>
+<li><a class="dropdown-item" href="#" data-value="teknik">Teknik</a></li>
+<li><a class="dropdown-item" href="#" data-value="produksi">Produksi</a></li>
+<li><a class="dropdown-item" href="#" data-value="logistik">Logistik</a></li>
+<li><a class="dropdown-item" href="#" data-value="transportasi">Transportasi</a></li>
+<li><a class="dropdown-item" href="#" data-value="hrd">Sumber Daya Manusia (HRD)</a></li>
+<li><a class="dropdown-item" href="#" data-value="hukum">Hukum</a></li>
+<li><a class="dropdown-item" href="#" data-value="media-komunikasi">Media & Komunikasi</a></li>
+<li><a class="dropdown-item" href="#" data-value="perhotelan">Perhotelan & Pariwisata</a></li>
+<li><a class="dropdown-item" href="#" data-value="ritel">Ritel & E-commerce</a></li>
+<li><a class="dropdown-item" href="#" data-value="freelance">Freelance</a></li>
+<li><a class="dropdown-item" href="#" data-value="magang">Magang</a></li>
+<li><a class="dropdown-item" href="#" data-value="remote">Remote Work</a></li>
+{{-- Akhir Kategori Baru --}}
+        
+    </ul>
+</div>
                 </div>
 
                 <div class="col-12 col-md-3">
@@ -216,9 +243,9 @@
                 </div>
             </form>
 
-            <div class="search-options-wrapper">
+            {{-- <div class="search-options-wrapper">
                 <a href="#" class="more-options" id="moreOptionsToggle">Opsi lainnya <i class="bi bi-sliders"></i></a>
-            </div>
+            </div> --}}
         </div>
     </section>
 
@@ -570,7 +597,7 @@
                     .map(cb => cb.parentElement.querySelector('span').textContent);
                 
                 if (selectedCategories.length === 0) {
-                    klasifikasiText.textContent = 'Semua klasifikasi';
+                    klasifikasiText.textContent = 'Semua kategori';
                 } else if (selectedCategories.length === 1) {
                     klasifikasiText.textContent = selectedCategories[0];
                 } else {

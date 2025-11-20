@@ -6,14 +6,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Notifikasi Saya - {{ config('app.name', 'Laravel') }}</title>
     
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        /* ==== GAYA UTAMA ==== */
         .notification-item {
-            border-left: 4px solid #007bff;
+            border-left: 4px solid #eff1f3;
             transition: all 0.3s ease;
         }
         .notification-item:hover {
@@ -23,6 +22,7 @@
         .notification-item.unread {
             background-color: #e7f3ff;
             border-left-color: #17a2b8;
+            cursor: pointer;
         }
         .notification-item.read {
             background-color: #f8f9fa;
@@ -45,10 +45,38 @@
             position: relative;
             top: -2px;
         }
+
+        /* ==== AKSI (MATA + TITIK TIGA) ==== */
+        .notification-item h6 {
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .notification-item .btn-sm {
+            padding: 4px 8px;
+        }
+
+        .notification-item .dropdown .btn {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .notification-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .notification-actions .btn i {
+            font-size: 15px;
+        }
     </style>
 </head>
+
 <body>
-    <!-- Navbar -->
     @include('partials.navbar')
     
     <div class="container mt-4 mb-5">
@@ -58,11 +86,21 @@
                     <h2><i class="fas fa-bell me-2"></i>Notifikasi Saya</h2>
                     
                     <div class="d-flex gap-2">
-                        @if($notifications->where('read_at', null)->count() > 0)
-                            <form action="{{ route('notifications.markAllRead') }}" method="POST">
+                        @if($notifications->count() > 0)
+                            @if($notifications->where('read_at', null)->count() > 0)
+                                <form action="{{ route('notifications.markAllRead') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                                        <i class="fas fa-check-double me-1"></i>Tandai Semua Dibaca
+                                    </button>
+                                </form>
+                            @endif
+
+                            <form action="{{ route('notifications.deleteAll') }}" method="POST" onsubmit="return confirm('PERINGATAN! Anda yakin ingin MENGHAPUS SEMUA notifikasi? Tindakan ini tidak dapat dibatalkan.')">
                                 @csrf
-                                <button type="submit" class="btn btn-outline-primary btn-sm">
-                                    <i class="fas fa-check-double me-1"></i>Tandai Semua Dibaca
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger btn-sm">
+                                    <i class="fas fa-trash me-1"></i>Hapus Semua
                                 </button>
                             </form>
                         @endif
@@ -73,7 +111,6 @@
                     </div>
                 </div>
                 
-                <!-- Alert Success -->
                 @if(session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
@@ -81,7 +118,6 @@
                     </div>
                 @endif
                 
-                <!-- Notifications List -->
                 <div class="card shadow-sm">
                     <div class="card-header bg-white">
                         <h5 class="mb-0">
@@ -103,38 +139,53 @@
                                             </div>
                                             
                                             <div class="flex-grow-1">
+                                                <!-- Bagian Judul dan Aksi -->
                                                 <div class="d-flex justify-content-between align-items-start">
                                                     <h6 class="mb-1">{{ $notification->data['title'] ?? 'Notifikasi' }}</h6>
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-sm btn-outline-secondary border-0" type="button" data-bs-toggle="dropdown">
-                                                            <i class="fas fa-ellipsis-v"></i>
-                                                        </button>
-                                                        <ul class="dropdown-menu">
-                                                            @if(!$notification->read_at)
+
+                                                    <div class="notification-actions">
+                                                        @if(isset($notification->data['link']))
+                                                            <a href="{{ $notification->data['link'] }}" 
+                                                               class="btn btn-sm btn-outline-info" 
+                                                               title="Lihat Detail">
+                                                                <i class="fas fa-eye"></i>
+                                                            </a>
+                                                        @endif
+
+                                                        <div class="dropdown">
+                                                            <button class="btn btn-sm btn-outline-secondary" 
+                                                                    type="button" 
+                                                                    data-bs-toggle="dropdown" 
+                                                                    aria-expanded="false"
+                                                                    title="Opsi Lain">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </button>
+                                                            <ul class="dropdown-menu dropdown-menu-end">
+                                                                
+                                                                    <li>
+    <a href="{{ route('notifications.show', $notification->id) }}" class="dropdown-item">
+        <i class="fas fa-eye me-2"></i>lihat detail
+    </a>
+</li>
+                                                                
                                                                 <li>
-                                                                    <form action="{{ route('notifications.markRead', $notification->id) }}" method="POST">
+                                                                    <form action="{{ route('notifications.delete', $notification->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus notifikasi ini?')">
                                                                         @csrf
-                                                                        <button type="submit" class="dropdown-item">
-                                                                            <i class="fas fa-check me-2"></i>Tandai Dibaca
+                                                                        @method('DELETE')
+                                                                        <button type="submit" class="dropdown-item text-danger">
+                                                                            <i class="fas fa-trash me-2"></i>Hapus
                                                                         </button>
                                                                     </form>
                                                                 </li>
-                                                            @endif
-                                                            <li>
-                                                                <form action="#" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus notifikasi ini?')">
-                                                                    @csrf
-                                                                    @method('DELETE')
-                                                                    <button type="submit" class="dropdown-item text-danger">
-                                                                        <i class="fas fa-trash me-2"></i>Hapus
-                                                                    </button>
-                                                                </form>
-                                                            </li>
-                                                        </ul>
+                                                            </ul>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 
+                                                <!-- Pesan Notifikasi -->
                                                 <p class="mb-1">{{ $notification->data['message'] ?? 'Tidak ada pesan' }}</p>
                                                 
+                                                <!-- Waktu & Status -->
                                                 <div class="d-flex justify-content-between align-items-center mt-2">
                                                     <small class="notification-time">
                                                         <i class="far fa-clock me-1"></i>
@@ -159,7 +210,6 @@
                         @endif
                     </div>
                     
-                    <!-- Pagination -->
                     @if($notifications->hasPages())
                         <div class="card-footer bg-white">
                             <div class="d-flex justify-content-center">
@@ -172,34 +222,14 @@
         </div>
     </div>
     
-    <!-- Footer -->
     @include('partials.footer')
     
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
-        // Fungsi untuk refresh notifikasi
         function refreshNotifications() {
             window.location.reload();
         }
-        
-        // Auto refresh setiap 30 detik (opsional)
-        // setInterval(refreshNotifications, 30000);
-        
-        // Mark notification as read when clicked (opsional)
-        document.addEventListener('DOMContentLoaded', function() {
-            const notificationItems = document.querySelectorAll('.notification-item.unread');
-            
-            notificationItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const form = this.querySelector('form');
-                    if (form) {
-                        form.submit();
-                    }
-                });
-            });
-        });
     </script>
 </body>
 </html>
