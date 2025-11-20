@@ -807,13 +807,14 @@ class NotificationManager {
             .replace(/'/g, "&#039;");
     }
 }
+</script>
 
-// Inisialisasi notifikasi manager ketika user sudah login
 @auth
     @if (Auth::user()->role === 'user')
-        document.addEventListener('DOMContentLoaded', function() {
-            new NotificationManager();
-        });
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        new NotificationManager();
+    });
+</script>
     @endif
 @endauth
-</script>

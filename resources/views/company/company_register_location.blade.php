@@ -19,7 +19,7 @@
         /* NAVBAR */
         .navbar {
             font-size: 1rem;
-            box-sha dow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             background: #fff;
             border-bottom: 1px solid #dee2e6;
             padding: 0.5rem 1rem;
@@ -109,7 +109,7 @@
 
         .card-header {
             padding: 1.5rem 2rem 1rem 2rem;
-            border-bottom: 1px solid #ee        e;
+            border-bottom: 1px solid #dee2e6;
         }
 
         .card-title {
@@ -124,7 +124,7 @@
         }
 
         .form-group {
-            margin-bottom: 1.5r        em;
+            margin-bottom: 1.5rem;
         }
 
         .form-label {
@@ -135,11 +135,11 @@
             color: #e53935;
         }
 
-                .form-control {
+        .form-control {
             border-radius: 2px;
-                    border: 1px solid #999;
+            border: 1px solid #999;
             padding: 0.75rem;
-            f        ont-size: 0.95rem;
+            font-size: 0.95rem;
             transition: border-color 0.2s;
         }
 
