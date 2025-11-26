@@ -626,7 +626,11 @@
                                 <td class="col-nama">{{ ucfirst(strtolower($regency->name)) }}</td>
                                 <td class="col-provinsi">{{ ucfirst(strtolower($regency->province->name ?? '-')) }}</td>
                                 <td class="col-status">
-                                    <span class="badge bg-success">Aktif</span>
+                                    @if($regency->status)
+                                        <span class="badge bg-success">Aktif</span>
+                                    @else
+                                        <span class="badge bg-secondary">Nonaktif</span>
+                                    @endif
                                 </td>
                                 <td class="col-actions">
                                     <div class="d-flex justify-content-center gap-1">
