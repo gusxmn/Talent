@@ -720,28 +720,19 @@
         form.submit();
     }
 
-    // Toast notification simple approach
+    // Toast initialization dengan Bootstrap Toast API
     const successToastEl = document.getElementById('successToast');
     if (successToastEl) {
-        // Ensure toast is visible
-        successToastEl.style.display = 'block';
-        successToastEl.style.opacity = '1';
+        const toast = new bootstrap.Toast(successToastEl);
+        toast.show();
         
         let seconds = 4;
-        const timerEl = document.getElementById('toastTimer');
         const timer = setInterval(() => {
             seconds--;
-            if (timerEl) {
-                timerEl.textContent = seconds + 's';
-            }
+            document.getElementById('toastTimer').textContent = seconds + 's';
             if (seconds <= 0) {
                 clearInterval(timer);
-                // Fade out
-                successToastEl.style.transition = 'opacity 0.3s ease-out';
-                successToastEl.style.opacity = '0';
-                setTimeout(() => {
-                    successToastEl.style.display = 'none';
-                }, 300);
+                toast.hide();
             }
         }, 1000);
     }

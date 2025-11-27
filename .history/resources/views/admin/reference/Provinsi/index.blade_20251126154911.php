@@ -508,6 +508,7 @@
         </div>
         <div class="header-text">
             <h1 class="main-title">Manajemen Provinsi</h1>
+            <h2 class="page-title">Daftar Provinsi</h2>
         </div>
     </div>
     
@@ -720,28 +721,16 @@
         form.submit();
     }
 
-    // Toast notification simple approach
-    const successToastEl = document.getElementById('successToast');
-    if (successToastEl) {
-        // Ensure toast is visible
-        successToastEl.style.display = 'block';
-        successToastEl.style.opacity = '1';
-        
+    // Toast timer
+    const successToast = document.getElementById('successToast');
+    if (successToast) {
         let seconds = 4;
-        const timerEl = document.getElementById('toastTimer');
         const timer = setInterval(() => {
             seconds--;
-            if (timerEl) {
-                timerEl.textContent = seconds + 's';
-            }
+            document.getElementById('toastTimer').textContent = seconds + 's';
             if (seconds <= 0) {
                 clearInterval(timer);
-                // Fade out
-                successToastEl.style.transition = 'opacity 0.3s ease-out';
-                successToastEl.style.opacity = '0';
-                setTimeout(() => {
-                    successToastEl.style.display = 'none';
-                }, 300);
+                successToast.style.display = 'none';
             }
         }, 1000);
     }

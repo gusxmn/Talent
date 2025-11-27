@@ -5,8 +5,8 @@
 @section('styles')
 <style>
     input[readonly], textarea[readonly] {
-        background-color: #d3d3d3 !important;
-        color: #495057 !important;
+        background-color: #e9ecef !important;
+        color: #6c757d !important;
         cursor: not-allowed !important;
     }
 </style>

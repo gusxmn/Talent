@@ -1,6 +1,6 @@
 @extends('admin.layout')
 
-@section('title', 'Manajemen Provinsi')
+@section('title', 'Manajemen Kabupaten')
 @section('content')
 
 {{-- =================================================================== --}}
@@ -51,7 +51,7 @@
         padding-top: 8px;
     }
 
-    /* SUB JUDUL DAFTAR PROVINSI */
+    /* SUB JUDUL DAFTAR KABUPATEN */
     .page-title {
         color: var(--text-primary) !important;
         font-weight: 500 !important;
@@ -76,13 +76,13 @@
 
     /* ICON SIDE */
     .header-icon {
-        font-size: 2rem !important;
+        font-size: 1.5rem !important;
         color: var(--header-color) !important;
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 50px;
-        height: 50px;
+        width: 40px;
+        height: 40px;
         background: rgba(30, 58, 138, 0.1);
         border-radius: 8px;
         margin-top: 8px;
@@ -163,30 +163,42 @@
         padding: 10px 4px !important;
     }
     
-    /* KOLOM KODE PROVINSI */
+    /* KOLOM KODE */
     .col-kode {
-        width: 10% !important;
+        width: 8% !important;
+    }
+    
+    /* KOLOM NAMA */
+    .col-nama {
+        width: 18% !important;
     }
     
     /* KOLOM PROVINSI */
     .col-provinsi {
-        width: 26% !important;
+        width: 18% !important;
     }
     
-    /* KOLOM NAMA PENGISI */
-    .col-pengisi {
-        width: 26% !important;
+    /* KOLOM STATUS */
+    .col-status {
+        width: 14% !important;
     }
     
     /* KOLOM TINDAKAN */
     .col-actions {
-        width: 24% !important;
+        width: 14% !important;
         text-align: center !important;
     }
     
     /* ROW HOVER EFFECT */
     .table-hover tbody tr:hover {
         background-color: var(--table-hover) !important;
+    }
+
+    /* BADGE STYLE - COMPACT */
+    .col-status .badge {
+        font-size: 9px !important;
+        padding: 3px 6px !important;
+        font-weight: 500;
     }
     
     /* FOOTER - NEMPEL LANGSUNG KE BODY */
@@ -245,66 +257,113 @@
         border-color: #1e3a8a !important;
     }
 
+    /* ACTION BUTTONS - SMALLER */
+    .btn-action {
+        padding: 3px 6px !important;
+        font-size: 10px !important;
+        min-width: 26px !important;
+        height: 26px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .btn-action i {
+        font-size: 10px !important;
+    }
+
     /* CONTAINER TABEL - NO GAP */
     .table-container {
         border-radius: 5px;
         overflow: hidden;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
-        border: 1px solid var(--border-color);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        margin: 0 !important;
+        padding: 0 !important;
     }
 
-    /* STYLE UNTUK FILTER PAGINATION DI FOOTER */
+    /* FOOTER CONTROLS */
     .footer-controls {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
         width: 100%;
+        padding: 0;
+    }
+    
+    .footer-info {
+        font-size: 11px;
+        padding: 0;
     }
     
     .pagination-filter-footer {
-        min-width: 100px;
+        width: 90px;
     }
+    
     .pagination-filter-footer .form-select {
-        background-color: #ffffff !important;
-        border: 1px solid #ced4da !important;
-        color: #212529 !important;
-        cursor: pointer;
         font-size: 10px !important;
-        padding: 3px 6px !important;
-        height: 26px !important;
-    }
-    
-    /* TOMBOL TINDAKAN YANG LEBIH KECIL */
-    .btn-action {
-        padding: 3px 6px !important;
-        font-size: 10px !important;
-        min-width: 26px;
-        height: 26px;
-    }
-    
-    /* TEXT INFO FOOTER */
-    .footer-info {
-        font-size: 10px !important;
-    }
-
-    /* GARIS PEMISAH - DARK MODE SUPPORT */
-    .divider {
-        border: none;
-        border-top: 1px solid var(--border-color);
-        margin: 20px 0;
-    }
-
-    /* PAGINATION CUSTOM STYLE - DIPERBAIKI */
-    .table-pagination {
-        margin: 0 !important;
-        padding: 0 !important;
+        padding: 4px 6px !important;
+        min-height: auto;
     }
     
     .table-pagination .pagination {
         margin: 0 !important;
         justify-content: flex-end;
         gap: 2px;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
+    }
+
+    /* CUSTOM PAGINATION STYLING */
+    .pagination-custom {
+        display: flex !important;
+        gap: 3px !important;
+        list-style: none;
+    }
+
+    .pagination-custom .page-item {
+        display: inline-block;
+    }
+
+    .pagination-custom .page-link {
+        font-size: 11px !important;
+        padding: 5px 8px !important;
+        min-width: 28px;
+        height: 28px;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #ffffff;
+        border: 1px solid #dee2e6;
+        color: #0d6efd;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+    }
+
+    .pagination-custom .page-item.active .page-link {
+        background-color: #0d6efd !important;
+        border-color: #0d6efd !important;
+        color: white !important;
+        font-weight: 600;
+    }
+
+    .pagination-custom .page-item.disabled .page-link {
+        background-color: #f8f9fa;
+        border-color: #dee2e6;
+        color: #6c757d;
+        cursor: not-allowed;
+    }
+
+    .pagination-custom .page-link:hover:not(.disabled) {
+        background-color: #e9ecef;
+        border-color: #dee2e6;
+        color: #0a58ca;
+    }
+
+    .pagination-custom .page-link i {
+        font-size: 10px;
     }
     
     .table-pagination .page-link {
@@ -452,50 +511,12 @@
     .modal.show {
         display: flex !important;
     }
-    
-    .modal.fade .modal-dialog {
-        transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-    }
-    
-    .modal.show .modal-dialog {
-        transform: none;
-        animation: modalSlideIn 0.4s ease-out;
-    }
-    
-    @keyframes modalSlideIn {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
 
-    /* LOADING STATE UNTUK DELETE BUTTON */
-    .btn-delete-loading {
-        position: relative;
-        pointer-events: none;
-    }
-    
-    .btn-delete-loading::after {
-        content: '';
-        position: absolute;
-        width: 16px;
-        height: 16px;
-        top: 50%;
-        left: 50%;
-        margin: -8px 0 0 -8px;
-        border: 2px solid transparent;
-        border-top: 2px solid #ffffff;
-        border-radius: 50%;
-        animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-        0% { transform: rotate(0deg); }
-        100% { transform: rotate(360deg); }
+    /* GARIS PEMISAH */
+    .divider {
+        border: none;
+        border-top: 1px solid var(--border-color);
+        margin: 20px 0;
     }
 </style>
 
@@ -504,10 +525,10 @@
     {{-- HEADER SECTION - SEJAJAR DENGAN ICON --}}
     <div class="header-section">
         <div class="header-icon">
-            <i class="fas fa-map-marked-alt"></i>
+            <i class="fas fa-city"></i>
         </div>
         <div class="header-text">
-            <h1 class="main-title">Manajemen Provinsi</h1>
+            <h1 class="main-title">Manajemen Kabupaten/Kota</h1>
         </div>
     </div>
     
@@ -532,13 +553,13 @@
     @endif
 
     {{-- FORM KONTROL DENGAN FIXED LAYOUT --}}
-    <form method="GET" action="{{ route('admin.reference.provinsi.index') }}" class="mb-4" id="filterForm">
+    <form method="GET" action="{{ route('admin.reference.kabupaten.index') }}" class="mb-4" id="filterForm">
         <div class="row g-3 align-items-end">
             {{-- KOLOM PENCARIAN --}}
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <div class="input-group">
                     <input type="text" name="search" id="search" class="form-control"
-                           placeholder="Cari nama provinsi atau kode..."
+                           placeholder="Cari nama kabupaten/kota atau kode..."
                            value="{{ request('search') }}">
                     <button type="submit" class="btn btn-search">
                         <i class="fas fa-search"></i>
@@ -546,15 +567,27 @@
                 </div>
             </div>
             
+            {{-- FILTER PROVINSI --}}
+            <div class="col-md-3">
+                <select name="province_id" id="province_id" class="form-select" onchange="document.getElementById('filterForm').submit();">
+                    <option value="">-- Semua Provinsi --</option>
+                    @foreach($provinces as $province)
+                        <option value="{{ $province->id }}" {{ request('province_id') == $province->id ? 'selected' : '' }}>
+                            {{ $province->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            
             {{-- TOMBOL TAMBAH --}}
             <div class="col-md-3">
-                <a href="{{ route('admin.reference.provinsi.create') }}" class="btn btn-primary w-100 btn-tambah">
-                    <i class="fas fa-plus me-1"></i>Tambah Provinsi
+                <a href="{{ route('admin.reference.kabupaten.create') }}" class="btn btn-primary w-100 btn-tambah">
+                    <i class="fas fa-plus me-1"></i>Tambah Kabupaten
                 </a>
             </div>
         </div>
 
-        {{-- INPUT HIDDEN UNTUK PER PAGE --}}
+        {{-- INPUT HIDDEN UNTUK MENJAGA PARAMETER --}}
         <input type="hidden" name="per_page" id="per_page" value="{{ request('per_page', 10) }}">
     </form>
 
@@ -572,7 +605,8 @@
                         <tr>
                             <th class="col-no">NO</th>
                             <th class="col-kode">KODE</th>
-                            <th class="col-nama">NAMA PROVINSI</th>
+                            <th class="col-nama">NAMA KABUPATEN</th>
+                            <th class="col-provinsi">NAMA PROVINSI</th>
                             <th class="col-status">STATUS</th>
                             <th class="col-actions">TINDAKAN</th> 
                         </tr>
@@ -584,13 +618,14 @@
             <div class="tbl-content">
                 <table class="table table-hover"> 
                     <tbody>
-                        @forelse($provinces as $index => $province)
+                        @forelse($regencies as $index => $regency)
                             <tr class="align-middle"> 
-                                <td class="col-no">{{ $provinces->firstItem() + $index }}</td>
-                                <td class="col-kode">{{ $province->id }}</td>
-                                <td class="col-nama">{{ $province->name }}</td>
+                                <td class="col-no">{{ $regencies->firstItem() + $index }}</td>
+                                <td class="col-kode">{{ $regency->id }}</td>
+                                <td class="col-nama">{{ ucfirst(strtolower($regency->name)) }}</td>
+                                <td class="col-provinsi">{{ ucfirst(strtolower($regency->province->name ?? '-')) }}</td>
                                 <td class="col-status">
-                                    @if($province->status)
+                                    @if($regency->status)
                                         <span class="badge bg-success">Aktif</span>
                                     @else
                                         <span class="badge bg-secondary">Nonaktif</span>
@@ -598,14 +633,14 @@
                                 </td>
                                 <td class="col-actions">
                                     <div class="d-flex justify-content-center gap-1">
-                                        <a href="{{ route('admin.reference.provinsi.edit', $province->id) }}" title="Edit"
+                                        <a href="{{ route('admin.reference.kabupaten.edit', $regency->id) }}" title="Edit"
                                            class="btn btn-warning btn-sm btn-action">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <button type="button" class="btn btn-danger btn-sm btn-action btn-delete"
-                                                data-delete-url="{{ route('admin.reference.provinsi.destroy', $province->id) }}"
-                                                data-item-name="{{ $province->name }}"
-                                                data-item-id="{{ $province->id }}"
+                                                data-delete-url="{{ route('admin.reference.kabupaten.destroy', $regency->id) }}"
+                                                data-item-name="{{ $regency->name }}"
+                                                data-item-id="{{ $regency->id }}"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#deleteModal"
                                                 title="Hapus">
@@ -616,7 +651,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="text-center text-muted py-3" style="font-size: 11px !important;">Tidak ada data provinsi</td>
+                                <td colspan="6" class="text-center text-muted py-3" style="font-size: 11px !important;">Tidak ada data kabupaten</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -625,16 +660,16 @@
         </div>
         
         {{-- FOOTER - NEMPEL LANGSUNG KE BODY --}}
-        @if(count($provinces) > 0)
+        @if(count($regencies) > 0)
         <div class="table-responsive">
             <table class="table" style="table-layout: fixed;"> 
                 <tfoot>
                     <tr>
-                        <td colspan="5" class="p-2">
+                        <td colspan="6" class="p-2">
                             <div class="footer-controls">
                                 <div class="d-flex align-items-center gap-2">
                                     <div class="text-muted footer-info">
-                                        Total: <strong>{{ $provinces->total() }}</strong> data provinsi
+                                        Total: <strong>{{ $regencies->total() }}</strong> data kabupaten
                                     </div>
                                     <div class="pagination-filter-footer">
                                         <select name="per_page_footer" id="per_page_footer" class="form-select" onchange="changePage(this.value)">
@@ -648,9 +683,9 @@
                                 </div>
                                 
                                 {{-- PAGINATION DI KANAN BAWAH - PRESERVE SEARCH & FILTER --}}
-                                @if($provinces->hasPages())
+                                @if($regencies->hasPages())
                                 <div class="table-pagination">
-                                    {{ $provinces->appends(request()->query())->links('vendor.pagination.custom') }}
+                                    {{ $regencies->appends(request()->query())->links('vendor.pagination.custom') }}
                                 </div>
                                 @endif
                             </div>
@@ -673,7 +708,7 @@
                 </h5>
             </div>
             <div class="modal-body p-4">
-                <p class="mb-3">Apakah Anda yakin ingin menghapus <strong>provinsi berikut</strong>?</p>
+                <p class="mb-3">Apakah Anda yakin ingin menghapus <strong>kabupaten/kota berikut</strong>?</p>
                 <div class="alert alert-light border border-danger" style="border-radius: 8px;">
                     <p class="mb-0 text-danger fw-bold" id="deleteItemName" style="font-size: 1.1rem;"></p>
                     <small class="text-muted">ID: <span id="deleteItemId"></span></small>
@@ -699,7 +734,6 @@
     </div>
 </div>
 
-{{-- JAVASCRIPT UNTUK FILTER DAN DELETE --}}
 <script>
     // Delete button handler dengan modal
     document.querySelectorAll('.btn-delete').forEach(button => {
@@ -720,30 +754,19 @@
         form.submit();
     }
 
-    // Toast notification simple approach
-    const successToastEl = document.getElementById('successToast');
-    if (successToastEl) {
-        // Ensure toast is visible
-        successToastEl.style.display = 'block';
-        successToastEl.style.opacity = '1';
-        
+    // Toast timer
+    const successToast = document.getElementById('successToast');
+    if (successToast) {
         let seconds = 4;
-        const timerEl = document.getElementById('toastTimer');
         const timer = setInterval(() => {
             seconds--;
-            if (timerEl) {
-                timerEl.textContent = seconds + 's';
-            }
+            document.getElementById('toastTimer').textContent = seconds + 's';
             if (seconds <= 0) {
                 clearInterval(timer);
-                // Fade out
-                successToastEl.style.transition = 'opacity 0.3s ease-out';
-                successToastEl.style.opacity = '0';
-                setTimeout(() => {
-                    successToastEl.style.display = 'none';
-                }, 300);
+                successToast.style.display = 'none';
             }
         }, 1000);
     }
 </script>
+
 @endsection

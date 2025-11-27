@@ -663,6 +663,32 @@
     </div>
 </div>
 
+{{-- SUCCESS DELETE MODAL --}}
+<div class="modal fade" id="successDeleteModal" tabindex="-1" aria-labelledby="successDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-success text-white border-0">
+                <h5 class="modal-title" id="successDeleteModalLabel">
+                    <i class="fas fa-check-circle me-2"></i>Berhasil Dihapus
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4 text-center">
+                <div style="font-size: 3rem; color: #28a745; margin-bottom: 20px;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h6 class="mb-3">Data Provinsi Berhasil Dihapus</h6>
+                <p class="text-muted mb-0">Data telah dihapus dari sistem dan tidak dapat dipulihkan.</p>
+            </div>
+            <div class="modal-footer border-0 bg-light">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal">
+                    <i class="fas fa-check me-2"></i>Selesai
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{-- DELETE MODAL --}}
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 500px;">
@@ -701,6 +727,19 @@
 
 {{-- JAVASCRIPT UNTUK FILTER DAN DELETE --}}
 <script>
+    // Check if ada session success dan trigger modal sukses
+    document.addEventListener('DOMContentLoaded', function() {
+        @if(session('success'))
+            const successDeleteModal = new bootstrap.Modal(document.getElementById('successDeleteModal'));
+            successDeleteModal.show();
+            
+            // Redirect ke index setelah modal ditutup
+            document.getElementById('successDeleteModal').addEventListener('hidden.bs.modal', function() {
+                location.reload();
+            });
+        @endif
+    });
+    
     // Delete button handler dengan modal
     document.querySelectorAll('.btn-delete').forEach(button => {
         button.addEventListener('click', function() {
@@ -720,28 +759,16 @@
         form.submit();
     }
 
-    // Toast notification simple approach
-    const successToastEl = document.getElementById('successToast');
-    if (successToastEl) {
-        // Ensure toast is visible
-        successToastEl.style.display = 'block';
-        successToastEl.style.opacity = '1';
-        
+    // Toast timer
+    const successToast = document.getElementById('successToast');
+    if (successToast) {
         let seconds = 4;
-        const timerEl = document.getElementById('toastTimer');
         const timer = setInterval(() => {
             seconds--;
-            if (timerEl) {
-                timerEl.textContent = seconds + 's';
-            }
+            document.getElementById('toastTimer').textContent = seconds + 's';
             if (seconds <= 0) {
                 clearInterval(timer);
-                // Fade out
-                successToastEl.style.transition = 'opacity 0.3s ease-out';
-                successToastEl.style.opacity = '0';
-                setTimeout(() => {
-                    successToastEl.style.display = 'none';
-                }, 300);
+                successToast.style.display = 'none';
             }
         }, 1000);
     }
