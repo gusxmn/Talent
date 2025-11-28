@@ -1,6 +1,17 @@
 @extends('admin.layout')
 
 @section('title', 'Edit Desa/Kelurahan')
+
+@section('styles')
+<style>
+    input[readonly], textarea[readonly] {
+        background-color: #d3d3d3 !important;
+        color: #495057 !important;
+        cursor: not-allowed !important;
+    }
+</style>
+@endsection
+
 @section('content')
 
 <div class="judul-form-area text-white p-3" style="background-color: #ffc107;">
@@ -76,13 +87,10 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="kode_desa" class="font-weight: normal;">Kode Desa <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control @error('kode_desa') is-invalid @enderror" 
+                    <input type="text" class="form-control" 
                            id="kode_desa" name="kode_desa" 
-                           value="{{ old('kode_desa', $desa->kode_desa) }}" required>
-                    @error('kode_desa')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                    <small class="text-muted">Kode Desa</small>
+                           value="{{ $desa->kode_desa }}" readonly style="pointer-events: none;">
+                    <small class="text-muted">Kode tidak dapat diubah</small>
                 </div>
                 
                 <div class="col-md-6 mb-3">

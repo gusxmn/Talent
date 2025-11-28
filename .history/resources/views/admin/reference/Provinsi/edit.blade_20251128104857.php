@@ -1,6 +1,17 @@
 @extends('admin.layout')
 
 @section('title', 'Edit Provinsi')
+
+@section('styles')
+<style>
+    input[readonly], textarea[readonly] {
+        background-color: #d3d3d3 !important;
+        color: #495057 !important;
+        cursor: not-allowed !important;
+    }
+</style>
+@endsection
+
 @section('content')
 
 <div class="judul-form-area text-white p-3" style="background-color: #ffc107;">
@@ -36,8 +47,8 @@
                     <label for="id" class="font-weight: normal;">Kode Provinsi <span class="text-danger">*</span></label>
                     <input type="text" class="form-control" 
                            id="id" name="id" 
-                           value="{{ $province->id }}">
-                    <small class="text-muted">Kode Provinsi</small>
+                           value="{{ $province->id }}" readonly style="pointer-events: none;">
+                    <small class="text-muted">ID tidak dapat diubah</small>
                 </div>
                 
                 <div class="col-md-6 mb-3">

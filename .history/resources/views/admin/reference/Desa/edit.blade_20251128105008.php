@@ -1,6 +1,17 @@
 @extends('admin.layout')
 
 @section('title', 'Edit Desa/Kelurahan')
+
+@section('styles')
+<style>
+    input[readonly], textarea[readonly] {
+        background-color: #d3d3d3 !important;
+        color: #495057 !important;
+        cursor: not-allowed !important;
+    }
+</style>
+@endsection
+
 @section('content')
 
 <div class="judul-form-area text-white p-3" style="background-color: #ffc107;">
